@@ -1,0 +1,6 @@
+numpy
+sounddevice
+matplotlib
+bleak
+polar-python
+pylsl
