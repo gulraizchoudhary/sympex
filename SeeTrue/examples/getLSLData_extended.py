@@ -1,4 +1,4 @@
-from pylsl import StreamInlet, resolve_streams, resolve_stream
+from pylsl import StreamInlet, resolve_streams, resolve_streams
 import csv
 import time
 import numpy as np
@@ -9,7 +9,7 @@ import math
 # Edit this host_name and data_kinds as your situation
 # host_name = ["SeeTrue-Demo2"]
 # host_name = ["DESKTOP-MDN17L1"]
-host_name = ["DESKTOP-MDN17L1", "SeeTrue-Demo2"]
+host_name = ["968KRQ3"]
 data_kinds = ["EyeData", "EyeEvents", "DebugData"]
 
 # only one have to be True
@@ -34,7 +34,7 @@ only_parse = {f"{host}_{name}": [] for host in host_name for name in data_kinds}
 save_time = 50
 
 # print out data analyze
-data_analyze = False
+data_analyze = True
 
 # plot eye data
 plot_eye_data = True
