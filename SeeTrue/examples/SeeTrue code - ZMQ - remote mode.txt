@@ -1,0 +1,55 @@
+import zmq
+import csv
+from io import StringIO
+
+def main():
+    PORT = 3428
+    TIMEOUT_MS = 1000  # 1 second timeout
+
+    # Initialize ZMQ context and pull socket
+    context = zmq.Context()
+    socket = context.socket(zmq.PULL)
+    socket.set_hwm(1)
+
+    print(f"Connecting to push socket on port {PORT}...")
+    socket.connect(f"tcp://localhost:{PORT}")
+
+    # Set receive timeout
+    socket.setsockopt(zmq.RCVTIMEO, TIMEOUT_MS)
+
+    print("Connected! Waiting for data...")
+    print("Check SeeTrue documentation for explanation of ZMQ stream variables.")
+
+    try:
+        while True:
+            try:
+                # Receive message with timeout
+                message = socket.recv_string()
+
+                # Parse CSV data
+                reader = csv.reader(StringIO(message), delimiter=";")
+                values = next(reader)
+                print(message)
+
+                if len(values) >= 4:  # Ensure we have at least gaze coordinates
+                    gaze_x = float(values[2])
+                    gaze_y = float(values[3])
+                    print(f"Gaze: X={gaze_x:.3f}, Y={gaze_y:.3f}")
+
+            except zmq.error.Again:
+                # Timeout occurred
+                print("No data received (timeout)")
+                continue
+            except Exception as e:
+                print(f"Error: {e}")
+                continue
+
+    except KeyboardInterrupt:
+        print("\nShutting down...")
+    finally:
+        # Clean up
+        socket.close()
+        context.term()
+
+if __name__ == "__main__":
+    main()
