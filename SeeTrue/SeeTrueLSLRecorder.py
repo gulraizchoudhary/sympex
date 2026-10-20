@@ -224,8 +224,8 @@ class SeeTrueLSLRecorder:
 if __name__ == "__main__":
 
     recorder = SeeTrueLSLRecorder(
-        user_data_dir=r"C:\Users\chgul\Documents",
-        user_name="New Test"
+        user_data_dir=r"C:/Users/wksadmin/Documents",
+        user_name="Test-GI"
     )
 
     recorder.record()
