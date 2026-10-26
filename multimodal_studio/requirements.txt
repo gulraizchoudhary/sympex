@@ -1,0 +1,9 @@
+numpy>=1.24
+sounddevice>=0.4.6
+soundfile>=0.12
+pylsl>=1.16
+bleak>=0.21
+polar-python
+matplotlib>=3.7
+opencv-python>=4.8
+Pillow>=10.0
