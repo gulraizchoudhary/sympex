@@ -44,35 +44,67 @@ class AudioRecorder(RecorderBase):
         self.level = 0.0
         self.preview_lock = threading.Lock()
         self.last_callback = None
+        self.callback_errors = 0
         self.total_frames_received = 0
         self._prev_status = None
         self._writer_failed = False
 
     def start(self, folder, device, sample_rate, channels=1):
-
-        device_info = sd.query_devices(device)
-        hostapis = sd.query_hostapis()
-    
-        backend = hostapis[device_info["hostapi"]]["name"]
-    
-        # Enable exclusive mode for WASAPI devices
-        extra_settings = None
-    
-        if "WASAPI" in backend.upper():
-            extra_settings = sd.WasapiSettings(
-                exclusive=True
+        # A 384 kHz Ultramic input must use a compatible endpoint. Windows
+        # DirectSound commonly rejects it; the user verified WASAPI Exclusive.
+        device_info = sd.query_devices(device, 'input')
+        backend = sd.query_hostapis(device_info['hostapi'])['name']
+        high_rate = int(sample_rate) >= 384000
+        if high_rate and 'WASAPI' not in backend.upper():
+            raise ValueError(
+                f'{sample_rate} Hz requires the WASAPI input endpoint for this '
+                f'Ultramic setup. Selected: {device_info["name"]} ({backend}). '
+                'Refresh the microphone list and select its WASAPI entry.'
             )
-    
-        # Validate the actual recording configuration
-        sd.check_input_settings(
-            device=device,
-            samplerate=sample_rate,
-            channels=channels,
-            dtype="int16",
-            extra_settings=extra_settings
+        extra_settings = (
+            sd.WasapiSettings(exclusive=True)
+            if high_rate and 'WASAPI' in backend.upper()
+            else None
         )
-    
         self._extra_settings = extra_settings
+        self.report(
+            'INFO',
+            f'Opening microphone: {device_info["name"]} | index={device} | '
+            f'backend={backend} | rate={sample_rate} Hz | channels={channels} | '
+            f'WASAPI exclusive={extra_settings is not None}'
+        )
+        sd.check_input_settings(
+            device=device, samplerate=sample_rate, channels=channels,
+            dtype='int16', extra_settings=extra_settings
+        )
+        self._rate=sample_rate
+        with self.preview_lock:
+            self.preview.clear()
+            self.preview_timed.clear()
+        self.q = queue.Queue(maxsize=512)
+        self.count = self.lost_blocks = 0
+        self.total_frames_received = 0
+        self.last_callback = None
+        self.callback_errors = 0
+        self._writer_failed = False
+        self.failed = False
+        self.active = True
+        stem = self.name.lower().replace(' ', '_')
+        self.worker = threading.Thread(target=self._writer, args=(Path(folder), stem, sample_rate, channels), daemon=False)
+        self.worker.start()
+        try:
+            self.stream = sd.InputStream(
+                device=device, samplerate=sample_rate, channels=channels,
+                dtype='int16', blocksize=0, latency='high',
+                extra_settings=self._extra_settings, callback=self._callback
+            )
+            self.stream.start()
+            self.report('RECORDING', f'device={device}, rate={sample_rate} Hz, channels={channels}')
+        except Exception:
+            self.active = False
+            self.q.put(None)
+            self.worker.join()
+            raise
 
     def _callback(self, data, frames, timing, status):
         # Estimate first sample LSL time using PortAudio's clock relationship.
@@ -83,8 +115,15 @@ class AudioRecorder(RecorderBase):
         import numpy as np
         stride = max(1, int(self._rate / 300))  # rate-based, not callback-size-based
         down = data[:, 0][::stride].astype('float32') / 32768.0
-        # Timestamps track actual selected sample indices, including variable callback sizes.
-        times = t + np.arange(len(down), dtype=np.float64) * (stride / self._rate)
+        # Preview follows local LSL time. Some host drivers report ADC timestamps
+        # with unusable offsets: retain original t for the recording metadata,
+        # but use arrival-based times for display if the offset is implausible.
+        display_t = t
+        display_now = local_clock()
+        block_duration = frames / self._rate
+        if not (0 <= display_now - t <= 5.0 + block_duration):
+            display_t = display_now - block_duration
+        times = display_t + np.arange(len(down), dtype=np.float64) * (stride / self._rate)
         with self.preview_lock:
             self.preview.extend(down.tolist())
             self.preview_timed.extend(zip(times.tolist(), down.tolist()))

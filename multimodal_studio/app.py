@@ -9,6 +9,7 @@ from tkinter import ttk, filedialog, messagebox
 from pathlib import Path
 from datetime import datetime
 import numpy as np
+import sounddevice as sd
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
@@ -19,7 +20,6 @@ from devices.polar import PolarRecorder
 from devices.seetrue import SeeTrueRecorder
 from devices.camera_recorder import CameraRecorder
 from devices.camera_preview import CameraPreview, discover_cameras
-import sounddevice as sd
 
 BASE = Path(__file__).resolve().parent
 BG, PANEL, CARD, WHITE = '#101827', '#172337', '#20304a', '#ecf3ff'
@@ -451,7 +451,7 @@ class App:
                 ax.set_ylabel('Amplitude (−1 to +1)',color=MUTED,fontsize=8)
                 peak=max((abs(y) for _,y in points),default=0.0)
                 assessment=('NO RECENT SAMPLES — check acquisition' if not points else 'SILENCE — recorded samples near zero' if peak < 1/32768 else 'LOW LEVEL — check gain/input' if peak < 0.003 else 'Signal received')
-                info.configure(text=f'{assessment}  |  Peak: {peak:.4f}  |  RMS: {rec.level:.4f}  |  Saved: {rec.count:,}  |  Drops: {rec.lost_blocks}')
+                info.configure(text=f'{assessment}  |  Peak: {peak:.4f}  |  RMS: {rec.level:.4f}  |  Received: {rec.total_frames_received:,}  |  Saved: {rec.count:,}  |  Drops: {rec.lost_blocks}')
             elif name=='Polar H10':
                 points=[(now-t,y) for t,y in list(rec.ecg_timed) if 0 <= now-t <= 5]
                 if points:
@@ -754,10 +754,16 @@ class App:
             self.stop_preview()
             return
         try:
+            if not any(v.get() for v in self.enabled.values()) and self.mic_select.current() >= 0:
+                self.enabled['Microphone'].set(True)
+                self.status['Microphone'].set('Selected · configure →')
+                self._rebuild_monitor()
+                self.bus.emit('Preview','INFO','No devices were enabled; microphone selected for Preview automatically')
             selected=self._selected_recorders()
             self.preview_tmp=tempfile.TemporaryDirectory(prefix='multimodal_preview_')
             self.preview_devices=selected
             self.preview_active=True
+            started_count=0
             for name,(rec,settings) in selected.items():
                 try:
                     if name.startswith('Camera'):
@@ -769,8 +775,12 @@ class App:
                     else:
                         rec.start(Path(self.preview_tmp.name), **settings)
                         self.status[name].set('PREVIEW')
+                    started_count += 1
                 except Exception as exc:
+                    self.status[name].set('ERROR')
                     self.bus.emit(name,'ERROR',f'Preview start failed: {exc!r}')
+            if not started_count:
+                raise RuntimeError('No selected device could start Preview. Check Activity & errors for the exact reason.')
             self.preview_btn.configure(text='■ STOP PREVIEW')
             self.status_top.configure(text='●  PREVIEW',fg=BLUE)
             self.session_status.set('Preview mode · temporary test capture')
@@ -895,7 +905,10 @@ class App:
             see=self.recorders['SeeTrue']
             if see.last_sample is not None:self.see_live.set(f'{see.samples:,} samples  ·  Latest: {str(see.last_sample)[:350]}')
         self._update_selection()
-        self._draw_monitors()
+        try:
+            self._draw_monitors()
+        except Exception as exc:
+            self.bus.emit('Monitoring','ERROR',f'Live plot update failed: {exc!r}')
         self.root.after(500,self.poll)
 
     def close(self):
