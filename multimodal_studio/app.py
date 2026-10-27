@@ -19,6 +19,7 @@ from devices.polar import PolarRecorder
 from devices.seetrue import SeeTrueRecorder
 from devices.camera_recorder import CameraRecorder
 from devices.camera_preview import CameraPreview, discover_cameras
+import sounddevice as sd
 
 BASE = Path(__file__).resolve().parent
 BG, PANEL, CARD, WHITE = '#101827', '#172337', '#20304a', '#ecf3ff'
@@ -706,9 +707,19 @@ class App:
         self.update_lsl_count()
 
     def audio_args(self,box,rate):
-        i=box.current()
-        if not 0<=i<len(self.device_choices):raise ValueError('Select an audio input first.')
-        return {'device':self.device_choices[i][0],'sample_rate':rate,'channels':1}
+        i = box.current()
+        if not 0 <= i < len(self.device_choices):
+            raise ValueError('Select an audio input first.')
+        device = self.device_choices[i][0]
+        details = sd.query_devices(device, 'input')
+        backend = sd.query_hostapis(details['hostapi'])['name']
+        if rate >= 384000 and 'WASAPI' not in backend.upper():
+            raise ValueError(
+                f'384 kHz requires the Ultramic WASAPI endpoint. '
+                f'Currently selected: {details["name"]} ({backend}). '
+                'Choose Microphone (UltraMic384K_PRO 16bit r0) — Windows WASAPI.'
+            )
+        return {'device': device, 'sample_rate': rate, 'channels': 1}
 
     def _selected_recorders(self):
         selected={}

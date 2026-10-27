@@ -59,3 +59,56 @@
 2026-10-27 10:05:59,683 INFO [Microphone] STOPPED: 5141760 samples saved; queue drops=0
 2026-10-27 10:06:00,242 INFO [Camera 1] INFO: Preview capture stopped
 2026-10-27 10:06:15,758 INFO [Application] INFO: Application closing
+2026-10-27 11:51:49,904 INFO [Application] INFO: Application started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-10-27 11:51:50,475 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-10-27 11:51:50,476 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-10-27 11:52:45,476 ERROR [Microphone] ERROR: Preview start failed: PortAudioError('Error opening InputStream: Unanticipated host error', -9999, (1, -2147024809, 'DirectSound error'))
+2026-10-27 11:52:48,278 INFO [Microphone] STOPPED: 0 samples saved; queue drops=0
+2026-10-27 11:53:02,269 INFO [Microphone] RECORDING: device=19, rate=48000 Hz, channels=1
+2026-10-27 11:53:03,306 WARNING [Microphone] DROPPED: Audio stream became inactive
+2026-10-27 11:53:06,434 INFO [Microphone] STOPPED: 0 samples saved; queue drops=0
+2026-10-27 11:53:20,365 INFO [Microphone] RECORDING: device=1, rate=44100 Hz, channels=1
+2026-10-27 11:53:29,303 INFO [Microphone] STOPPED: 388512 samples saved; queue drops=0
+2026-10-27 11:55:57,110 INFO [Application] INFO: Application started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-10-27 11:55:57,593 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-10-27 11:55:57,595 INFO [Audio] INFO: 14 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-10-27 11:56:15,913 ERROR [Preview] ERROR: Preview setup failed: ValueError('Enable at least one device on the left.')
+2026-10-27 11:56:21,863 ERROR [Microphone] ERROR: Preview start failed: PortAudioError('Invalid sample rate', -9997)
+2026-10-27 11:56:24,310 INFO [Microphone] STOPPED: 0 samples saved; queue drops=0
+2026-10-27 11:56:26,104 ERROR [Microphone] ERROR: Preview start failed: PortAudioError('Invalid sample rate', -9997)
+2026-10-27 11:56:27,803 INFO [Microphone] STOPPED: 0 samples saved; queue drops=0
+2026-10-27 11:56:33,034 ERROR [Microphone] ERROR: Preview start failed: PortAudioError('Invalid sample rate', -9997)
+2026-10-27 11:56:46,484 INFO [Microphone] STOPPED: 0 samples saved; queue drops=0
+2026-10-27 11:57:01,838 ERROR [Microphone] ERROR: Preview start failed: PortAudioError('Error opening InputStream: Unanticipated host error', -9999, (1, -2147024809, 'DirectSound error'))
+2026-10-27 11:57:04,716 INFO [Microphone] STOPPED: 0 samples saved; queue drops=0
+2026-10-27 11:57:06,075 ERROR [Microphone] ERROR: Preview start failed: PortAudioError('Error opening InputStream: Unanticipated host error', -9999, (1, -2147024809, 'DirectSound error'))
+2026-10-27 11:57:07,200 INFO [Microphone] STOPPED: 0 samples saved; queue drops=0
+2026-10-27 11:57:13,597 INFO [Microphone] RECORDING: device=7, rate=192000 Hz, channels=1
+2026-10-27 11:57:52,446 INFO [Microphone] STOPPED: 7414800 samples saved; queue drops=0
+2026-10-27 11:59:31,971 ERROR [Microphone] ERROR: Preview start failed: PortAudioError('Error opening InputStream: Unanticipated host error', -9999, (1, -2147024809, 'DirectSound error'))
+2026-10-27 12:01:52,645 INFO [Microphone] STOPPED: 0 samples saved; queue drops=0
+2026-10-27 12:01:53,803 INFO [Application] INFO: Application closing
+2026-10-27 12:09:37,746 INFO [Application] INFO: Application started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-10-27 12:09:38,474 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-10-27 12:09:38,475 INFO [Audio] INFO: 14 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-10-27 12:09:47,527 ERROR [Preview] ERROR: Preview setup failed: ValueError('Enable at least one device on the left.')
+2026-10-27 12:10:03,936 INFO [Microphone] STOPPED: 0 samples saved; queue drops=0
+2026-10-27 12:19:19,979 INFO [Application] INFO: Application started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-10-27 12:19:20,420 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-10-27 12:19:20,423 INFO [Audio] INFO: 14 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-10-27 12:19:34,530 ERROR [Preview] ERROR: Preview setup failed: NameError("name 'sd' is not defined")
+2026-10-27 12:21:00,051 INFO [Application] INFO: Application closing
+2026-10-27 12:21:02,201 INFO [Application] INFO: Application started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-10-27 12:21:02,585 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-10-27 12:21:02,586 INFO [Audio] INFO: 14 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-10-27 12:21:44,874 INFO [Microphone] STOPPED: 0 samples saved; queue drops=0
+2026-10-27 12:22:55,924 INFO [Microphone] STOPPED: 0 samples saved; queue drops=0
+2026-10-27 12:22:55,925 INFO [Application] INFO: Application closing
+2026-10-27 12:22:59,889 INFO [Application] INFO: Application started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-10-27 12:23:00,334 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-10-27 12:23:00,336 INFO [Audio] INFO: 14 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-10-27 12:23:45,642 INFO [Microphone] STOPPED: 0 samples saved; queue drops=0
+2026-10-27 12:23:45,647 INFO [Session] RECORDING: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_001\Session_20261027_122345_643600
+2026-10-27 12:23:58,228 INFO [Microphone] STOPPED: 0 samples saved; queue drops=0
+2026-10-27 12:23:58,229 INFO [Session] STOPPED: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_001\Session_20261027_122345_643600
+2026-10-27 12:26:00,293 INFO [Microphone] STOPPED: 0 samples saved; queue drops=0

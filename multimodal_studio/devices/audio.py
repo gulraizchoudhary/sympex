@@ -49,30 +49,30 @@ class AudioRecorder(RecorderBase):
         self._writer_failed = False
 
     def start(self, folder, device, sample_rate, channels=1):
-        sd.check_input_settings(device=device, samplerate=sample_rate, channels=channels, dtype='int16')
-        self._rate=sample_rate
-        with self.preview_lock:
-            self.preview.clear()
-            self.preview_timed.clear()
-        self.q = queue.Queue(maxsize=512)
-        self.count = self.lost_blocks = 0
-        self.total_frames_received = 0
-        self.last_callback = None
-        self._writer_failed = False
-        self.failed = False
-        self.active = True
-        stem = self.name.lower().replace(' ', '_')
-        self.worker = threading.Thread(target=self._writer, args=(Path(folder), stem, sample_rate, channels), daemon=False)
-        self.worker.start()
-        try:
-            self.stream = sd.InputStream(device=device, samplerate=sample_rate, channels=channels, dtype='int16', blocksize=0, callback=self._callback)
-            self.stream.start()
-            self.report('RECORDING', f'device={device}, rate={sample_rate} Hz, channels={channels}')
-        except Exception:
-            self.active = False
-            self.q.put(None)
-            self.worker.join()
-            raise
+
+        device_info = sd.query_devices(device)
+        hostapis = sd.query_hostapis()
+    
+        backend = hostapis[device_info["hostapi"]]["name"]
+    
+        # Enable exclusive mode for WASAPI devices
+        extra_settings = None
+    
+        if "WASAPI" in backend.upper():
+            extra_settings = sd.WasapiSettings(
+                exclusive=True
+            )
+    
+        # Validate the actual recording configuration
+        sd.check_input_settings(
+            device=device,
+            samplerate=sample_rate,
+            channels=channels,
+            dtype="int16",
+            extra_settings=extra_settings
+        )
+    
+        self._extra_settings = extra_settings
 
     def _callback(self, data, frames, timing, status):
         # Estimate first sample LSL time using PortAudio's clock relationship.

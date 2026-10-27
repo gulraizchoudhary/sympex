@@ -1,0 +1,14 @@
+{
+  "participant": "001",
+  "devices": [
+    "Microphone"
+  ],
+  "settings": {
+    "Microphone": {
+      "device": 11,
+      "sample_rate": 384000,
+      "channels": 1
+    }
+  },
+  "started_wall_time": "2026-10-27T12:23:45.645131"
+}
