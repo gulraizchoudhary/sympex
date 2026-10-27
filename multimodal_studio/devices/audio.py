@@ -11,11 +11,22 @@ from core import RecorderBase
 
 
 def available_inputs():
+    """Return actual PortAudio indices with useful Windows endpoint and backend names.
+
+    WASAPI is prioritized because Windows generally exposes more descriptive endpoint
+    names there. Never infer a PortAudio device index from Windows Device Manager IDs.
+    """
     out = []
+    hosts = sd.query_hostapis()
     for idx, d in enumerate(sd.query_devices()):
-        if d['max_input_channels'] > 0:
-            host = sd.query_hostapis(d['hostapi'])['name']
-            out.append((idx, f"{idx}: {d['name']} [{host}]"))
+        if d['max_input_channels'] <= 0:
+            continue
+        host = hosts[d['hostapi']]['name']
+        name = d['name'].strip()
+        out.append((idx, f"{name}  —  {host}  (input #{idx})"))
+    out.sort(key=lambda pair: (0 if 'WASAPI' in pair[1] else 1,
+                               0 if 'ultramic' in pair[1].lower() else 1,
+                               pair[1].casefold()))
     return out
 
 

@@ -1,63 +1,61 @@
-2026-10-26 12:04:58,245 INFO [Application] INFO: Application started; persistent log: C:\Users\chgul\Downloads\multimodal_studio_camera_recording\multimodal_studio\logs\application.log
-2026-10-26 12:04:58,272 INFO [Audio] INFO: 11 audio input endpoints discovered
-2026-10-26 12:05:09,715 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
-2026-10-26 12:05:10,506 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
-2026-10-26 12:05:10,506 INFO [Cameras] INFO: index 0: available via DirectShow
-2026-10-26 12:05:10,947 INFO [Cameras] INFO: index 1 / DirectShow: could not open
-2026-10-26 12:05:11,003 INFO [Cameras] INFO: index 1 / Media Foundation: could not open
-2026-10-26 12:05:11,050 INFO [Cameras] INFO: index 1 / Default: could not open
-2026-10-26 12:05:11,051 INFO [Cameras] INFO: index 2 / DirectShow: could not open
-2026-10-26 12:05:11,094 INFO [Cameras] INFO: index 2 / Media Foundation: could not open
-2026-10-26 12:05:11,139 INFO [Cameras] INFO: index 2 / Default: could not open
-2026-10-26 12:05:11,140 INFO [Cameras] INFO: index 3 / DirectShow: could not open
-2026-10-26 12:05:11,184 INFO [Cameras] INFO: index 3 / Media Foundation: could not open
-2026-10-26 12:05:11,228 INFO [Cameras] INFO: index 3 / Default: could not open
-2026-10-26 12:05:11,229 INFO [Cameras] INFO: index 4 / DirectShow: could not open
-2026-10-26 12:05:11,270 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
-2026-10-26 12:05:11,318 INFO [Cameras] INFO: index 4 / Default: could not open
-2026-10-26 12:05:11,319 INFO [Cameras] INFO: index 5 / DirectShow: could not open
-2026-10-26 12:05:11,362 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
-2026-10-26 12:05:11,403 INFO [Cameras] INFO: index 5 / Default: could not open
-2026-10-26 12:05:11,404 INFO [Cameras] INFO: index 6 / DirectShow: could not open
-2026-10-26 12:05:11,445 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
-2026-10-26 12:05:11,490 INFO [Cameras] INFO: index 6 / Default: could not open
-2026-10-26 12:05:11,491 INFO [Cameras] INFO: index 7 / DirectShow: could not open
-2026-10-26 12:05:11,532 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
-2026-10-26 12:05:11,577 INFO [Cameras] INFO: index 7 / Default: could not open
-2026-10-26 12:05:11,578 INFO [Cameras] INFO: index 8 / DirectShow: could not open
-2026-10-26 12:05:11,618 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
-2026-10-26 12:05:11,678 INFO [Cameras] INFO: index 8 / Default: could not open
-2026-10-26 12:05:11,679 INFO [Cameras] INFO: index 9 / DirectShow: could not open
-2026-10-26 12:05:11,721 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
-2026-10-26 12:05:11,764 INFO [Cameras] INFO: index 9 / Default: could not open
-2026-10-26 12:05:12,226 INFO [Cameras] INFO: Camera scan finished: 1 available
-2026-10-26 12:05:15,460 WARNING [Camera 1] WARNING: index 0 / DirectShow: frames OK (default, 640x480)
-2026-10-26 12:05:15,460 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
-2026-10-26 12:05:16,962 INFO [Camera 1] INFO: Preview capture stopped
-2026-10-26 12:05:22,085 WARNING [Camera 1] WARNING: index 0 / DirectShow: frames OK (default, 640x480)
-2026-10-26 12:05:22,085 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
-2026-10-26 12:05:23,838 INFO [Camera 1] INFO: Preview capture stopped
-2026-10-26 12:05:25,446 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (default, 640x480)
-2026-10-26 12:05:25,451 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
-2026-10-26 12:05:25,452 INFO [Session] RECORDING: C:\Users\chgul\Downloads\multimodal_studio_camera_recording\Participant_Data\Participant_001\Session_20261026_120524_828386
-2026-10-26 12:05:49,020 INFO [Camera 1] INFO: Camera stopped; 463 frames saved
-2026-10-26 12:05:49,020 INFO [Session] STOPPED: C:\Users\chgul\Downloads\multimodal_studio_camera_recording\Participant_Data\Participant_001\Session_20261026_120524_828386
-2026-10-26 13:23:03,341 INFO [Microphone] RECORDING: device=0, rate=48000 Hz, channels=1
-2026-10-26 13:23:03,341 INFO [Polar H10] CONNECTING: C6:C7:F5:76:B8:6B: Polar H10 57E41E2B
-2026-10-26 13:23:04,214 WARNING [Camera 1] WARNING: index 0 / DirectShow: frames OK (default, 640x480)
-2026-10-26 13:23:04,214 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
-2026-10-26 13:23:08,865 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
-2026-10-26 13:23:10,159 INFO [Microphone] STOPPED: 321984 samples saved; queue drops=0
-2026-10-26 13:23:10,374 INFO [Polar H10] STOPPED: Polar finished
-2026-10-26 13:23:10,774 INFO [Camera 1] INFO: Preview capture stopped
-2026-10-26 13:23:10,813 INFO [Microphone] RECORDING: device=0, rate=48000 Hz, channels=1
-2026-10-26 13:23:10,813 INFO [Polar H10] CONNECTING: C6:C7:F5:76:B8:6B: Polar H10 57E41E2B
-2026-10-26 13:23:11,508 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (default, 640x480)
-2026-10-26 13:23:11,510 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
-2026-10-26 13:23:11,511 INFO [Session] RECORDING: C:\Users\chgul\Downloads\multimodal_studio_camera_recording\Participant_Data\Participant_001\Session_20261026_132310_776925
-2026-10-26 13:23:13,453 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
-2026-10-26 13:25:05,839 INFO [Microphone] STOPPED: 5516160 samples saved; queue drops=0
-2026-10-26 13:25:06,053 INFO [Polar H10] STOPPED: Polar finished
-2026-10-26 13:25:06,694 INFO [Camera 1] INFO: Camera stopped; 2292 frames saved
-2026-10-26 13:25:06,695 INFO [Session] STOPPED: C:\Users\chgul\Downloads\multimodal_studio_camera_recording\Participant_Data\Participant_001\Session_20261026_132310_776925
-2026-10-26 16:19:20,201 INFO [Audio] INFO: 11 audio input endpoints discovered
+2026-10-27 10:00:13,664 INFO [Application] INFO: Application started; persistent log: C:\Users\chgul\Downloads\multimodal_studio_microphone_friendly_names\multimodal_studio\logs\application.log
+2026-10-27 10:00:14,298 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-10-27 10:00:14,299 INFO [Audio] INFO: 14 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-10-27 10:00:53,956 ERROR [Preview] ERROR: Preview setup failed: ValueError('Enable at least one device on the left.')
+2026-10-27 10:01:07,690 INFO [Microphone] RECORDING: device=1, rate=384000 Hz, channels=1
+2026-10-27 10:01:46,490 INFO [Microphone] STOPPED: 14832000 samples saved; queue drops=0
+2026-10-27 10:02:17,441 ERROR [Microphone] ERROR: Preview start failed: PortAudioError('Error opening InputStream: Unanticipated host error', -9999, (1, -2147024809, 'DirectSound error'))
+2026-10-27 10:02:21,596 INFO [Microphone] STOPPED: 0 samples saved; queue drops=0
+2026-10-27 10:02:22,717 ERROR [Microphone] ERROR: Preview start failed: PortAudioError('Error opening InputStream: Unanticipated host error', -9999, (1, -2147024809, 'DirectSound error'))
+2026-10-27 10:02:23,935 INFO [Microphone] STOPPED: 0 samples saved; queue drops=0
+2026-10-27 10:03:08,974 ERROR [Microphone] ERROR: Preview start failed: PortAudioError('Invalid sample rate', -9997)
+2026-10-27 10:03:12,189 INFO [Microphone] STOPPED: 0 samples saved; queue drops=0
+2026-10-27 10:03:21,246 INFO [Microphone] RECORDING: device=1, rate=384000 Hz, channels=1
+2026-10-27 10:04:09,141 INFO [Microphone] STOPPED: 18342240 samples saved; queue drops=0
+2026-10-27 10:04:29,513 INFO [Audio] INFO: Friendly microphone name saved: UltraMic (user assigned, not hardware verified)
+2026-10-27 10:04:30,018 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-10-27 10:04:30,021 INFO [Audio] INFO: 14 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-10-27 10:04:35,352 INFO [Microphone] RECORDING: device=1, rate=384000 Hz, channels=1
+2026-10-27 10:04:46,637 WARNING [Microphone] DROPPED: PortAudio: input overflow
+2026-10-27 10:04:46,743 WARNING [Microphone] DROPPED: Audio stream became inactive
+2026-10-27 10:04:57,148 INFO [Microphone] STOPPED: 4182624 samples saved; queue drops=0
+2026-10-27 10:05:32,258 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
+2026-10-27 10:05:33,534 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
+2026-10-27 10:05:33,534 INFO [Cameras] INFO: index 0: available via DirectShow
+2026-10-27 10:05:34,073 INFO [Cameras] INFO: index 1 / DirectShow: could not open
+2026-10-27 10:05:34,149 INFO [Cameras] INFO: index 1 / Media Foundation: could not open
+2026-10-27 10:05:34,215 INFO [Cameras] INFO: index 1 / Default: could not open
+2026-10-27 10:05:34,216 INFO [Cameras] INFO: index 2 / DirectShow: could not open
+2026-10-27 10:05:34,265 INFO [Cameras] INFO: index 2 / Media Foundation: could not open
+2026-10-27 10:05:34,327 INFO [Cameras] INFO: index 2 / Default: could not open
+2026-10-27 10:05:34,328 INFO [Cameras] INFO: index 3 / DirectShow: could not open
+2026-10-27 10:05:34,387 INFO [Cameras] INFO: index 3 / Media Foundation: could not open
+2026-10-27 10:05:34,457 INFO [Cameras] INFO: index 3 / Default: could not open
+2026-10-27 10:05:34,457 INFO [Cameras] INFO: index 4 / DirectShow: could not open
+2026-10-27 10:05:34,516 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
+2026-10-27 10:05:34,576 INFO [Cameras] INFO: index 4 / Default: could not open
+2026-10-27 10:05:34,577 INFO [Cameras] INFO: index 5 / DirectShow: could not open
+2026-10-27 10:05:34,631 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
+2026-10-27 10:05:34,689 INFO [Cameras] INFO: index 5 / Default: could not open
+2026-10-27 10:05:34,690 INFO [Cameras] INFO: index 6 / DirectShow: could not open
+2026-10-27 10:05:34,750 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
+2026-10-27 10:05:34,802 INFO [Cameras] INFO: index 6 / Default: could not open
+2026-10-27 10:05:34,803 INFO [Cameras] INFO: index 7 / DirectShow: could not open
+2026-10-27 10:05:34,877 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
+2026-10-27 10:05:34,933 INFO [Cameras] INFO: index 7 / Default: could not open
+2026-10-27 10:05:34,934 INFO [Cameras] INFO: index 8 / DirectShow: could not open
+2026-10-27 10:05:34,984 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
+2026-10-27 10:05:35,091 INFO [Cameras] INFO: index 8 / Default: could not open
+2026-10-27 10:05:35,093 INFO [Cameras] INFO: index 9 / DirectShow: could not open
+2026-10-27 10:05:35,148 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
+2026-10-27 10:05:35,254 INFO [Cameras] INFO: index 9 / Default: could not open
+2026-10-27 10:05:35,735 INFO [Cameras] INFO: Camera scan finished: 1 available
+2026-10-27 10:05:41,093 WARNING [Camera 2] WARNING: index 0 / DirectShow: frames OK (default, 640x480)
+2026-10-27 10:05:41,093 INFO [Camera 2] PREVIEW: Opened camera 0 via DirectShow
+2026-10-27 10:05:44,117 INFO [Camera 2] INFO: Preview capture stopped
+2026-10-27 10:05:45,797 INFO [Microphone] RECORDING: device=1, rate=384000 Hz, channels=1
+2026-10-27 10:05:46,584 WARNING [Camera 1] WARNING: index 0 / DirectShow: frames OK (default, 640x480)
+2026-10-27 10:05:46,584 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
+2026-10-27 10:05:59,683 INFO [Microphone] STOPPED: 5141760 samples saved; queue drops=0
+2026-10-27 10:06:00,242 INFO [Camera 1] INFO: Preview capture stopped
+2026-10-27 10:06:15,758 INFO [Application] INFO: Application closing

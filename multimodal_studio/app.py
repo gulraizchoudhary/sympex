@@ -1,5 +1,6 @@
 """Interactive, independent-device experiment recorder (Tkinter, Python 3.10+)."""
 import queue
+import json
 import tempfile
 import time
 import threading
@@ -13,6 +14,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 from core import EventBus, SessionManager
 from devices.audio import AudioRecorder, available_inputs
+from devices.windows_audio import device_manager_sound_names, safe_hardware_match
 from devices.polar import PolarRecorder
 from devices.seetrue import SeeTrueRecorder
 from devices.camera_recorder import CameraRecorder
@@ -21,9 +23,9 @@ from devices.camera_preview import CameraPreview, discover_cameras
 BASE = Path(__file__).resolve().parent
 BG, PANEL, CARD, WHITE = '#101827', '#172337', '#20304a', '#ecf3ff'
 MUTED, BLUE, GREEN, YELLOW, RED = '#aabbd2', '#55a6ff', '#51d4a2', '#ffc66d', '#ff7585'
-DEVICES = ['Microphone', 'Ultramic', 'Polar H10', 'SeeTrue', 'Camera 1', 'Camera 2', 'Camera 3']
-ICONS = {'Microphone':'MIC', 'Ultramic':'ULTRA', 'Polar H10':'HEART', 'SeeTrue':'EYE', 'Camera 1':'CAM 1', 'Camera 2':'CAM 2', 'Camera 3':'CAM 3'}
-DESCRIPTIONS = {'Microphone':'Laptop / external audio', 'Ultramic':'384 kHz ultrasound', 'Polar H10':'Heart rate, ECG, motion', 'SeeTrue':'LSL gaze stream', 'Camera 1':'Camera preview + MP4 recording', 'Camera 2':'Camera preview + MP4 recording', 'Camera 3':'Camera preview + MP4 recording'}
+DEVICES = ['Microphone', 'Polar H10', 'SeeTrue', 'Camera 1', 'Camera 2', 'Camera 3']
+ICONS = {'Microphone':'MIC', 'Polar H10':'HEART', 'SeeTrue':'EYE', 'Camera 1':'CAM 1', 'Camera 2':'CAM 2', 'Camera 3':'CAM 3'}
+DESCRIPTIONS = {'Microphone':'Choose any Windows audio input', 'Polar H10':'Heart rate, ECG, motion', 'SeeTrue':'LSL gaze stream', 'Camera 1':'Camera preview + MP4 recording', 'Camera 2':'Camera preview + MP4 recording', 'Camera 3':'Camera preview + MP4 recording'}
 
 class App:
     def __init__(self, root):
@@ -37,7 +39,6 @@ class App:
         self.bus.emit("Application", "INFO", f"Application started; persistent log: {self.bus.application_log}")
         self.session = SessionManager(self.bus)
         self.recorders = {'Microphone':AudioRecorder('Microphone',self.bus),
-                          'Ultramic':AudioRecorder('Ultramic',self.bus),
                           'Polar H10':PolarRecorder(self.bus),
                           'SeeTrue':SeeTrueRecorder(self.bus),
                           **{f'Camera {i}':CameraRecorder(i,self.bus) for i in range(1,4)}}
@@ -50,11 +51,18 @@ class App:
         self.time_label = tk.StringVar(value='00:00:00')
         self.count_label = tk.StringVar(value='0 selected')
         self.mic_rate = tk.StringVar(value='48000')
+        self.mic_friendly_name = tk.StringVar(value='')
+        self.alias_path = BASE / 'microphone_aliases.json'
+        self.mic_aliases = self._load_mic_aliases()
+        self.mic_details = tk.StringVar(value='Select an input to view device capabilities')
+        self.windows_hardware_info = tk.StringVar(value='Windows sound hardware: not scanned')
         self.ecg, self.acc = tk.BooleanVar(value=True), tk.BooleanVar(value=True)
         self.polar_detail = tk.StringVar(value='No Polar H10 selected')
         self.lsl_details = tk.StringVar(value='Scan to locate the SeeTrue broadcaster.')
         self.see_live = tk.StringVar(value='Waiting for LSL samples')
         self.device_choices, self.lsl_choices, self.ble_device = [], [], None
+        self.windows_sound_names = []
+        self.audio_name_lookup = {}
         self.lsl_channel_vars = []
         self.selected_device = 'Microphone'
         self.started_at = None
@@ -188,19 +196,35 @@ class App:
 
     def _build_configs(self):
         f=self.settings['Microphone']
-        self.label(f,'Audio input',11,WHITE,True).pack(anchor='w')
-        self.mic_select=ttk.Combobox(f,state='readonly',width=65)
-        self.mic_select.pack(fill='x',pady=(6,13))
-        self.label(f,'Sample rate',11,WHITE,True).pack(anchor='w')
-        self.mic_rate_combo=ttk.Combobox(f,values=['44100','48000','96000','192000'],textvariable=self.mic_rate,width=15,state='readonly')
+        self.label(f,'Connected recording microphone',11,WHITE,True).pack(anchor='w')
+        self.label(f,'Choose one Windows audio input. The same device is used for Preview and Record.',
+                   10,MUTED,wraplength=650,justify='left').pack(anchor='w',pady=(5,9))
+        self.mic_select=ttk.Combobox(f,state='readonly',width=80)
+        self.mic_select.pack(fill='x',pady=(6,10))
+        self.mic_select.bind('<<ComboboxSelected>>',lambda _event:self.on_audio_selected())
+        self.label(f,'Friendly name for the selected input',10,WHITE,True).pack(anchor='w',pady=(3,3))
+        alias_row=tk.Frame(f,bg=PANEL)
+        alias_row.pack(fill='x',pady=(0,8))
+        self.mic_alias_entry=self.field(alias_row,self.mic_friendly_name,30)
+        self.mic_alias_entry.pack(side='left',fill='x',expand=True)
+        self.mic_alias_save=self.action(alias_row,'Save name',self.save_mic_alias)
+        self.mic_alias_save.pack(side='left',padx=(8,0))
+        self.mic_alias_clear=self.action(alias_row,'Clear name',self.clear_mic_alias)
+        self.mic_alias_clear.pack(side='left',padx=(8,0))
+        self.label(f,'Use Preview to verify the input before naming it. Names are local labels, not verified USB hardware identities.',9,MUTED,wraplength=650,justify='left').pack(anchor='w',pady=(0,10))
+        self.label(f,'',10,MUTED,textvariable=self.mic_details,wraplength=650,justify='left').pack(anchor='w',pady=(0,13))
+        self.label(f,'Windows Device Manager hardware (identification only)',10,WHITE,True).pack(anchor='w',pady=(0,3))
+        self.label(f,'',9,MUTED,textvariable=self.windows_hardware_info,wraplength=650,justify='left').pack(anchor='w',pady=(0,12))
+        self.label(f,'Sampling rate',11,WHITE,True).pack(anchor='w')
+        self.mic_rate_combo=ttk.Combobox(f,values=['44100','48000','96000','192000','384000'],
+                                          textvariable=self.mic_rate,width=15,state='readonly')
         self.mic_rate_combo.pack(anchor='w',pady=(6,13))
-        self.action(f,'↻ Refresh audio inputs',self.refresh_audio).pack(anchor='w')
-        f=self.settings['Ultramic']
-        self.label(f,'Ultramic USB audio endpoint',11,WHITE,True).pack(anchor='w')
-        self.ultra_select=ttk.Combobox(f,state='readonly',width=65)
-        self.ultra_select.pack(fill='x',pady=(6,12))
-        self.label(f,'Capture: 384,000 samples/s · mono · 16-bit WAV',10,MUTED).pack(anchor='w',pady=(0,15))
-        self.action(f,'↻ Refresh audio inputs',self.refresh_audio).pack(anchor='w')
+        self.action(f,'↻ Refresh Windows audio inputs',self.refresh_audio).pack(anchor='w')
+        self.action(f,'View Device Manager sound hardware names',self.show_windows_audio_names).pack(anchor='w',pady=(8,0))
+        self.label(f,'Windows may expose the same microphone through several audio backends. '
+                     'Device Manager lists sound hardware; Windows recording endpoints may have different names. '
+                     'Hardware names are shown only when they can be matched without guessing. Select one input endpoint.',
+                   9,YELLOW,wraplength=650,justify='left').pack(anchor='w',pady=(12,0))
         f=self.settings['Polar H10']
         self.label(f,'Bluetooth Polar H10',11,WHITE,True).pack(anchor='w')
         self.label(f,'Scan before starting the session. HR/RR are included by default.',10,MUTED).pack(anchor='w',pady=(3,12))
@@ -392,7 +416,7 @@ class App:
             ax.set_facecolor('#0b1423')
             ax.tick_params(colors=MUTED,labelsize=8)
             for spine in ax.spines.values():spine.set_color('#50627d')
-            label='Amplitude' if name in ('Microphone','Ultramic') else ('BPM / ECG / ACC' if name=='Polar H10' else 'LSL channel value')
+            label='Amplitude' if name in ('Microphone',) else ('BPM / ECG / ACC' if name=='Polar H10' else 'LSL channel value')
             ax.set_ylabel(label,color=MUTED,fontsize=8)
             fig.tight_layout(pad=1.5)
             canvas=FigureCanvasTkAgg(fig,master=card)
@@ -416,7 +440,7 @@ class App:
             ax.set_xticks([5,4,3,2,1,0])
             ax.set_xlabel('Time ago (seconds) · newest at 0',color=MUTED,fontsize=8)
             for spine in ax.spines.values():spine.set_color('#50627d')
-            if name in ('Microphone','Ultramic'):
+            if name in ('Microphone',):
                 from monitoring import aged_points
                 points = aged_points(rec.snapshot_preview(), now, seconds=5.0)
                 if points:
@@ -496,21 +520,141 @@ class App:
         path=filedialog.askdirectory(initialdir=self.folder.get())
         if path:self.folder.set(path)
 
-    def refresh_audio(self):
+    def show_windows_audio_names(self):
+        names = self.windows_sound_names
+        messagebox.showinfo(
+            'Sound, video and game controllers',
+            ('Windows hardware names:\n\n' + '\n'.join('• ' + x for x in names))
+            if names else 'No Windows hardware names were obtained. Check the Activity log.'
+        )
+
+    def _load_mic_aliases(self):
         try:
-            current_m=self.mic_select.get();current_u=self.ultra_select.get()
-            self.device_choices=available_inputs()
-            values=[s for _,s in self.device_choices]
-            self.mic_select.configure(values=values)
-            self.ultra_select.configure(values=values)
-            if current_m in values:self.mic_select.set(current_m)
-            elif values:self.mic_select.current(0)
-            match=[i for i,s in enumerate(values) if 'ultramic' in s.lower()]
-            if current_u in values:self.ultra_select.set(current_u)
-            elif match:self.ultra_select.current(match[0])
-            else:self.ultra_select.set('')
-            self.bus.emit('Audio','INFO',f'{len(values)} audio input endpoints discovered')
+            data=json.loads(self.alias_path.read_text(encoding='utf-8'))
+            return data if isinstance(data,dict) else {}
+        except FileNotFoundError:
+            return {}
+        except (ValueError,OSError) as exc:
+            self.bus.emit('Audio','WARNING',f'Could not read microphone names: {exc!r}')
+            return {}
+
+    @staticmethod
+    def _mic_key(index, device, hostapi_name):
+        # A locally recognizable endpoint fingerprint, NOT a permanent hardware ID.
+        # Matching an index across changed Windows device layouts is not assumed safe.
+        return json.dumps([int(index),str(device['name']),str(hostapi_name)],ensure_ascii=False)
+
+    def _selected_mic_key(self):
+        pos=self.mic_select.current()
+        if not 0 <= pos < len(self.device_choices):
+            return None
+        import sounddevice as sd
+        index=self.device_choices[pos][0]
+        device=sd.query_devices(index)
+        api=sd.query_hostapis(device['hostapi'])['name']
+        return self._mic_key(index,device,api)
+
+    def save_mic_alias(self):
+        if self.session.active or self.preview_active:
+            self.bus.emit('Audio','WARNING','Stop Preview/Record before changing microphone names')
+            return
+        key=self._selected_mic_key()
+        if key is None:
+            self.bus.emit('Audio','WARNING','Select a microphone endpoint before naming it')
+            return
+        alias=self.mic_friendly_name.get().strip()
+        if not alias or len(alias)>80:
+            self.bus.emit('Audio','WARNING','Enter a microphone name between 1 and 80 characters')
+            return
+        self.mic_aliases[key]=alias
+        try:
+            self.alias_path.write_text(json.dumps(self.mic_aliases,indent=2,ensure_ascii=False),encoding='utf-8')
+        except OSError as exc:
+            self.bus.emit('Audio','ERROR',f'Could not save microphone name: {exc!r}')
+            return
+        self.bus.emit('Audio','INFO',f'Friendly microphone name saved: {alias} (user assigned, not hardware verified)')
+        self.refresh_audio()
+
+    def clear_mic_alias(self):
+        if self.session.active or self.preview_active:
+            self.bus.emit('Audio','WARNING','Stop Preview/Record before changing microphone names')
+            return
+        key=self._selected_mic_key()
+        if key is None:return
+        self.mic_aliases.pop(key,None)
+        try:
+            self.alias_path.write_text(json.dumps(self.mic_aliases,indent=2,ensure_ascii=False),encoding='utf-8')
+        except OSError as exc:
+            self.bus.emit('Audio','ERROR',f'Could not clear microphone name: {exc!r}')
+            return
+        self.bus.emit('Audio','INFO','User microphone label cleared')
+        self.refresh_audio()
+
+    def refresh_audio(self):
+        if self.session.active or self.preview_active:
+            self.bus.emit('Audio','WARNING','Stop Preview/Record before refreshing audio inputs')
+            return
+        try:
+            old_key = self.device_choices[self.mic_select.current()][0] if (
+                0 <= self.mic_select.current() < len(self.device_choices)) else None
+            try:
+                self.windows_sound_names = device_manager_sound_names()
+                self.bus.emit('Audio','INFO',
+                              'Windows sound hardware: ' + (', '.join(self.windows_sound_names) or 'none reported'))
+            except Exception as exc:
+                self.windows_sound_names = []
+                self.bus.emit('Audio','WARNING',f'Windows hardware name lookup failed: {exc!r}')
+            self.windows_hardware_info.set(', '.join(self.windows_sound_names) if self.windows_sound_names else 'No hardware names reported (or lookup failed)')
+            raw_inputs = available_inputs()
+            self.audio_name_lookup = {}
+            self.device_choices = []
+            import sounddevice as sd
+            for index, endpoint_label in raw_inputs:
+                endpoint_name = sd.query_devices(index)['name'].strip()
+                matched = safe_hardware_match(endpoint_name, self.windows_sound_names)
+                api=sd.query_hostapis(sd.query_devices(index)['hostapi'])['name']
+                alias=self.mic_aliases.get(self._mic_key(index,sd.query_devices(index),api))
+                if alias:
+                    label=f'{alias} [user label]  |  {endpoint_label}'
+                elif matched:
+                    label = f'{matched}  |  {endpoint_label}'
+                    self.audio_name_lookup[index] = matched
+                else:
+                    label = endpoint_label
+                self.device_choices.append((index, label))
+            self.mic_select.configure(values=[label for _,label in self.device_choices])
+            preferred = next((i for i,(index,_) in enumerate(self.device_choices)
+                              if index == old_key),None)
+            if preferred is None:
+                preferred=next((i for i,(_,label) in enumerate(self.device_choices)
+                                if 'ultramic' in label.lower()),None)
+            if preferred is None and self.device_choices:
+                preferred=0
+            if preferred is not None:self.mic_select.current(preferred)
+            else:self.mic_select.set('')
+            self.on_audio_selected()
+            self.bus.emit('Audio','INFO',f'{len(self.device_choices)} audio input endpoint(s) enumerated; '
+                          f'{len(self.audio_name_lookup)} with unambiguous matching hardware name')
         except Exception as exc:self.bus.emit('Audio','ERROR',f'Audio discovery: {exc!r}')
+
+    def on_audio_selected(self):
+        pos=self.mic_select.current()
+        if not 0 <= pos < len(self.device_choices):
+            self.mic_details.set('No microphone selected')
+            return
+        import sounddevice as sd
+        index,label=self.device_choices[pos]
+        key=self._selected_mic_key()
+        self.mic_friendly_name.set(self.mic_aliases.get(key,'') if key else '')
+        try:
+            detail=sd.query_devices(index)
+            native=int(round(detail['default_samplerate']))
+            ultramic='ultramic' in detail['name'].lower() or 'ultramic' in self.mic_friendly_name.get().lower()
+            self.mic_rate.set('384000' if ultramic else str(native) if native in (44100,48000,96000,192000,384000) else '48000')
+            self.mic_details.set(f"Device Manager match: {self.audio_name_lookup.get(index, 'Not verified')} | Audio endpoint: {detail['name']} | Input channels: {detail['max_input_channels']} "
+                                 f"| Default sample rate: {native:,} Hz | {'Ultrasonic mode' if ultramic else 'Standard audio mode'}")
+        except Exception as exc:
+            self.mic_details.set(f'Could not read device details: {exc!r}')
 
     def scan_polar(self):
         self.polar_detail.set('Scanning Bluetooth…')
@@ -569,12 +713,8 @@ class App:
     def _selected_recorders(self):
         selected={}
         if self.enabled['Microphone'].get():
-            selected['Microphone']=(self.recorders['Microphone'],self.audio_args(self.mic_select,int(self.mic_rate.get())))
-        if self.enabled['Ultramic'].get():
-            args=self.audio_args(self.ultra_select,384000)
-            label=self.device_choices[self.ultra_select.current()][1]
-            if 'ultramic' not in label.lower():raise ValueError('Select an Ultramic-labeled input endpoint.')
-            selected['Ultramic']=(self.recorders['Ultramic'],args)
+            selected['Microphone']=(self.recorders['Microphone'],
+                                   self.audio_args(self.mic_select,int(self.mic_rate.get())))
         if self.enabled['Polar H10'].get():
             selected['Polar H10']=(self.recorders['Polar H10'],{'ble_device':self.ble_device,'ecg':self.ecg.get(),'acc':self.acc.get()})
         if self.enabled['SeeTrue'].get():
@@ -679,7 +819,7 @@ class App:
     def _lock(self,locked):
         state='disabled' if locked else 'normal'
         for _,(_,_,c) in self.cards.items():c.configure(state=state)
-        for widget in (self.mic_select,self.ultra_select,self.mic_rate_combo,self.lsl_select,*self.camera_selects.values()):
+        for widget in (self.mic_select,self.mic_rate_combo,self.lsl_select,*self.camera_selects.values()):
             widget.configure(state='disabled' if locked else 'readonly')
         for widget in self.lsl_channel_box.winfo_children():
             widget.configure(state='disabled' if locked else 'normal')
