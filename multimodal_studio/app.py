@@ -171,7 +171,8 @@ class App:
         self.see_tab=tk.Frame(self.tabs,bg=PANEL,padx=22,pady=22)
         self.camera_tab=tk.Frame(self.tabs,bg=PANEL,padx=22,pady=22)
         self.activity_tab=tk.Frame(self.tabs,bg=PANEL,padx=16,pady=16)
-        for name,frame in [('Device settings',self.configure_tab),('Live monitoring',self.monitor_tab),('SeeTrue · LSL',self.see_tab),('3 camera previews',self.camera_tab),('Activity & errors',self.activity_tab)]:
+        self.analysis_tab=tk.Frame(self.tabs,bg=PANEL,padx=8,pady=8)
+        for name,frame in [('Device settings',self.configure_tab),('Live monitoring',self.monitor_tab),('SeeTrue · LSL',self.see_tab),('3 camera previews',self.camera_tab),('Activity & errors',self.activity_tab),('Post-experiment analysis',self.analysis_tab)]:
             self.tabs.add(frame,text='  '+name+'  ')
         self.config_head=self.label(self.configure_tab,'Device settings',17,WHITE,True)
         self.config_head.pack(anchor='w')
@@ -186,6 +187,9 @@ class App:
         self._build_seetrue()
         self._build_cameras()
         self._build_activity()
+        from post_analysis import PostExperimentTab
+        self.post_analysis = PostExperimentTab(self.analysis_tab,self.root,self.session,self.bus)
+        self.post_analysis.pack(fill='both',expand=True)
         foot=tk.Frame(self.root,bg=BG,padx=24,pady=10);foot.pack(fill='x')
         self.label(foot,'Event marker:',10,MUTED).pack(side='left')
         self.field(foot,self.marker_label,24).pack(side='left',ipady=8,padx=8)

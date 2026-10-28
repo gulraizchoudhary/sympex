@@ -141,3 +141,41 @@ The former Microphone and Ultramic controls have been combined into one optional
 
 ### Windows Device Manager hardware names (updated)
 The Microphone configuration panel now shows the names returned by Windows `Win32_SoundDevice` (the Sound, video and game controllers hardware list) next to the recording endpoint selector. It also includes a button to show the full list. An exact, unambiguous text match is prefixed to the corresponding audio endpoint entry. **A driver/hardware name is not itself a PortAudio capture endpoint**: if Windows reports a generic endpoint such as `Microphone (USB Audio Device)`, the application cannot safely establish which branded hardware name corresponds to that endpoint using names alone. In that case the hardware name remains visible separately, but the endpoint is not renamed based on a guess. For full physical-device-to-endpoint mapping on all hardware, Windows Core Audio endpoint device-container/association metadata is needed. Recording always uses the actual verified PortAudio device index.
+
+## Post-experiment analysis (integrated)
+
+Use the **Post-experiment analysis** tab in `app.py` after stopping an experiment.
+Browse to a `Participant_*/Session_*` folder, click **Scan**, select timestamped
+streams and optional channels, then tune warning thresholds and click **Analyze**.
+The tab displays a sortable warning table and interactive matplotlib charts (pan,
+zoom, save) for coverage, sample-interval regularity, and matched-event offsets.
+Reports are saved under `SESSION/analysis_reports/TIMESTAMP/` (JSON, CSV, PNG,
+summary.txt); source data is read-only.
+
+**Important:** start/stop differences are coverage, not physical sensor latency;
+clock drift vs nominal rate is not inter-device drift. For true relative offset/drift,
+provide an optional CSV containing `stream,event,time_lsl` with repeated physical
+synchronization events detected in two or more streams. Use exact discovered
+stream names (CSV filename stems). Warnings are heuristic; gap counts from chunked
+or event-based sources may not correspond to lost physical samples. Camera MP4
+fixed-FPS timing can disagree with capture timestamps.
+
+The tab blocks analysis while the current session is active to avoid reading
+partially written recording files. It runs analysis in a worker thread.
+Dependencies include pandas for offline analysis.
+
+### Expanded interactive Post-Experiment Analysis plots
+
+After **Analyze selected streams**, use the graph dropdown to switch among nine views:
+Coverage, Inter-sample intervals, Jitter distribution, Large gaps timeline,
+Nominal-rate drift, Reception lag, Pairwise overlap, Camera timing, and
+Event offsets. Use the Matplotlib toolbar to zoom, pan and save figures.
+
+**Interpretation:** Jitter residuals are referenced to nominal sample cadence
+(or median cadence if unknown). Extreme residuals are clipped **only in the
+histogram presentation**, not in saved data/metrics. Gap points are cadence
+anomalies and do not prove actual lost packets. Nominal-rate drift is a
+sample-index/timebase check, not calibrated inter-device drift. Reception lag
+requires timestamp clock-domain consistency. Event offsets require matched
+physical anchors. Camera timing compares the video writer's nominal duration
+to the frame timestamp span and is not a camera exposure offset measurement.
