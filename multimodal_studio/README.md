@@ -1,6 +1,6 @@
-# Multimodal Studio — Interactive Experiment Recorder
+# Intelligent MicroSynch (IMS) — Microsurgical Multimodal Research Platform
 
-A modular Tkinter implementation consistent with the previous Polar H10 + microphone application. Python 3.10+ recommended. Works with Windows USB audio devices, the `polar-python` BLE library and LSL broadcasters.
+Intelligent MicroSynch (IMS) is a modular Tkinter implementation consistent with the previous Polar H10 + microphone application. Python 3.10+ recommended. Works with Windows USB audio devices, the `polar-python` BLE library and LSL broadcasters.
 
 ## Install
 

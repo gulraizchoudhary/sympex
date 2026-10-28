@@ -31,13 +31,13 @@ DESCRIPTIONS = {'Microphone':'Choose any Windows audio input', 'Polar H10':'Hear
 class App:
     def __init__(self, root):
         self.root = root
-        self.root.title('Multimodal Studio  |  Experiment Recorder')
+        self.root.title('Intelligent MicroSynch (IMS) | Microsurgical Multimodal Research Platform')
         self.root.geometry('1280x850')
         self.root.minsize(1030, 720)
         self.root.configure(bg=BG)
         self.bus = EventBus()
         self.bus.install_exception_hooks()
-        self.bus.emit("Application", "INFO", f"Application started; persistent log: {self.bus.application_log}")
+        self.bus.emit("Application", "INFO", f"Intelligent MicroSynch (IMS) started; persistent log: {self.bus.application_log}")
         self.session = SessionManager(self.bus)
         self.recorders = {'Microphone':AudioRecorder('Microphone',self.bus),
                           'Polar H10':PolarRecorder(self.bus),
@@ -89,6 +89,20 @@ class App:
         self.root.after(350, self.poll)
         self.root.protocol('WM_DELETE_WINDOW',self.close)
 
+    def show_about(self):
+        """Display transparent scope and purpose without claiming unvalidated AI."""
+        messagebox.showinfo(
+            'About Intelligent MicroSynch',
+            'Intelligent MicroSynch (IMS)\n'
+            'Microsurgical Multimodal Research Platform\n\n'
+            'Acquisition · Live Monitoring · Temporal Alignment · Quality Assessment\n\n'
+            'Modular support for audio, video, Polar H10 and SeeTrue LSL streams.\n'
+            'Post-experiment synchronization-quality analysis is available in its own tab.\n\n'
+            'Physical synchronization accuracy and AI-based surgical assessment require\n'
+            'separate experimental validation.\n\n'
+            'Existing recording filenames and session structures are preserved.'
+        )
+
     def _style(self):
         style = ttk.Style(self.root)
         style.theme_use('clam')
@@ -115,11 +129,16 @@ class App:
                         highlightcolor=BLUE,font=('Segoe UI',11))
 
     def _build(self):
-        head = tk.Frame(self.root,bg=BG,padx=24,pady=16); head.pack(fill='x')
-        self.label(head,'MULTIMODAL STUDIO',19,WHITE,True).pack(side='left')
-        self.label(head,'  /  EXPERIMENT RECORDER',11,MUTED).pack(side='left',pady=(7,0))
+        head = tk.Frame(self.root,bg=BG,padx=24,pady=13); head.pack(fill='x')
+        branding = tk.Frame(head, bg=BG); branding.pack(side='left')
+        title_row = tk.Frame(branding, bg=BG); title_row.pack(anchor='w')
+        self.label(title_row,'Intelligent ',19,WHITE,True).pack(side='left')
+        self.label(title_row,'MicroSynch',19,BLUE,True).pack(side='left')
+        self.label(title_row,'  IMS',10,MUTED,True).pack(side='left',pady=(8,0))
+        self.label(branding,'Multimodal Acquisition  •  Temporal Alignment  •  Synchronization Quality Assessment for Microsurgery',9,MUTED).pack(anchor='w',pady=(3,0))
         self.status_top=self.label(head,'●  IDLE',11,GREEN,True)
-        self.status_top.pack(side='right')
+        self.status_top.pack(side='right',padx=(12,0))
+        self.action(head,'About IMS',self.show_about).pack(side='right',padx=(0,10))
         line=tk.Frame(self.root,bg='#31445f',height=1); line.pack(fill='x')
         setup=tk.Frame(self.root,bg=BG,padx=24,pady=14); setup.pack(fill='x')
         self.label(setup,'Participant',10,MUTED).grid(row=0,column=0,sticky='w')
