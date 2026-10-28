@@ -2,6 +2,7 @@ import asyncio
 import csv
 from collections import deque
 import threading
+import time
 from concurrent.futures import TimeoutError as FutureTimeout
 from pathlib import Path
 from bleak import BleakScanner
@@ -31,6 +32,23 @@ class PolarRecorder(RecorderBase):
         self.hr_timed = deque(maxlen=200)
         self.acc_preview = deque(maxlen=1000)
         self.last_packet = None
+        self.ready_events = {key: threading.Event() for key in ('hr','ecg','acc')}
+
+    def wait_ready(self, ecg=True, acc=True, timeout=45, cancel=None):
+        """Wait for real packets, not merely a successful BLE connection."""
+        required = ['hr'] + (['ecg'] if ecg else []) + (['acc'] if acc else [])
+        end = time.monotonic() + timeout
+        while time.monotonic() < end:
+            if cancel is not None and cancel.is_set():
+                raise RuntimeError('Polar readiness cancelled')
+            if self.failed or (self.future and self.future.done() and self.future.exception()):
+                raise RuntimeError('Polar stream startup failed; inspect Activity log')
+            if all(self.ready_events[key].is_set() for key in required):
+                self.report('READY', f'Live samples confirmed: {", ".join(required)}')
+                return
+            time.sleep(0.10)
+        missing = [key for key in required if not self.ready_events[key].is_set()]
+        raise TimeoutError('Polar H10 not ready: no live '+', '.join(missing)+' samples within '+str(timeout)+' seconds')
 
     def _loop_main(self):
         asyncio.set_event_loop(self.loop)
@@ -51,6 +69,7 @@ class PolarRecorder(RecorderBase):
         if ble_device is None:
             raise ValueError('Scan/select a Polar H10 first')
         self.ble_device = ble_device
+        for event in self.ready_events.values(): event.clear()
         self.failed = False
         self.last_packet = None
         self.folder = Path(folder)
@@ -121,6 +140,7 @@ class PolarRecorder(RecorderBase):
         try:
             now = local_clock()
             self.last_packet = now
+            self.ready_events["hr"].set()
             value = float(data.heartrate)
             self.last_hr = value
             self.hr_preview.append(value)
@@ -144,6 +164,7 @@ class PolarRecorder(RecorderBase):
             samples = list(getattr(data, 'data', []) or [])
             now = local_clock()
             self.last_packet = now
+            if samples: self.ready_events["ecg"].set()
             stamp = getattr(data, 'timestamp', '')
             rows = []
             for i, sample in enumerate(samples):
@@ -160,6 +181,7 @@ class PolarRecorder(RecorderBase):
             samples = list(getattr(data, 'data', []) or [])
             now = local_clock()
             self.last_packet = now
+            if samples: self.ready_events["acc"].set()
             stamp = getattr(data, 'timestamp', '')
             rows=[]
             for i, item in enumerate(samples):

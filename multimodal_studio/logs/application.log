@@ -1,11 +1,17 @@
-2026-10-27 21:05:52,295 INFO [Application] INFO: Application started; persistent log: C:\Users\chgul\Downloads\multimodal_studio_extended_analysis_plots\multimodal_studio\logs\application.log
-2026-10-27 21:05:52,760 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
-2026-10-27 21:05:52,761 INFO [Audio] INFO: 14 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
-2026-10-27 21:06:15,876 INFO [Post-analysis] INFO: QA report saved: C:\Users\chgul\Desktop\Recordings\Participant_001\Session_20261027_133854_303831\analysis_reports\20261027_210615_255854
-2026-10-27 21:07:02,162 INFO [Post-analysis] INFO: QA report saved: C:\Users\chgul\Desktop\Recordings\Participant_001\Session_20261027_133854_303831\analysis_reports\20261027_210701_553701
-2026-10-27 21:07:14,693 INFO [Post-analysis] INFO: QA report saved: C:\Users\chgul\Desktop\Recordings\Participant_001\Session_20261027_133854_303831\analysis_reports\20261027_210714_040759
-2026-10-27 21:07:43,944 INFO [Post-analysis] INFO: QA report saved: C:\Users\chgul\Desktop\Recordings\Participant_001\Session_20261027_133854_303831\analysis_reports\20261027_210743_366107
-2026-10-27 21:08:16,236 INFO [Post-analysis] INFO: QA report saved: C:\Users\chgul\Desktop\Recordings\Participant_001\Session_20261027_133854_303831\analysis_reports\20261027_210815_668544
-2026-10-27 21:08:22,478 INFO [Post-analysis] INFO: QA report saved: C:\Users\chgul\Desktop\Recordings\Participant_001\Session_20261027_133854_303831\analysis_reports\20261027_210821_646966
-2026-10-27 21:08:28,365 INFO [Post-analysis] INFO: QA report saved: C:\Users\chgul\Desktop\Recordings\Participant_001\Session_20261027_133854_303831\analysis_reports\20261027_210827_818562
-2026-10-27 21:08:29,907 INFO [Post-analysis] INFO: QA report saved: C:\Users\chgul\Desktop\Recordings\Participant_001\Session_20261027_133854_303831\analysis_reports\20261027_210829_221331
+2026-10-28 09:38:37,829 INFO [Application] INFO: Application started; persistent log: C:\Users\chgul\Downloads\multimodal_studio_polar_ready_session_ids\multimodal_studio\logs\application.log
+2026-10-28 09:38:38,973 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-10-28 09:38:38,977 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-10-28 09:39:21,800 INFO [Post-analysis] INFO: QA report saved: C:\Users\chgul\Desktop\Recordings\Participant_001\Session_20261027_133854_303831\analysis_reports\20261028_093921_142689
+2026-10-28 09:40:46,438 INFO [Post-analysis] INFO: QA report saved: C:\Users\chgul\Desktop\Recordings\Participant_001\Session_20261027_133854_303831\analysis_reports\20261028_094045_682678
+2026-10-28 09:40:59,154 INFO [Post-analysis] INFO: QA report saved: C:\Users\chgul\Desktop\Recordings\Participant_001\Session_20261027_133854_303831\analysis_reports\20261028_094058_536170
+2026-10-28 09:42:03,732 INFO [Polar H10] INFO: Preflight: connect and await live HR/ECG/ACC as selected before session marker
+2026-10-28 09:42:03,733 ERROR [Session] ERROR: Preflight/start aborted (no RECORDING_START marker): ValueError('Scan/select a Polar H10 first')
+2026-10-28 09:42:03,733 INFO [Polar H10] STOPPED: Polar finished
+2026-10-28 09:42:04,050 ERROR [Session] ERROR: Session start failed: ValueError('Scan/select a Polar H10 first')
+2026-10-28 09:42:20,325 ERROR [Polar H10] ERROR: Preview start failed: ValueError('Scan/select a Polar H10 first')
+2026-10-28 09:42:20,325 ERROR [Preview] ERROR: Preview setup failed: RuntimeError('No selected device could start Preview. Check Activity & errors for the exact reason.')
+2026-10-28 09:42:20,325 INFO [Polar H10] STOPPED: Polar finished
+2026-10-28 09:42:28,402 ERROR [Polar H10] ERROR: Preview start failed: ValueError('Scan/select a Polar H10 first')
+2026-10-28 09:42:28,402 ERROR [Preview] ERROR: Preview setup failed: RuntimeError('No selected device could start Preview. Check Activity & errors for the exact reason.')
+2026-10-28 09:42:28,402 INFO [Polar H10] STOPPED: Polar finished
+2026-10-28 09:42:31,934 INFO [Application] INFO: Application closing

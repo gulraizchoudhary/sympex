@@ -179,3 +179,27 @@ sample-index/timebase check, not calibrated inter-device drift. Reception lag
 requires timestamp clock-domain consistency. Event offsets require matched
 physical anchors. Camera timing compares the video writer's nominal duration
 to the frame timestamp span and is not a camera exposure offset measurement.
+
+## Polar preflight and session file identity (2026-10-28)
+
+If Polar H10 is selected, **Start Session** now connects it first and waits for
+actual HR packets, and ECG/ACC packets when those options are checked, before
+starting the other acquisition modules and writing `RECORDING_START`.
+The wait runs on a worker thread; the user interface remains responsive.
+If live samples do not arrive within 45 seconds, session start is aborted
+and logged. Unselected Polar is never required. A BLE dropout *after* a
+successful session start is still logged without stopping other devices.
+
+Every completed session now has a random `session_id` in `config.json`, the
+`markers.csv` session_id column, and `session_manifest.json`. Each generated
+file also has a matching `<original name>.session.json` sidecar carrying the
+session_id, participant, session folder, byte size, SHA-256 checksum and name.
+The original media/CSV filenames have deliberately been preserved for
+compatibility with the existing Post-Experiment Analysis tab. **Keep the sidecar
+with its original file** when transferring files between folders; WAV and MP4
+formats are not renamed or re-encoded. Hashing large media on finalization
+can require extra disk activity and time.
+
+The readiness preflight does not guarantee sample-level alignment. The Polar
+CSV may contain setup samples before the formal start marker, and the
+optional streams must still be checked for gaps and delayed startup.

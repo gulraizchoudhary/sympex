@@ -67,6 +67,8 @@ class App:
         self.lsl_channel_vars = []
         self.selected_device = 'Microphone'
         self.started_at = None
+        self._start_results = queue.Queue()
+        self._starting_session = False
         self.preview_active = False
         self.preview_tmp = None
         self.preview_devices = {}
@@ -816,30 +818,55 @@ class App:
         self._lock(False)
 
     def start(self):
-        if self.session.active:return
+        if self.session.active or self._starting_session:
+            return
         if self.preview_active:
-            self.stop_preview()  # stop tests, then open the actual experiment files
+            self.stop_preview()
         try:
-            selected=self._selected_recorders()
-            # Independent Test previews own their camera capture handles; release them
-            # before session recorders open those same selected hardware inputs.
+            selected = self._selected_recorders()
             for slot, p in self.camera_previews.items():
                 if p.thread and p.thread.is_alive():
                     p.stop()
                     if p.thread and p.thread.is_alive():
                         raise RuntimeError(f'Camera {slot} preview did not release the device')
                     self.camera_buttons[slot].configure(text='▶ Test preview')
-            path=self.session.start(self.folder.get(),self.participant.get(),selected)
-            self.started_at=datetime.now()
-            self.status_top.configure(text='●  RECORDING',fg=GREEN)
-            self.session_status.set('Recording · '+path.name)
-            self.start_btn.configure(state='disabled');self.stop_btn.configure(state='normal');self.preview_btn.configure(state='disabled')
-            self.marker_btn.configure(state='normal')
+            folder, participant = self.folder.get(), self.participant.get()
+            self._starting_session = True
+            self.start_btn.configure(state='disabled')
+            self.preview_btn.configure(state='disabled')
             self._lock(True)
-            self.tabs.select(self.monitor_tab)
+            self.session_status.set('Connecting selected Polar and checking live streams…' if 'Polar H10' in selected else 'Starting recording…')
+            self.status_top.configure(text='●  CONNECTING',fg=YELLOW)
+            def worker():
+                try:
+                    path = self.session.start(folder, participant, selected)
+                    self._start_results.put((True,path))
+                except Exception as exc:
+                    self._start_results.put((False,exc))
+            threading.Thread(target=worker,daemon=True,name='SessionStartup').start()
         except Exception as exc:
             self.bus.emit('Session','ERROR',f'Session start failed: {exc!r}')
             messagebox.showerror('Session could not start',str(exc))
+
+    def _handle_start_result(self, ok, result):
+        self._starting_session = False
+        if ok:
+            self.started_at=datetime.now()
+            self.status_top.configure(text='●  RECORDING',fg=GREEN)
+            self.session_status.set('Recording · '+result.name)
+            self.start_btn.configure(state='disabled')
+            self.stop_btn.configure(state='normal')
+            self.preview_btn.configure(state='disabled')
+            self.marker_btn.configure(state='normal')
+            self.tabs.select(self.monitor_tab)
+        else:
+            self._lock(False)
+            self.status_top.configure(text='●  IDLE',fg=GREEN)
+            self.session_status.set('Session preflight failed — recording not started')
+            self.start_btn.configure(state='normal')
+            self.preview_btn.configure(state='normal')
+            self.bus.emit('Session','ERROR',f'Session start failed: {result!r}')
+            messagebox.showerror('Session could not start',str(result))
 
     def _lock(self,locked):
         state='disabled' if locked else 'normal'
@@ -866,6 +893,12 @@ class App:
             self._log(f'MARKER   {text}')
 
     def poll(self):
+        try:
+            ok, result = self._start_results.get_nowait()
+        except queue.Empty:
+            pass
+        else:
+            self._handle_start_result(ok, result)
         for _ in range(120):
             try:name,status,message=self.bus.events.get_nowait()
             except queue.Empty:break
@@ -916,6 +949,9 @@ class App:
         self.root.after(500,self.poll)
 
     def close(self):
+        if self._starting_session:
+            messagebox.showwarning('Connecting', 'Polar preflight is still running. Close after it completes or times out.')
+            return
         if self.session.active:
             if not messagebox.askyesno('Stop and exit','Stop the current session and close the application?'):return
             self.stop()
