@@ -96,7 +96,12 @@ class SessionManager:
         self.folder = None
         self.mark_file = None
         self.mark_writer = None
-        self.marker_outlet = StreamOutlet(StreamInfo('ExperimentMarkers', 'Markers', 1, 0, 'string', 'experiment_markers'))
+        self.marker_source_id = f'IMS_ExperimentMarkers_{uuid.uuid4().hex}'
+        marker_info = StreamInfo('IMS_Experiment_Markers', 'Markers', 1, 0, 'string', self.marker_source_id)
+        if hasattr(marker_info, 'desc'):
+            marker_info.desc().append_child_value('recording_system', 'Intelligent Multimodal Microsurgery Studio (IMMSS)')
+            marker_info.desc().append_child('channels').append_child('channel').append_child_value('label', 'EventMarker')
+        self.marker_outlet = StreamOutlet(marker_info)
         self.lock = threading.RLock()
         self.session_id = None
         self._session_config = None

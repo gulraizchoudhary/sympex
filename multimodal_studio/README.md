@@ -1,6 +1,6 @@
-# Intelligent MicroSynch (IMS) — Microsurgical Multimodal Research Platform
+# Intelligent Multimodal Microsurgery Studio (IMMSS) — Microsurgical Multimodal Research Platform
 
-Intelligent MicroSynch (IMS) is a modular Tkinter implementation consistent with the previous Polar H10 + microphone application. Python 3.10+ recommended. Works with Windows USB audio devices, the `polar-python` BLE library and LSL broadcasters.
+Intelligent Multimodal Microsurgery Studio (IMMSS) is a modular Tkinter implementation consistent with the previous Polar H10 + microphone application. Python 3.10+ recommended. Works with Windows USB audio devices, the `polar-python` BLE library and LSL broadcasters.
 
 ## Install
 
@@ -203,3 +203,49 @@ can require extra disk activity and time.
 The readiness preflight does not guarantee sample-level alignment. The Polar
 CSV may contain setup samples before the formal start marker, and the
 optional streams must still be checked for gaps and delayed startup.
+
+
+## Multiple network LSL streams (IMS update)
+
+The **Network LSL streams** tab discovers all currently visible LSL outlets on the local host and compatible network. It is **not necessary** to combine every device into a single LSL stream. Each physical sensor may publish several streams (e.g., ECG, ACC, markers). Streams with identical names are displayed separately using the LSL **UID**, source ID and host name. A name alone must not be used to identify an outlet.
+
+1. Start the publishers on the sensor computers, and confirm LSL discovery is allowed by firewall/network configuration.
+2. Open **Network LSL streams**, then click **Discover network streams**.
+3. Click a row and choose **Enable stream**. Repeat for as many outlets as desired.
+4. Select only the channel checkboxes needed for that outlet.
+5. Click **PREVIEW** to test, or **START SESSION** to record each selected outlet separately.
+6. Files `network_lsl_XX_lsl.csv` and `network_lsl_XX_channels.json` are created for each chosen outlet, alongside session manifest metadata.
+
+The existing dedicated SeeTrue tab is retained for compatibility. **Do not select the same LSL UID in SeeTrue and Network LSL simultaneously.** LSL `RECORDING_START` markers are published separately through `ExperimentMarkers`, which is a single marker stream shared by IMS (not a container for all sensor samples). Outlets may have different channel counts, rates, and native clocks. The CSV preserves original source timestamps and local receive clock; physical synchronization still requires appropriate timestamp-correction/validation.
+
+Stream indices in `network_lsl_XX` reflect the current discovery order, which may change across scans or sessions; use the `uid` and `source_id` recorded in `_channels.json` and the session manifest to identify an outlet unambiguously. Sample silence/no data is reported to the event log, and other outlets continue independently.
+
+**Limitations:** LSL multicast may not cross all network segments/VLANs; antivirus/firewalls and Wi-Fi isolation can prevent discovery. This version supports per-stream CSV capture and channel selection, but does not yet display individual plots for each network outlet in Live Monitoring. Data from newly started worker threads may begin after the session start marker; the post-experiment analyzer should still check start coverage.
+
+
+## Unified Network LSL Manager (October 2026)
+
+The separate SeeTrue acquisition tab and sidebar checkbox were removed. SeeTrue and all other external LSL sources are selected through **Network LSL streams**. Discover outlets, enable multiple outlets, and choose channels independently for each. Each selected stream has its own CSV and channel metadata JSON. Old SeeTrue CSV files remain readable; the legacy `devices.seetrue.SeeTrueRecorder` class is retained as an implementation detail for compatibility.
+
+IMS-created outlet names identify their content: `IMS_PolarH10_HR`, `IMS_PolarH10_RR`, `IMS_PolarH10_ECG`, `IMS_PolarH10_ACC`, and `IMS_Experiment_Markers`. They include distinct source IDs for each application instance or Polar recorder instance. Incoming LSL outlets keep the name assigned by the external publisher, which IMS cannot rename; use type, hostname, source ID, UID, and channel labels to identify them.
+
+**Avoid accidental duplicate recordings:** Polar H10 data published by IMS can also be discovered through the Network LSL Manager. Select either the local Polar recording, the discovered LSL copy, or both intentionally, as they are separate saved files. The local Polar HR/ECG/ACC timestamps should not be assumed hardware synchronized merely because they are LSL-broadcast. No new raw audio/video LSL publisher is created by this update; microphone audio and camera video continue to be saved in their native file formats.
+
+
+## All-device LSL broadcast
+
+IMS broadcasts separate descriptive outlets while selected devices are acquiring:
+
+- `IMS_Microphone_Audio` or `IMS_Ultramic384K_Audio`: full-rate float32 normalized PCM samples in chunks. Timestamp passed to LSL is the estimated time of the last sample of each chunk; earlier times are interpolated by LSL. Host/device clock calibration is required for high-precision alignment. At 384 kHz, expect substantial network traffic; receiver/network performance must be tested. WAV recording remains the authoritative raw PCM16 artifact.
+- `IMS_Camera1_Frames`, `IMS_Camera2_Frames`, `IMS_Camera3_Frames`: one sample per saved frame, fields `FrameNumber`, `Width`, `Height`, `MonotonicCaptureTime`; the LSL timestamp is the host-side frame-retrieval estimate (NOT actual exposure time). MP4 contains video pixels, not LSL.
+- `IMS_PolarH10_HR`, `_RR`, `_ECG`, `_ACC`: existing separate physiological LSL outlets, active when Polar is selected and ready.
+- `IMS_Experiment_Markers`: event markers, available while IMS is running.
+
+**Discoverability**: only active/started devices have their data outlets. Use Preview or Record, then discover again in the Network LSL Manager or another LSL client. Do not enable an IMS-broadcast outlet as a network input in the same session unless you intentionally want a duplicate copy. Stream source IDs are unique per outlet, and channel/type metadata describes its data. External LSL broadcasters are not renamed by IMS.
+
+### Camera configuration (IMS)
+Click **Camera 1**, **Camera 2**, or **Camera 3** in the left device list to jump directly to the Cameras tab. There is no separate camera Settings page. For each slot, choose a detected camera, test the preview, then set dimensions, nominal FPS, autofocus or manual focus, automatic or manual exposure, brightness and gain. Click **Apply settings & restart preview** to test the changes; the same requested settings are passed to the camera recorder when you start a session. Camera controls are unavailable during an active session to protect recording consistency. Camera properties are best-effort: Windows DirectShow/MSMF drivers often ignore or clamp requested values. Check Activity & errors for unsupported settings and check the saved camera metadata for actual resolution and video FPS. Brightness/gain/exposure numbers are *driver-specific*, not standardized photographic units. External lighting cannot be controlled through OpenCV unless that lighting device exposes a supported control. Exposure auto/manual semantics differ by backend.
+
+## Device-oriented GUI (latest update)
+
+See `GUI_REDESIGN.md`. Eight primary tabs separate experiment readiness from settings and live monitoring while preserving recorder functionality and existing data formats.

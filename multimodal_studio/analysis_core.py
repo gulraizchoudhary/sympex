@@ -321,7 +321,7 @@ def save_report(report,streams,out):
         ax.set_title(s.name);ax.set_ylabel('Interval (ms)');ax.set_xlabel('Time since first sample (s)')
     fig.tight_layout();fig.savefig(out/'intervals.png',dpi=150);plt.close(fig)
     with open(out/'summary.txt','w',encoding='utf-8') as f:
-        f.write('Intelligent MicroSynch (IMS) synchronization QA\n\n')
+        f.write('Intelligent Multimodal Microsurgery Studio (IMMSS) synchronization QA\n\n')
         f.write('Start and end: coverage relative to session markers, not timing error.\n')
         f.write('Device-to-device offset requires matching physical events.\n\n')
         for m in report['streams']:

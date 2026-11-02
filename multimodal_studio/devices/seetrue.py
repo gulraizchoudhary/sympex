@@ -8,8 +8,10 @@ from pylsl import StreamInlet, resolve_streams, local_clock
 from core import RecorderBase
 
 class SeeTrueRecorder(RecorderBase):
-    def __init__(self, bus):
-        super().__init__('SeeTrue', bus)
+    """Generic LSL inlet recorder; legacy class name retained for compatibility."""
+    def __init__(self, bus, name='SeeTrue', filename_prefix='seetrue'):
+        super().__init__(name, bus)
+        self.filename_prefix = filename_prefix
         self.worker = None
         self.stop_event = threading.Event()
         self.last_sample = None
@@ -54,7 +56,9 @@ class SeeTrueRecorder(RecorderBase):
                 labels = [f'channel_{i+1}' for i in range(stream.channel_count())]
             result.append({'name': stream.name(), 'type': stream.type(),
                            'source_id': stream.source_id(), 'channels': stream.channel_count(),
-                           'uid': stream.uid(), 'labels': labels})
+                           'uid': stream.uid(), 'labels': labels,
+                           'hostname': stream.hostname(), 'nominal_srate': stream.nominal_srate(),
+                           'channel_format': str(stream.channel_format())})
         return result
 
     def start(self, folder, uid, channel_indices=None, timeout_seconds=5):
@@ -72,7 +76,7 @@ class SeeTrueRecorder(RecorderBase):
             streams = resolve_streams(wait_time=3.0)
             match = next((s for s in streams if s.uid() == uid), None)
             if match is None:
-                raise RuntimeError('Selected SeeTrue LSL stream is no longer available')
+                raise RuntimeError('Selected network LSL stream is no longer available')
             inlet = StreamInlet(match, max_buflen=30, recover=True)
             info = inlet.info(timeout=5)
             self.channels = self.channel_labels(info)
@@ -83,14 +87,15 @@ class SeeTrueRecorder(RecorderBase):
             self.selected_indices = selected
             headers = [f'ch_{i+1:03d}_{self.channels[i]}' for i in selected]
             # Store the exact mapping from saved columns to original LSL indices.
-            (folder / 'seetrue_channels.json').write_text(json.dumps({
-                'stream_name': info.name(), 'source_id': info.source_id(),
+            (folder / f'{self.filename_prefix}_channels.json').write_text(json.dumps({
+                'stream_name': info.name(), 'source_id': info.source_id(), 'uid': info.uid(),
+                'host': info.hostname(), 'nominal_srate': info.nominal_srate(),
                 'channel_count': info.channel_count(),
                 'saved_channels': [{'index_zero_based': i, 'index_one_based': i+1,
                                     'label': self.channels[i], 'csv_column': headers[k]}
                                    for k, i in enumerate(selected)]
             }, indent=2), encoding='utf-8')
-            with open(folder / 'seetrue_lsl.csv', 'w', newline='', encoding='utf-8') as fd:
+            with open(folder / f'{self.filename_prefix}_lsl.csv', 'w', newline='', encoding='utf-8') as fd:
                 writer = csv.writer(fd)
                 writer.writerow(['lsl_timestamp', 'local_receive_clock'] + headers)
                 self.report('RECORDING', f'LSL stream={info.name()}, channels={self.channels}')
@@ -107,7 +112,7 @@ class SeeTrueRecorder(RecorderBase):
                         self.last_seen = time.monotonic()
                         if was_failed:
                             self.failed = False
-                            self.report('RECOVERED', 'SeeTrue samples resumed')
+                            self.report('RECOVERED', 'Network LSL samples resumed')
                     elif self.last_seen is not None and time.monotonic() - self.last_seen > timeout_seconds and not self.failed:
                         self.report('DROPPED', f'No LSL samples for {timeout_seconds} seconds; waiting for recovery')
         except Exception as exc:
@@ -125,3 +130,7 @@ class SeeTrueRecorder(RecorderBase):
             if self.worker.is_alive():
                 self.report('ERROR', 'LSL worker did not stop promptly')
         self.active = False
+
+
+# Preferred name for new integrations; legacy alias preserves compatibility.
+NetworkLSLRecorder = SeeTrueRecorder

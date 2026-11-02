@@ -2,6 +2,7 @@
 import sys
 import threading
 import time
+from devices.camera_controls import normalize_settings, apply_camera_settings
 
 
 def camera_backends(cv2):
@@ -12,7 +13,7 @@ def camera_backends(cv2):
     return candidates
 
 
-def open_camera(index, *, report=None, attempts=30):
+def open_camera(index, *, report=None, attempts=30, settings=None):
     """Return (capture, frame, backend) or (None,None,None); log failure reasons."""
     import cv2
     for name, backend in camera_backends(cv2):
@@ -25,7 +26,8 @@ def open_camera(index, *, report=None, attempts=30):
                 continue
             # Some Windows webcams need warm-up and/or a conservative format.
             # DirectShow/MSMF enumerate different indexes on some systems.
-            formats = [('default', None), ('640x480', (640, 480)),
+            formats = ([('requested', (int(settings['width']), int(settings['height'])))]
+                       if settings else []) + [('default', None), ('640x480', (640, 480)),
                        ('640x480 MJPG', (640, 480, 'MJPG'))]
             for format_label, setting in formats:
                 if setting:
@@ -33,6 +35,8 @@ def open_camera(index, *, report=None, attempts=30):
                     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, setting[1])
                     if len(setting) == 3:
                         cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*setting[2]))
+                if settings:
+                    apply_camera_settings(cap, cv2, settings, report=report)
                 for _ in range(attempts):
                     ok, frame = cap.read()
                     if ok and frame is not None and getattr(frame, 'size', 0):
@@ -71,10 +75,11 @@ class CameraPreview:
         self.error = None
         self.device_index = None
 
-    def start(self, index):
+    def start(self, index, settings=None):
         if self.thread and self.thread.is_alive():
             raise RuntimeError('Stop this camera preview first')
         self.device_index = index
+        self.settings = normalize_settings(settings) if settings is not None else None
         self.last_rgb, self.last_time, self.error = None, 0, None
         self.stop_event.clear()
         self.thread = threading.Thread(target=self._run, name=f'CameraPreview{self.slot}', daemon=True)
@@ -86,7 +91,8 @@ class CameraPreview:
         try:
             cap, first, backend = open_camera(
                 self.device_index,
-                report=lambda msg: self.bus.emit(f'Camera {self.slot}', 'WARNING', msg)
+                report=lambda msg: self.bus.emit(f'Camera {self.slot}', 'INFO', msg),
+                settings=self.settings,
             )
             if cap is None:
                 raise RuntimeError(f'Camera {self.device_index} unavailable via DirectShow, Media Foundation, or default backend')

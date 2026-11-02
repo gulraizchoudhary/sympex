@@ -17,31 +17,31 @@ from core import EventBus, SessionManager
 from devices.audio import AudioRecorder, available_inputs
 from devices.windows_audio import device_manager_sound_names, safe_hardware_match
 from devices.polar import PolarRecorder
-from devices.seetrue import SeeTrueRecorder
+from devices.seetrue import NetworkLSLRecorder
 from devices.camera_recorder import CameraRecorder
 from devices.camera_preview import CameraPreview, discover_cameras
+from devices.camera_controls import normalize_settings
 
 BASE = Path(__file__).resolve().parent
 BG, PANEL, CARD, WHITE = '#101827', '#172337', '#20304a', '#ecf3ff'
 MUTED, BLUE, GREEN, YELLOW, RED = '#aabbd2', '#55a6ff', '#51d4a2', '#ffc66d', '#ff7585'
-DEVICES = ['Microphone', 'Polar H10', 'SeeTrue', 'Camera 1', 'Camera 2', 'Camera 3']
-ICONS = {'Microphone':'MIC', 'Polar H10':'HEART', 'SeeTrue':'EYE', 'Camera 1':'CAM 1', 'Camera 2':'CAM 2', 'Camera 3':'CAM 3'}
-DESCRIPTIONS = {'Microphone':'Choose any Windows audio input', 'Polar H10':'Heart rate, ECG, motion', 'SeeTrue':'LSL gaze stream', 'Camera 1':'Camera preview + MP4 recording', 'Camera 2':'Camera preview + MP4 recording', 'Camera 3':'Camera preview + MP4 recording'}
+DEVICES = ['Microphone', 'Polar H10', 'Camera 1', 'Camera 2', 'Camera 3']
+ICONS = {'Microphone':'MIC', 'Polar H10':'HEART', 'Camera 1':'CAM 1', 'Camera 2':'CAM 2', 'Camera 3':'CAM 3'}
+DESCRIPTIONS = {'Microphone':'Choose any Windows audio input', 'Polar H10':'Heart rate, ECG, motion', 'Camera 1':'Camera preview + MP4 recording', 'Camera 2':'Camera preview + MP4 recording', 'Camera 3':'Camera preview + MP4 recording'}
 
 class App:
     def __init__(self, root):
         self.root = root
-        self.root.title('Intelligent MicroSynch (IMS) | Microsurgical Multimodal Research Platform')
+        self.root.title('Intelligent Multimodal Microsurgery Studio (IMMSS) | Acquisition & Analysis')
         self.root.geometry('1280x850')
         self.root.minsize(1030, 720)
         self.root.configure(bg=BG)
         self.bus = EventBus()
         self.bus.install_exception_hooks()
-        self.bus.emit("Application", "INFO", f"Intelligent MicroSynch (IMS) started; persistent log: {self.bus.application_log}")
+        self.bus.emit("Application", "INFO", f"Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: {self.bus.application_log}")
         self.session = SessionManager(self.bus)
         self.recorders = {'Microphone':AudioRecorder('Microphone',self.bus),
                           'Polar H10':PolarRecorder(self.bus),
-                          'SeeTrue':SeeTrueRecorder(self.bus),
                           **{f'Camera {i}':CameraRecorder(i,self.bus) for i in range(1,4)}}
         self.enabled = {n:tk.BooleanVar(value=False) for n in DEVICES}
         self.status = {n:tk.StringVar(value='Not selected') for n in DEVICES}
@@ -59,12 +59,13 @@ class App:
         self.windows_hardware_info = tk.StringVar(value='Windows sound hardware: not scanned')
         self.ecg, self.acc = tk.BooleanVar(value=True), tk.BooleanVar(value=True)
         self.polar_detail = tk.StringVar(value='No Polar H10 selected')
-        self.lsl_details = tk.StringVar(value='Scan to locate the SeeTrue broadcaster.')
-        self.see_live = tk.StringVar(value='Waiting for LSL samples')
-        self.device_choices, self.lsl_choices, self.ble_device = [], [], None
+        self.device_choices, self.ble_device = [], None
         self.windows_sound_names = []
         self.audio_name_lookup = {}
-        self.lsl_channel_vars = []
+        self.network_choices = []
+        self.network_selections = {}
+        self.network_channel_vars = []
+        self.network_current_uid = None
         self.selected_device = 'Microphone'
         self.started_at = None
         self._start_results = queue.Queue()
@@ -72,7 +73,9 @@ class App:
         self.preview_active = False
         self.preview_tmp = None
         self.preview_devices = {}
+        self.preview_started = set()
         self.buttons = {}
+        self.device_enable_controls = {}
         self.monitor_panels = {}
         self.camera_previews = {i: CameraPreview(i, self.bus) for i in range(1, 4)}
         self.camera_choices = []
@@ -81,22 +84,24 @@ class App:
         self.camera_labels = {}
         self.camera_status = {}
         self.camera_buttons = {}
+        self.camera_setting_vars = {}
+        self.camera_setting_widgets = {}
         self._camera_scanning = False
         self._style()
         self._build()
         self.refresh_audio()
-        self.select_device('Microphone')
+        self.tabs.select(self.dashboard_tab)
         self.root.after(350, self.poll)
         self.root.protocol('WM_DELETE_WINDOW',self.close)
 
     def show_about(self):
         """Display transparent scope and purpose without claiming unvalidated AI."""
         messagebox.showinfo(
-            'About Intelligent MicroSynch',
-            'Intelligent MicroSynch (IMS)\n'
+            'About Intelligent Multimodal Microsurgery Studio',
+            'Intelligent Multimodal Microsurgery Studio (IMMSS)\n'
             'Microsurgical Multimodal Research Platform\n\n'
             'Acquisition · Live Monitoring · Temporal Alignment · Quality Assessment\n\n'
-            'Modular support for audio, video, Polar H10 and SeeTrue LSL streams.\n'
+            'Modular support for audio, video, Polar H10 and external network LSL streams.\n'
             'Post-experiment synchronization-quality analysis is available in its own tab.\n\n'
             'Physical synchronization accuracy and AI-based surgical assessment require\n'
             'separate experimental validation.\n\n'
@@ -132,13 +137,13 @@ class App:
         head = tk.Frame(self.root,bg=BG,padx=24,pady=13); head.pack(fill='x')
         branding = tk.Frame(head, bg=BG); branding.pack(side='left')
         title_row = tk.Frame(branding, bg=BG); title_row.pack(anchor='w')
-        self.label(title_row,'Intelligent ',19,WHITE,True).pack(side='left')
-        self.label(title_row,'MicroSynch',19,BLUE,True).pack(side='left')
-        self.label(title_row,'  IMS',10,MUTED,True).pack(side='left',pady=(8,0))
+        self.label(title_row,'Intelligent Multimodal ',19,WHITE,True).pack(side='left')
+        self.label(title_row,'Microsurgery Studio',19,BLUE,True).pack(side='left')
+        self.label(title_row,'  IMMSS',10,MUTED,True).pack(side='left',pady=(8,0))
         self.label(branding,'Multimodal Acquisition  •  Temporal Alignment  •  Synchronization Quality Assessment for Microsurgery',9,MUTED).pack(anchor='w',pady=(3,0))
         self.status_top=self.label(head,'●  IDLE',11,GREEN,True)
         self.status_top.pack(side='right',padx=(12,0))
-        self.action(head,'About IMS',self.show_about).pack(side='right',padx=(0,10))
+        self.action(head,'About IMMSS',self.show_about).pack(side='right',padx=(0,10))
         line=tk.Frame(self.root,bg='#31445f',height=1); line.pack(fill='x')
         setup=tk.Frame(self.root,bg=BG,padx=24,pady=14); setup.pack(fill='x')
         self.label(setup,'Participant',10,MUTED).grid(row=0,column=0,sticky='w')
@@ -154,31 +159,13 @@ class App:
         self.stop_btn=self.action(setup,'■  STOP',self.stop,danger=True,state='disabled')
         self.stop_btn.grid(row=1,column=5)
         body=tk.Frame(self.root,bg=BG,padx=24); body.pack(fill='both',expand=True)
-        left=tk.Frame(body,bg=PANEL,width=300,padx=12,pady=14); left.pack(side='left',fill='y',padx=(0,12)); left.pack_propagate(False)
-        self.label(left,'DEVICES',11,WHITE,True).pack(anchor='w',padx=9)
-        self.label(left,'Choose only what you need',9,MUTED).pack(anchor='w',padx=9,pady=(0,9))
-        self.cards={}
-        for device in DEVICES:
-            card=tk.Frame(left,bg=CARD,padx=10,pady=8,highlightthickness=1,highlightbackground='#334662')
-            card.pack(fill='x',pady=4)
-            row=tk.Frame(card,bg=CARD);row.pack(fill='x')
-            toggle=tk.Checkbutton(row,variable=self.enabled[device],command=lambda n=device:self.toggle(n),
-                                  bg=CARD,fg=WHITE,activebackground=CARD,selectcolor=BG,
-                                  bd=0,highlightthickness=0,cursor='hand2')
-            toggle.pack(side='left')
-            btn=tk.Button(row,text=device,command=lambda n=device:self.select_device(n),
-                          bg=CARD,fg=WHITE,activebackground='#304865',activeforeground=WHITE,
-                          bd=0,relief='flat',cursor='hand2',font=('Segoe UI',11,'bold'),anchor='w')
-            btn.pack(side='left',fill='x',expand=True)
-            self.label(card,DESCRIPTIONS[device],9,MUTED).pack(anchor='w',padx=27)
-            state=self.label(card,'Not selected',9,MUTED)
-            state.pack(anchor='w',padx=27)
-            self.cards[device]=(card,state,toggle)
-        self.label(left,'Selected cameras save independent MP4 and frame timestamps',9,YELLOW,wraplength=260).pack(anchor='w',padx=9,pady=(14,0))
-        right=tk.Frame(body,bg=BG);right.pack(side='left',fill='both',expand=True)
+        # A single full-width workspace. Device selection lives in each device tab;
+        # the Dashboard provides readiness and global session controls only.
+        right=tk.Frame(body,bg=BG)
+        right.pack(fill='both',expand=True)
         overview=tk.Frame(right,bg=PANEL,padx=17,pady=13);overview.pack(fill='x',pady=(0,10))
         top=tk.Frame(overview,bg=PANEL);top.pack(fill='x')
-        self.label(top,'SESSION OVERVIEW',10,MUTED,True).pack(side='left')
+        self.label(top,'SESSION STATUS',10,MUTED,True).pack(side='left')
         self.label(top,'Elapsed',10,MUTED).pack(side='right',padx=(12,0))
         self.label(top,'  •  ',10,MUTED).pack(side='right')
         self.label(top,'Selected',10,MUTED).pack(side='right')
@@ -187,25 +174,29 @@ class App:
         self.label(vals,'00:00:00',19,WHITE,True,textvariable=self.time_label).pack(side='right')
         self.label(vals,'0 selected',11,BLUE,True,textvariable=self.count_label).pack(side='right',padx=(0,30))
         self.tabs=ttk.Notebook(right);self.tabs.pack(fill='both',expand=True)
-        self.configure_tab=tk.Frame(self.tabs,bg=PANEL,padx=22,pady=22)
+        # Dedicated configuration tabs; existing recorder classes and settings are reused.
+        self.dashboard_tab=tk.Frame(self.tabs,bg=PANEL,padx=18,pady=14)
+        self.polar_tab=tk.Frame(self.tabs,bg=PANEL,padx=22,pady=18)
+        self.microphone_tab=tk.Frame(self.tabs,bg=PANEL,padx=22,pady=18)
         self.monitor_tab=tk.Frame(self.tabs,bg=PANEL,padx=12,pady=12)
-        self.see_tab=tk.Frame(self.tabs,bg=PANEL,padx=22,pady=22)
+        self.network_tab=tk.Frame(self.tabs,bg=PANEL,padx=18,pady=14)
         self.camera_tab=tk.Frame(self.tabs,bg=PANEL,padx=22,pady=22)
         self.activity_tab=tk.Frame(self.tabs,bg=PANEL,padx=16,pady=16)
         self.analysis_tab=tk.Frame(self.tabs,bg=PANEL,padx=8,pady=8)
-        for name,frame in [('Device settings',self.configure_tab),('Live monitoring',self.monitor_tab),('SeeTrue · LSL',self.see_tab),('3 camera previews',self.camera_tab),('Activity & errors',self.activity_tab),('Post-experiment analysis',self.analysis_tab)]:
+        for name,frame in [('Experiment dashboard',self.dashboard_tab),
+                           ('Polar H10',self.polar_tab),('Microphone',self.microphone_tab),
+                           ('Cameras',self.camera_tab),('Network LSL',self.network_tab),
+                           ('Live monitoring',self.monitor_tab),
+                           ('Post-experiment analysis',self.analysis_tab),
+                           ('Logs & diagnostics',self.activity_tab)]:
             self.tabs.add(frame,text='  '+name+'  ')
-        self.config_head=self.label(self.configure_tab,'Device settings',17,WHITE,True)
-        self.config_head.pack(anchor='w')
-        self.config_desc=self.label(self.configure_tab,'',10,MUTED,wraplength=680,justify='left');self.config_desc.pack(anchor='w',pady=(4,18))
-        self.settings_container=tk.Frame(self.configure_tab,bg=PANEL);self.settings_container.pack(fill='both',expand=True)
-        self.settings={}
-        for n in DEVICES:
-            f=tk.Frame(self.settings_container,bg=PANEL)
-            self.settings[n]=f
+        self.settings={'Microphone': self.microphone_tab, 'Polar H10': self.polar_tab}
+        self._build_dashboard()
+        self._build_device_enable(self.microphone_tab,'Microphone')
+        self._build_device_enable(self.polar_tab,'Polar H10')
         self._build_monitor()
         self._build_configs()
-        self._build_seetrue()
+        self._build_network_lsl()
         self._build_cameras()
         self._build_activity()
         from post_analysis import PostExperimentTab
@@ -258,59 +249,32 @@ class App:
         self.label(f,'Not scanned',10,MUTED,textvariable=self.polar_detail,wraplength=650).pack(anchor='w',pady=(0,15))
         tk.Checkbutton(f,text='Record ECG (~130 Hz)',variable=self.ecg,bg=PANEL,fg=WHITE,activebackground=PANEL,selectcolor=BG).pack(anchor='w')
         tk.Checkbutton(f,text='Record accelerometer (~25 Hz)',variable=self.acc,bg=PANEL,fg=WHITE,activebackground=PANEL,selectcolor=BG).pack(anchor='w')
-        f=self.settings['SeeTrue']
-        self.label(f,'SeeTrue receives data through LSL',11,WHITE,True).pack(anchor='w')
-        self.label(f,'Open the SeeTrue · LSL tab to discover the stream, review channel metadata and select it.',10,MUTED,wraplength=640,justify='left').pack(anchor='w',pady=(8,15))
-        self.action(f,'Open SeeTrue · LSL →',lambda:self.tabs.select(self.see_tab),accent=True).pack(anchor='w')
-        for i in range(1,4):
-            f=self.settings[f'Camera {i}']
-            self.label(f,f'Camera {i} — device selection and live preview',12,WHITE,True).pack(anchor='w')
-            self.label(f,'Choose a camera in the Cameras tab. The same selection is used for MP4 recording and frame timestamps.',10,YELLOW,wraplength=670,justify='left').pack(anchor='w',pady=(10,14))
-            self.action(f,'Configure camera →',lambda:self.tabs.select(self.camera_tab)).pack(anchor='w')
-
-    def _build_seetrue(self):
-        self.label(self.see_tab,'SEETRUE EYE TRACKER',17,WHITE,True).pack(anchor='w')
-        self.label(self.see_tab,'Step 1: start SeeTrue LSL broadcaster. Step 2: discover. Step 3: select a stream. Then enable SeeTrue on the left.',10,MUTED,wraplength=690,justify='left').pack(anchor='w',pady=(5,20))
-        row=tk.Frame(self.see_tab,bg=PANEL);row.pack(fill='x')
-        self.action(row,'↻ Discover LSL streams',self.scan_lsl,accent=True).pack(side='left')
-        self.lsl_scan_state=self.label(row,'Not scanned',10,MUTED)
-        self.lsl_scan_state.pack(side='left',padx=14)
-        self.label(self.see_tab,'Available streams',11,WHITE,True).pack(anchor='w',pady=(20,7))
-        self.lsl_select=ttk.Combobox(self.see_tab,state='readonly',width=76)
-        self.lsl_select.pack(fill='x')
-        self.lsl_select.bind('<<ComboboxSelected>>',lambda event:self.describe_lsl())
-        self.label(self.see_tab,'Selected stream details',11,WHITE,True).pack(anchor='w',pady=(20,7))
-        self.label(self.see_tab,'',10,MUTED,textvariable=self.lsl_details,wraplength=750,justify='left').pack(anchor='w')
-        self.label(self.see_tab,'Channels to RECORD',11,WHITE,True).pack(anchor='w',pady=(14,5))
-        toolrow=tk.Frame(self.see_tab,bg=PANEL);toolrow.pack(fill='x',pady=(0,5))
-        self.action(toolrow,'Select all',lambda:self.set_lsl_channels(True)).pack(side='left',padx=(0,6))
-        self.action(toolrow,'Clear selection',lambda:self.set_lsl_channels(False)).pack(side='left')
-        self.lsl_channel_count=self.label(toolrow,'Choose a stream',10,MUTED)
-        self.lsl_channel_count.pack(side='left',padx=12)
-        holder=tk.Frame(self.see_tab,bg=PANEL);holder.pack(fill='both',expand=True)
-        self.lsl_channel_canvas=tk.Canvas(holder,bg=PANEL,highlightthickness=0,height=180)
-        scroll=ttk.Scrollbar(holder,orient='vertical',command=self.lsl_channel_canvas.yview)
-        self.lsl_channel_canvas.configure(yscrollcommand=scroll.set)
-        scroll.pack(side='right',fill='y')
-        self.lsl_channel_canvas.pack(side='left',fill='both',expand=True)
-        self.lsl_channel_box=tk.Frame(self.lsl_channel_canvas,bg=PANEL)
-        self.lsl_channel_window=self.lsl_channel_canvas.create_window((0,0),window=self.lsl_channel_box,anchor='nw')
-        self.lsl_channel_box.bind('<Configure>',lambda e:self.lsl_channel_canvas.configure(scrollregion=self.lsl_channel_canvas.bbox('all')))
-        self.lsl_channel_canvas.bind('<Configure>',lambda e:self.lsl_channel_canvas.itemconfigure(self.lsl_channel_window,width=e.width))
-        self.label(self.see_tab,'Live data',11,WHITE,True).pack(anchor='w',pady=(22,7))
-        self.label(self.see_tab,'',10,GREEN,textvariable=self.see_live,wraplength=760,justify='left').pack(anchor='w')
-        self.label(self.see_tab,'Channel availability depends on the SeeTrue LSL broadcaster; the software cannot infer missing channels.',9,MUTED,wraplength=730).pack(anchor='w',pady=(24,0))
 
     def _build_cameras(self):
         self.label(self.camera_tab,'CAMERA SETUP & LIVE PREVIEW',17,WHITE,True).pack(anchor='w')
-        self.label(self.camera_tab,'Select a camera for each enabled slot. Test preview first; Start Session records the SAME camera to MP4.',10,YELLOW,wraplength=900).pack(anchor='w',pady=(4,10))
+        self.label(self.camera_tab,'Select devices and configure imaging in one place. Settings apply to both Test Preview and session recording.',10,YELLOW,wraplength=900).pack(anchor='w',pady=(4,10))
         self.action(self.camera_tab,'↻ Scan available cameras',self.scan_cameras,accent=True).pack(anchor='w',pady=(0,12))
-        grid=tk.Frame(self.camera_tab,bg=PANEL);grid.pack(fill='both',expand=True)
+        camera_canvas=tk.Canvas(self.camera_tab,bg=PANEL,highlightthickness=0)
+        camera_scroll=ttk.Scrollbar(self.camera_tab,orient='vertical',command=camera_canvas.yview)
+        camera_canvas.configure(yscrollcommand=camera_scroll.set)
+        camera_scroll.pack(side='right',fill='y')
+        camera_canvas.pack(side='left',fill='both',expand=True)
+        grid=tk.Frame(camera_canvas,bg=PANEL)
+        camera_window=camera_canvas.create_window((0,0),window=grid,anchor='nw')
+        grid.bind('<Configure>',lambda e:camera_canvas.configure(scrollregion=camera_canvas.bbox('all')))
+        camera_canvas.bind('<Configure>',lambda e:camera_canvas.itemconfigure(camera_window,width=e.width))
         for i in range(1,4):
             grid.columnconfigure(i-1,weight=1)
             frame=tk.Frame(grid,bg='#0b1423',highlightbackground='#36506d',highlightthickness=1)
             frame.grid(row=0,column=i-1,sticky='nsew',padx=5)
             self.label(frame,f'CAMERA {i}',11,WHITE,True).pack(anchor='w',padx=12,pady=(12,4))
+            enable=tk.Checkbutton(frame,text='Include in experiment',
+                                  variable=self.enabled[f'Camera {i}'],
+                                  command=lambda slot=i:self.toggle(f'Camera {slot}'),
+                                  bg='#0b1423',fg=WHITE,selectcolor=BG,
+                                  activebackground='#0b1423',activeforeground=WHITE)
+            enable.pack(anchor='w',padx=10)
+            self.device_enable_controls[f'Camera {i}']=enable
             combo=ttk.Combobox(frame,state='readonly',width=26)
             combo.pack(fill='x',padx=10,pady=5)
             self.camera_selects[i]=combo
@@ -323,8 +287,77 @@ class App:
             btn=self.action(frame,'▶ Test preview',lambda slot=i:self.toggle_camera_preview(slot))
             btn.pack(pady=(0,12))
             self.camera_buttons[i]=btn
+            self._build_camera_properties(frame, i)
         grid.rowconfigure(0,weight=1)
         self.root.after(650, self._render_cameras)
+
+
+    def _build_camera_properties(self, frame, slot):
+        self.label(frame, 'CAMERA PROPERTIES', 10, WHITE, True).pack(anchor='w', padx=10, pady=(4, 3))
+        vars_ = {
+            'resolution': tk.StringVar(value='640x480'),
+            'fps': tk.StringVar(value='25'),
+            'autofocus': tk.BooleanVar(value=True),
+            'focus': tk.StringVar(value='0'),
+            'autoexposure': tk.BooleanVar(value=True),
+            'exposure': tk.StringVar(value='-5'),
+            'brightness': tk.StringVar(value='0'),
+            'gain': tk.StringVar(value='0'),
+        }
+        self.camera_setting_vars[slot] = vars_
+        widgets = []
+        def line(label, var, choices=None):
+            row = tk.Frame(frame, bg='#0b1423')
+            row.pack(fill='x', padx=10, pady=2)
+            self.label(row, label, 9, MUTED).pack(side='left')
+            if choices:
+                widget = ttk.Combobox(row, textvariable=var, values=choices, state='readonly', width=12)
+            else:
+                widget = ttk.Entry(row, textvariable=var, width=12)
+            widget.pack(side='right')
+            widgets.append(widget)
+        line('Dimensions', vars_['resolution'], ['640x480','800x600','1280x720','1920x1080'])
+        line('FPS', vars_['fps'], ['15','25','30','60'])
+        for label, key in [('Autofocus','autofocus'), ('Auto exposure','autoexposure')]:
+            widget = tk.Checkbutton(frame, text=label, variable=vars_[key], bg='#0b1423', fg=WHITE,
+                                    activebackground='#0b1423', selectcolor=BG)
+            widget.pack(anchor='w', padx=10)
+            widgets.append(widget)
+        for label,key in [('Manual focus','focus'),('Exposure','exposure'),('Brightness','brightness'),('Gain','gain')]:
+            line(label, vars_[key])
+        self.camera_setting_widgets[slot] = widgets
+        self.action(frame,'Apply settings & restart preview',lambda i=slot:self.apply_camera_preview_settings(i)).pack(pady=(8,12))
+        self.label(frame,'Controls depend on camera and Windows backend; readback and warnings appear in Activity.',8,MUTED,wraplength=250).pack(padx=10,pady=(0,8))
+
+    def camera_settings(self, slot):
+        v = self.camera_setting_vars[slot]
+        try:
+            w,h = (int(x) for x in v['resolution'].get().split('x'))
+            return normalize_settings({
+                'width': w, 'height': h, 'fps': float(v['fps'].get()),
+                'autofocus': v['autofocus'].get(), 'focus': float(v['focus'].get()),
+                'autoexposure': v['autoexposure'].get(), 'exposure': float(v['exposure'].get()),
+                'brightness': float(v['brightness'].get()), 'gain': float(v['gain'].get()),
+            })
+        except (ValueError, TypeError) as exc:
+            raise ValueError(f'Camera {slot}: invalid property value: {exc}') from exc
+
+    def apply_camera_preview_settings(self, slot):
+        if self.session.active or self.preview_active:
+            self.bus.emit(f'Camera {slot}', 'WARNING', 'Stop experiment Preview/Record to adjust camera properties')
+            return
+        try:
+            self.camera_settings(slot)
+            p = self.camera_previews[slot]
+            if p.thread and p.thread.is_alive():
+                p.stop()
+                if p.thread and p.thread.is_alive():
+                    raise RuntimeError('Camera capture is still stopping')
+                self.camera_buttons[slot].configure(text='▶ Test preview')
+                self.toggle_camera_preview(slot)
+            self.bus.emit(f'Camera {slot}', 'INFO', 'Camera properties applied to next preview/recording; verify actual values in log')
+        except Exception as exc:
+            self.bus.emit(f'Camera {slot}', 'ERROR', f'Cannot apply settings: {exc}')
 
     def scan_cameras(self):
         if self._camera_scanning or self.session.active or self.preview_active:
@@ -374,7 +407,7 @@ class App:
                 self.bus.emit(f'Camera {slot}','WARNING',f'Camera {index} is already used by Camera {other}')
                 return
         try:
-            preview.start(index)
+            preview.start(index, settings=self.camera_settings(slot))
             self.camera_buttons[slot].configure(text='■ Stop preview')
             self.camera_status[slot].set('Connecting...')
         except Exception as exc:
@@ -489,16 +522,6 @@ class App:
                         ax.plot(xs,ys,color=GREEN,lw=1.2,label='HR')
                 if points:ax.legend(loc='upper right',fontsize=7)
                 info.configure(text=f'HR: {rec.last_hr if rec.last_hr is not None else "—"} BPM · ECG points: {len(rec.ecg_preview)} · ACC points: {len(rec.acc_preview)}')
-            elif name=='SeeTrue':
-                rows=[(t,s) for t,s in list(rec.preview_timed) if now-5 <= t <= now]
-                if rows:
-                    for i in rec.selected_indices[:2] if hasattr(rec,'selected_indices') else range(min(2,len(rows[-1][1]))):
-                        try:
-                            pts=[(now-t,float(r[i])) for t,r in rows]
-                            ax.plot(*zip(*pts),lw=1,label=rec.channels[i] if i<len(rec.channels) else f'Channel {i+1}')
-                        except (ValueError,TypeError,IndexError):continue
-                    ax.legend(loc='upper right',fontsize=7)
-                info.configure(text=f'Samples: {rec.samples:,} · First two selected channels (numeric only)')
             canvas.draw_idle()
 
     def _build_activity(self):
@@ -508,30 +531,75 @@ class App:
         self.log_text=tk.Text(self.activity_tab,bg='#0b1423',fg=WHITE,insertbackground=WHITE,
                               font=('Consolas',10),bd=0,wrap='word',padx=12,pady=12,state='normal')
         self.log_text.pack(fill='both',expand=True)
-        self._log('INFO  Interface initialized. Enable devices in the left panel.')
+        self._log('INFO  Interface initialized. Enable sensors in their dedicated tabs.')
 
     def _log(self,text):
         self.log_text.insert('end',f"{datetime.now():%H:%M:%S}   {text}\n")
         self.log_text.see('end')
 
     def select_device(self,name):
+        """Clicking a sidebar device navigates directly to its own controls."""
         self.selected_device=name
-        self.config_head.configure(text=name)
-        self.config_desc.configure(text=DESCRIPTIONS[name]+'  ·  Toggle on the left to include it in the next recording.')
-        for n,f in self.settings.items():
-            f.pack_forget()
-        self.settings[name].pack(fill='both',expand=True)
-        for n,(card,_,_) in self.cards.items():
-            card.configure(highlightbackground=BLUE if n==name else '#334662',highlightthickness=2 if n==name else 1)
-        self.tabs.select(self.configure_tab)
+        destination=(self.camera_tab if name.startswith('Camera ')
+                     else self.microphone_tab if name=='Microphone'
+                     else self.polar_tab)
+        self.tabs.select(destination)
+        if name.startswith('Camera '):
+            slot=int(name.rsplit(' ',1)[1])
+            self.camera_selects[slot].focus_set()
+
+    def _build_device_enable(self,parent,name):
+        strip=tk.Frame(parent,bg=CARD,padx=12,pady=10)
+        # Called before device-specific controls are constructed. Pack directly;
+        # querying winfo_children() here includes `strip` itself and using it
+        # as the `before=` anchor raises TclError: ... isn't packed.
+        strip.pack(fill='x')
+        box=tk.Checkbutton(strip,text='Include '+name+' in experiment',
+                           variable=self.enabled[name],command=lambda n=name:self.toggle(n),
+                           bg=CARD,fg=WHITE,activebackground=CARD,activeforeground=WHITE,
+                           selectcolor=BG,font=('Segoe UI',11,'bold'))
+        box.pack(side='left')
+        self.device_enable_controls[name]=box
+        self.label(strip,'Settings apply to Preview and Record',9,MUTED).pack(side='right')
+
+    def _build_dashboard(self):
+        self.label(self.dashboard_tab,'EXPERIMENT READINESS',17,WHITE,True).pack(anchor='w')
+        self.label(self.dashboard_tab,
+                   'Use the device tabs to include and configure equipment, test its signals, then start a session. '
+                   'Only enabled devices are acquired.',10,MUTED,wraplength=790,justify='left').pack(anchor='w',pady=(5,16))
+        self.readiness_rows={}
+        rows=tk.Frame(self.dashboard_tab,bg=PANEL)
+        rows.pack(fill='x')
+        for name in DEVICES:
+            row=tk.Frame(rows,bg=CARD,padx=12,pady=9)
+            row.pack(fill='x',pady=3)
+            self.action(row,'Configure  →',lambda n=name:self.select_device(n)).pack(side='right')
+            self.label(row,name,11,WHITE,True).pack(side='left',padx=(0,12))
+            state=tk.StringVar(value='Not selected')
+            self.label(row,'',10,MUTED,textvariable=state).pack(side='left')
+            self.readiness_rows[name]=state
+        self.label(self.dashboard_tab,'NETWORK LSL',11,WHITE,True).pack(anchor='w',pady=(16,4))
+        self.network_dashboard_status=tk.StringVar(value='No external LSL streams selected')
+        self.label(self.dashboard_tab,'',10,MUTED,textvariable=self.network_dashboard_status).pack(anchor='w')
+        self.action(self.dashboard_tab,'Manage network streams  →',
+                    lambda:self.tabs.select(self.network_tab)).pack(anchor='w',pady=(7,10))
+        self.label(self.dashboard_tab,'PREVIEW / RECORD',11,WHITE,True).pack(anchor='w',pady=(9,4))
+        self.label(self.dashboard_tab,
+                   'Use the Preview and Start Session buttons above. Polar sample readiness is '
+                   'checked during session startup. The Live Monitoring tab displays incoming signals.',
+                   10,MUTED,wraplength=790,justify='left').pack(anchor='w')
+        self.action(self.dashboard_tab,'Open live monitoring  →',
+                    lambda:self.tabs.select(self.monitor_tab)).pack(anchor='w',pady=(10,0))
 
     def _update_selection(self):
         count=sum(v.get() for v in self.enabled.values())
-        self.count_label.set(f'{count} selected')
-        if not self.session.active and not self.preview_active:self.session_status.set('Ready to record' if count else 'Choose devices to begin')
-        for name,(_,label,_) in self.cards.items():
-            state=self.status[name].get()
-            label.configure(text=state,fg=RED if state in ('ERROR','DROPPED') else GREEN if state in ('RECORDING','RECOVERED') else (YELLOW if state=='WARNING' else MUTED))
+        netcount=sum(1 for v in self.network_selections.values() if v.get('enabled'))
+        self.count_label.set(f'{count + netcount} selected')
+        if hasattr(self,'readiness_rows'):
+            for n,var in self.readiness_rows.items():
+                var.set(('Enabled  ·  '+self.status[n].get()) if self.enabled[n].get() else 'Not included')
+            self.network_dashboard_status.set(f'{netcount} external stream(s) selected')
+        if not self.session.active and not self.preview_active:self.session_status.set('Ready to record' if (count or netcount) else 'Choose devices to begin')
 
     def toggle(self,name):
         if self.session.active or self.preview_active:
@@ -689,47 +757,99 @@ class App:
             future.add_done_callback(lambda f:self.bus.events.put(('POLAR_SCAN','DONE',f)))
         except Exception as exc:self.bus.emit('Polar H10','ERROR',repr(exc))
 
-    def scan_lsl(self):
-        if self.session.active or self.preview_active:
-            return
-        self.lsl_scan_state.configure(text='Searching…')
+    def _build_network_lsl(self):
+        self.label(self.network_tab, 'Network LSL Stream Manager', 17, WHITE, True).pack(anchor='w')
+        self.label(self.network_tab, 'Single entry point for SeeTrue and external LSL streams. IMMSS outlets retain the existing IMS_ prefix for data compatibility; external names are supplied by their broadcasters.',
+                   10, MUTED, wraplength=800, justify='left').pack(anchor='w', pady=(5,10))
+        row=tk.Frame(self.network_tab,bg=PANEL); row.pack(fill='x',pady=(0,8))
+        self.action(row, 'Discover network streams', self.scan_network_lsl, accent=True).pack(side='left')
+        self.network_status=self.label(row,'Not scanned',10,MUTED)
+        self.network_status.pack(side='left',padx=14)
+        self.label(self.network_tab,'Tick the streams to save, then click a row to configure its channels.',10,MUTED).pack(anchor='w')
+        frame=tk.Frame(self.network_tab,bg=PANEL);frame.pack(fill='both',expand=True)
+        self.network_list=tk.Listbox(frame,selectmode='browse',height=9,exportselection=False,
+              bg=BG,fg=WHITE,selectbackground='#345a7e',font=('Consolas',10))
+        self.network_list.pack(side='left',fill='both',expand=True)
+        bar=ttk.Scrollbar(frame,command=self.network_list.yview)
+        bar.pack(side='left',fill='y');self.network_list.configure(yscrollcommand=bar.set)
+        self.network_list.bind('<<ListboxSelect>>',lambda e:self.describe_network_stream())
+        self.network_checks=tk.Frame(self.network_tab,bg=PANEL)
+        self.network_checks.pack(fill='x',pady=(8,4))
+        self.network_info=tk.StringVar(value='Select a stream to configure channels')
+        self.label(self.network_tab,'',10,MUTED,textvariable=self.network_info,wraplength=800,justify='left').pack(anchor='w')
+        tools=tk.Frame(self.network_tab,bg=PANEL);tools.pack(fill='x',pady=(8,4))
+        self.action(tools,'Select all channels',lambda:self.network_set_channels(True)).pack(side='left',padx=(0,8))
+        self.action(tools,'Clear channels',lambda:self.network_set_channels(False)).pack(side='left')
+        holder=tk.Frame(self.network_tab,bg=PANEL);holder.pack(fill='both',expand=True)
+        self.net_canvas=tk.Canvas(holder,bg=PANEL,highlightthickness=0,height=150)
+        self.net_canvas.pack(side='left',fill='both',expand=True)
+        scroll=ttk.Scrollbar(holder,orient='vertical',command=self.net_canvas.yview)
+        scroll.pack(side='left',fill='y');self.net_canvas.configure(yscrollcommand=scroll.set)
+        self.net_channel_frame=tk.Frame(self.net_canvas,bg=PANEL)
+        self.net_window=self.net_canvas.create_window((0,0),window=self.net_channel_frame,anchor='nw')
+        self.net_channel_frame.bind('<Configure>',lambda e:self.net_canvas.configure(scrollregion=self.net_canvas.bbox('all')))
+        self.net_canvas.bind('<Configure>',lambda e:self.net_canvas.itemconfigure(self.net_window,width=e.width))
+
+    def scan_network_lsl(self):
+        if self.session.active or self.preview_active or self._starting_session:return
+        self.network_status.configure(text='Searching…')
         def work():
-            try:result=SeeTrueRecorder.scan(timeout=2)
+            try:
+                streams=NetworkLSLRecorder.scan(timeout=3)
+                self.bus.events.put(('NET_LSL_SCAN','DONE',streams))
             except Exception as exc:
-                self.bus.emit('SeeTrue','ERROR',f'Scan failed: {exc!r}')
-                self.bus.events.put(('LSL_SCAN','DONE',[]));return
-            self.bus.events.put(('LSL_SCAN','DONE',result))
+                self.bus.emit('Network LSL','ERROR',f'Discovery error: {exc!r}')
+                self.bus.events.put(('NET_LSL_SCAN','DONE',[]))
         threading.Thread(target=work,daemon=True).start()
 
-    def set_lsl_channels(self, checked):
-        if self.session.active or self.preview_active:
-            return
-        for var in self.lsl_channel_vars:
-            var.set(checked)
-        self.update_lsl_count()
+    def network_toggle_stream(self):
+        if self.session.active or self.preview_active:return
+        i=self.network_list.curselection()
+        if not i:return
+        uid=self.network_choices[i[0]]['uid']
+        entry=self.network_selections[uid]
+        entry['enabled']=not entry['enabled']
+        self._update_network_rows()
 
-    def update_lsl_count(self):
-        selected=sum(v.get() for v in self.lsl_channel_vars)
-        self.lsl_channel_count.configure(text=f'{selected} / {len(self.lsl_channel_vars)} selected')
+    def _update_network_rows(self):
+        keep=self.network_list.curselection()
+        self.network_list.delete(0,'end')
+        for stream in self.network_choices:
+            state=self.network_selections.get(stream['uid'],{}).get('enabled',False)
+            label=(('☑' if state else '☐') + f" {stream['name']} | {stream['type']} | {stream['channels']}ch "
+                + f"| {stream.get('nominal_srate',0):g}Hz | {stream.get('hostname','?')} | {stream['uid'][:12]}")
+            self.network_list.insert('end',label)
+        if keep and keep[0]<self.network_list.size():self.network_list.selection_set(keep[0])
+        active=sum(v['enabled'] for v in self.network_selections.values())
+        self.network_status.configure(text=f'{len(self.network_choices)} discovered · {active} selected')
 
-    def describe_lsl(self):
-        i=self.lsl_select.current()
-        for widget in self.lsl_channel_box.winfo_children():
-            widget.destroy()
-        self.lsl_channel_vars=[]
-        if 0<=i<len(self.lsl_choices):
-            stream=self.lsl_choices[i]
-            self.lsl_details.set(f"Name: {stream['name']}\nType: {stream['type']}\nChannels: {stream['channels']}\nSource ID: {stream['source_id']}")
-            labels=stream.get('labels',[])
-            for j in range(stream['channels']):
-                var=tk.BooleanVar(value=True)
-                self.lsl_channel_vars.append(var)
-                label=labels[j] if j<len(labels) else f'channel_{j+1}'
-                tk.Checkbutton(self.lsl_channel_box, text=f'{j+1:3d}   {label}', variable=var,
-                    command=self.update_lsl_count,bg=PANEL,fg=WHITE,
-                    selectcolor=BG,activebackground=PANEL,activeforeground=WHITE,
-                    anchor='w',state='disabled' if self.session.active or self.preview_active else 'normal').pack(fill='x')
-        self.update_lsl_count()
+    def describe_network_stream(self):
+        for w in self.network_checks.winfo_children():w.destroy()
+        for w in self.net_channel_frame.winfo_children():w.destroy()
+        self.network_channel_vars=[]
+        selected=self.network_list.curselection()
+        if not selected:return
+        stream=self.network_choices[selected[0]]; uid=stream['uid'];self.network_current_uid=uid
+        record=self.network_selections[uid]
+        self.action(self.network_checks, 'Disable stream' if record['enabled'] else 'Enable stream',
+                    self.network_toggle_stream,accent=True).pack(side='left')
+        self.network_info.set(f"Data type: {stream['type']} | Stream: {stream['name']} | UID: {uid} | Source ID: {stream['source_id']} | "
+                              f"Host: {stream.get('hostname','?')} | {stream['channels']} channels")
+        for j,label in enumerate(stream['labels']):
+            v=tk.BooleanVar(value=j in record['channels']);self.network_channel_vars.append(v)
+            tk.Checkbutton(self.net_channel_frame,text=f'{j+1:3d}  {label}',variable=v,
+                command=lambda u=uid:self.save_network_channels(u),bg=PANEL,fg=WHITE,
+                selectcolor=BG,activebackground=PANEL,activeforeground=WHITE,
+                anchor='w').pack(fill='x')
+
+    def save_network_channels(self,uid):
+        if self.session.active or self.preview_active:return
+        self.network_selections[uid]['channels']=[i for i,v in enumerate(self.network_channel_vars) if v.get()]
+
+    def network_set_channels(self,value):
+        if self.session.active or self.preview_active:return
+        for v in self.network_channel_vars:v.set(value)
+        if self.network_current_uid:self.save_network_channels(self.network_current_uid)
 
     def audio_args(self,box,rate):
         i = box.current()
@@ -753,12 +873,6 @@ class App:
                                    self.audio_args(self.mic_select,int(self.mic_rate.get())))
         if self.enabled['Polar H10'].get():
             selected['Polar H10']=(self.recorders['Polar H10'],{'ble_device':self.ble_device,'ecg':self.ecg.get(),'acc':self.acc.get()})
-        if self.enabled['SeeTrue'].get():
-            i=self.lsl_select.current()
-            if i<0:raise ValueError('Discover/select a SeeTrue LSL stream in the SeeTrue tab.')
-            indices=[j for j,var in enumerate(self.lsl_channel_vars) if var.get()]
-            SeeTrueRecorder.validate_selection(indices,self.lsl_choices[i]['channels'])
-            selected['SeeTrue']=(self.recorders['SeeTrue'],{'uid':self.lsl_choices[i]['uid'],'channel_indices':indices})
         for i in range(1,4):
             n=f'Camera {i}'
             if self.enabled[n].get():
@@ -766,11 +880,19 @@ class App:
                 if not 0 <= choice < len(self.camera_choices):
                     raise ValueError(f'Camera {i}: select a detected camera in the Cameras tab')
                 index=self.camera_choices[choice][0]
-                selected[n]=(self.recorders[n],{'index':index})
+                selected[n]=(self.recorders[n],{'index':index, 'camera_settings':self.camera_settings(i)})
+        # All external LSL streams, including SeeTrue, use this single manager.
+        for n, stream in enumerate(self.network_choices, 1):
+            settings=self.network_selections.get(stream['uid'])
+            if not settings or not settings['enabled']:continue
+            channels=NetworkLSLRecorder.validate_selection(settings['channels'],stream['channels'])
+            key=f'Network LSL {n:02d} · {stream["name"]}'
+            recorder=NetworkLSLRecorder(self.bus,name=key,filename_prefix=f'network_lsl_{n:02d}')
+            selected[key]=(recorder,{'uid':stream['uid'],'channel_indices':channels})
         camera_indexes=[settings['index'] for name,(_,settings) in selected.items() if name.startswith('Camera')]
         if len(set(camera_indexes)) != len(camera_indexes):
             raise ValueError('Camera slots must use different physical camera indices')
-        if not selected:raise ValueError('Enable at least one device on the left.')
+        if not selected:raise ValueError('Enable a device or select a network LSL stream.')
         return selected
 
     def preview(self):
@@ -787,6 +909,7 @@ class App:
             selected=self._selected_recorders()
             self.preview_tmp=tempfile.TemporaryDirectory(prefix='multimodal_preview_')
             self.preview_devices=selected
+            self.preview_started=set()
             self.preview_active=True
             started_count=0
             for name,(rec,settings) in selected.items():
@@ -795,12 +918,13 @@ class App:
                         slot=int(name.rsplit(' ',1)[1])
                         p=self.camera_previews[slot]
                         if not (p.thread and p.thread.is_alive()):
-                            p.start(settings['index'])
+                            p.start(settings['index'], settings=settings.get('camera_settings'))
                         self.status[name].set('PREVIEW')
                     else:
                         rec.start(Path(self.preview_tmp.name), **settings)
                         self.status[name].set('PREVIEW')
                     started_count += 1
+                    self.preview_started.add(name)
                 except Exception as exc:
                     self.status[name].set('ERROR')
                     self.bus.emit(name,'ERROR',f'Preview start failed: {exc!r}')
@@ -819,6 +943,8 @@ class App:
     def stop_preview(self):
         if not self.preview_active:return
         for name,(rec,_) in self.preview_devices.items():
+            if name not in self.preview_started:
+                continue
             try:
                 if name.startswith('Camera'):
                     self.camera_previews[int(name.rsplit(' ',1)[1])].stop()
@@ -827,6 +953,7 @@ class App:
             except Exception as exc:self.bus.emit(name,'ERROR',f'Preview stop failed: {exc!r}')
         self.preview_active=False
         self.preview_devices={}
+        self.preview_started=set()
         if self.preview_tmp:
             try:self.preview_tmp.cleanup()
             except Exception as exc:self.bus.emit('Preview','WARNING',f'Preview cleanup: {exc!r}')
@@ -865,6 +992,10 @@ class App:
             threading.Thread(target=worker,daemon=True,name='SessionStartup').start()
         except Exception as exc:
             self.bus.emit('Session','ERROR',f'Session start failed: {exc!r}')
+            self._starting_session=False
+            self._lock(False)
+            self.start_btn.configure(state='normal')
+            self.preview_btn.configure(state='normal')
             messagebox.showerror('Session could not start',str(exc))
 
     def _handle_start_result(self, ok, result):
@@ -889,10 +1020,18 @@ class App:
 
     def _lock(self,locked):
         state='disabled' if locked else 'normal'
-        for _,(_,_,c) in self.cards.items():c.configure(state=state)
-        for widget in (self.mic_select,self.mic_rate_combo,self.lsl_select,*self.camera_selects.values()):
+        for c in self.device_enable_controls.values():c.configure(state=state)
+        for widget in (self.mic_select,self.mic_rate_combo,*self.camera_selects.values()):
             widget.configure(state='disabled' if locked else 'readonly')
-        for widget in self.lsl_channel_box.winfo_children():
+        for widgets in self.camera_setting_widgets.values():
+            for widget in widgets:
+                try:
+                    widget.configure(state='disabled' if locked else ('readonly' if isinstance(widget, ttk.Combobox) else 'normal'))
+                except tk.TclError:
+                    pass
+        for widget in self.net_channel_frame.winfo_children():
+            widget.configure(state='disabled' if locked else 'normal')
+        for widget in self.network_checks.winfo_children():
             widget.configure(state='disabled' if locked else 'normal')
 
     def stop(self):
@@ -931,22 +1070,39 @@ class App:
                 continue
             if name=='CAMERA_SCAN':
                 self._camera_scanning=False
+                old_indices = {}
+                for slot, combo in self.camera_selects.items():
+                    current = combo.current()
+                    if 0 <= current < len(self.camera_choices):
+                        old_indices[slot] = self.camera_choices[current][0]
                 self.camera_choices=message
                 labels=[label for _,label in message]
-                for combo in self.camera_selects.values():
+                index_map={index:position for position,(index,_) in enumerate(message)}
+                used=set()
+                for slot,combo in self.camera_selects.items():
                     combo.configure(values=labels)
-                    if labels:combo.current(0)
+                    prior=old_indices.get(slot)
+                    if prior in index_map and prior not in used:
+                        combo.current(index_map[prior]); used.add(prior)
+                    else:
+                        combo.set('')
+                        if self.enabled[f'Camera {slot}'].get():
+                            self.status[f'Camera {slot}'].set('Choose a detected camera')
                 self.bus.emit('Cameras','INFO',f'Camera scan finished: {len(labels)} available')
                 if not labels:
                     self.bus.emit('Cameras','WARNING','No usable camera frames detected. Check Windows Settings > Privacy & security > Camera > Let desktop apps access your camera; close Teams/Zoom/Camera app and retry. Integrated IR camera may be Windows Hello-only.')
                 continue
-            if name=='LSL_SCAN':
-                self.lsl_choices=message
-                labels=[f"{x['name']}  ·  {x['type']}  ·  {x['channels']} channels" for x in message]
-                self.lsl_select.configure(values=labels)
-                self.lsl_scan_state.configure(text=f'{len(labels)} streams found')
-                if labels:self.lsl_select.current(0);self.describe_lsl()
-                else:self.lsl_details.set('No streams discovered. Check SeeTrue broadcaster and network.')
+            if name=='NET_LSL_SCAN':
+                previous=self.network_selections
+                self.network_choices=message
+                self.network_selections={x['uid']:{'enabled':previous.get(x['uid'],{}).get('enabled',False),
+                    'channels':previous.get(x['uid'],{}).get('channels',list(range(x['channels'])))}
+                    for x in message}
+                self._update_network_rows()
+                if message:
+                    self.network_list.selection_set(0)
+                    self.describe_network_stream()
+                self.bus.emit('Network LSL','INFO',f'Discovered {len(message)} LSL outlets; inspect type, source ID and UID before selection')
                 continue
             if name in self.status:self.status[name].set(status)
             self._log(f'{name:<13} {status:<10} {message}')
@@ -958,8 +1114,6 @@ class App:
                 if hasattr(rec,'health'):
                     try:rec.health()
                     except Exception as exc:self.bus.emit(name,'ERROR',f'Health check: {exc!r}')
-            see=self.recorders['SeeTrue']
-            if see.last_sample is not None:self.see_live.set(f'{see.samples:,} samples  ·  Latest: {str(see.last_sample)[:350]}')
         self._update_selection()
         try:
             self._draw_monitors()

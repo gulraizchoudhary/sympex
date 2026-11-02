@@ -6,7 +6,8 @@ import time
 from pathlib import Path
 import sounddevice as sd
 import soundfile as sf
-from pylsl import local_clock
+from pylsl import local_clock, StreamInfo, StreamOutlet
+import uuid
 from core import RecorderBase
 
 
@@ -48,6 +49,11 @@ class AudioRecorder(RecorderBase):
         self.total_frames_received = 0
         self._prev_status = None
         self._writer_failed = False
+        self.audio_outlet = None
+        self.lsl_publish_errors = 0
+        self.lsl_queue = None
+        self.lsl_thread = None
+        self.lsl_drops = 0
 
     def start(self, folder, device, sample_rate, channels=1):
         # A 384 kHz Ultramic input must use a compatible endpoint. Windows
@@ -78,6 +84,40 @@ class AudioRecorder(RecorderBase):
             dtype='int16', extra_settings=extra_settings
         )
         self._rate=sample_rate
+        # Publish the actual mono/multichannel PCM samples as chunked LSL data.
+        # Keep this outlet separate from the PortAudio callback: never block acquisition.
+        try:
+            info = StreamInfo(
+                f'IMS_{"Ultramic384K" if "ultramic" in device_info["name"].lower() else "Microphone"}_Audio',
+                'Audio', int(channels), float(sample_rate), 'float32',
+                f'IMS_Audio_{uuid.uuid4().hex}'
+            )
+            meta = info.desc()
+            meta.append_child_value('recording_system', 'Intelligent MicroSynch')
+            meta.append_child_value('audio_device', device_info['name'])
+            meta.append_child_value('host_api', backend)
+            meta.append_child_value('timestamp_semantics', 'PortAudio ADC-time estimate of sample time')
+            ch = meta.append_child('channels')
+            for k in range(int(channels)):
+                node = ch.append_child('channel')
+                node.append_child_value('label', f'Audio_CH{k+1}')
+                node.append_child_value('unit', 'normalized_amplitude')
+            try:
+                self.audio_outlet = StreamOutlet(info, chunk_size=0, max_buffered=30)
+                self.report('INFO', f'LSL audio broadcasting: {info.name()} ({channels} ch, {sample_rate} Hz)')
+            except Exception as exc:
+                self.audio_outlet = None
+                self.report('WARNING', f'LSL audio outlet unavailable; WAV recording continues: {exc!r}')
+        except Exception as exc:
+            self.audio_outlet = None
+            self.report('WARNING', f'Audio LSL initialization unavailable; WAV continues: {exc!r}')
+        self.lsl_drops = 0
+        self.lsl_queue = queue.Queue(maxsize=32) if self.audio_outlet is not None else None
+        self.lsl_thread = None
+        if self.lsl_queue is not None:
+            self.lsl_thread = threading.Thread(target=self._lsl_worker, daemon=True,
+                                               name='IMS_Audio_LSL_Broadcast')
+            self.lsl_thread.start()
         with self.preview_lock:
             self.preview.clear()
             self.preview_timed.clear()
@@ -148,6 +188,14 @@ class AudioRecorder(RecorderBase):
                         break
                     samples, frames, first_ts, overflow = item
                     wav.write(samples)
+                    # Disk writing takes priority; LSL has a separate bounded queue.
+                    if self.lsl_queue is not None:
+                        try:
+                            self.lsl_queue.put_nowait((samples, frames, first_ts))
+                        except queue.Full:
+                            self.lsl_drops += 1
+                            if self.lsl_drops == 1:
+                                self.report('WARNING', 'LSL audio queue saturated; WAV continues uninterrupted')
                     writer.writerow([index, frames, f'{first_ts:.9f}', overflow])
                     index += frames
                     self.count = index
@@ -155,6 +203,25 @@ class AudioRecorder(RecorderBase):
             self._writer_failed = True
             self.report('ERROR', f'audio writer failed: {exc!r}')
             self.active = False
+
+    def _lsl_worker(self):
+        while True:
+            item = self.lsl_queue.get()
+            if item is None:
+                break
+            samples, frames, first_ts = item
+            if self.audio_outlet is None:
+                continue
+            try:
+                values = (samples.astype('float32') / 32768.0).tolist()
+                self.audio_outlet.push_chunk(
+                    values, timestamp=first_ts + (frames - 1) / self._rate
+                )
+            except Exception as exc:
+                self.lsl_publish_errors += 1
+                if self.lsl_publish_errors == 1:
+                    self.report('WARNING', f'LSL audio broadcast failed; WAV continues: {exc!r}')
+                self.audio_outlet = None
 
     def snapshot_preview(self):
         with self.preview_lock:
@@ -187,4 +254,16 @@ class AudioRecorder(RecorderBase):
             if self.worker.is_alive():
                 self.report('ERROR', 'Audio writer did not finish within timeout')
         self.active = False
-        self.report('STOPPED', f'{self.count} samples saved; queue drops={self.lost_blocks}')
+        if self.lsl_queue is not None and self.lsl_thread is not None:
+            try:
+                self.lsl_queue.put(None, timeout=1)
+            except queue.Full:
+                self.report('WARNING', 'LSL publisher backlog on stop; final broadcast chunks may be lost')
+            self.lsl_thread.join(timeout=3)
+            if self.lsl_thread.is_alive():
+                self.report('WARNING', 'LSL publisher still draining; local WAV finalized')
+            else:
+                self.audio_outlet = None
+        else:
+            self.audio_outlet = None
+        self.report('STOPPED', f'{self.count} samples saved; queue drops={self.lost_blocks}; LSL drops={self.lsl_drops}; LSL errors={self.lsl_publish_errors}')

@@ -1,4 +1,5 @@
 import asyncio
+import uuid
 import csv
 from collections import deque
 import threading
@@ -25,6 +26,7 @@ class PolarRecorder(RecorderBase):
         self.writers = {}
         self.file_lock = threading.RLock()
         self.outlets = {}
+        self.lsl_instance_id = uuid.uuid4().hex[:12]
         self.last_hr = None
         self.hr_preview = deque(maxlen=180)
         self.ecg_preview = deque(maxlen=1800)
@@ -105,7 +107,22 @@ class PolarRecorder(RecorderBase):
                 if acc: self._file('acc', ['lsl_estimate','device_timestamp','x','y','z'])
                 for name, count in [('hr',1),('rr',1),('ecg',1),('acc',3)]:
                     if name in self.files:
-                        info = StreamInfo('PolarH10_'+name.upper(), name.upper(), count, 0, 'float32', 'polarh10_'+name)
+                        info = StreamInfo(
+                            f'IMS_PolarH10_{name.upper()}',
+                            {'hr':'HeartRate','rr':'RRInterval','ecg':'ECG','acc':'Accelerometer'}[name],
+                            count, 0, 'float32',
+                            f'IMS_PolarH10_{self.lsl_instance_id}_{name.upper()}'
+                        )
+                        info.desc().append_child_value('manufacturer', 'Polar')
+                        info.desc().append_child_value('device_model', 'H10')
+                        info.desc().append_child_value('recording_system', 'Intelligent MicroSynch')
+                        channel_meta = info.desc().append_child('channels')
+                        for label, unit in {'hr':[('BPM','beats/min')], 'rr':[('RR','ms')],
+                                            'ecg':[('ECG','device units')],
+                                            'acc':[('ACC_X','g'),('ACC_Y','g'),('ACC_Z','g')]}[name]:
+                            c = channel_meta.append_child('channel')
+                            c.append_child_value('label', label)
+                            c.append_child_value('unit', unit)
                         self.outlets[name] = StreamOutlet(info)
             await self.device.start_hr_stream(hr_callback=self._hr)
             await asyncio.sleep(1)
