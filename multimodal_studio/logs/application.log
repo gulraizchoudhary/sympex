@@ -280,3 +280,30 @@
 2026-11-02 11:12:53,021 INFO [Camera 3] INFO: Camera stopped; 14388 frames saved
 2026-11-02 11:12:53,022 INFO [Session] STOPPED: C:\Users\chgul\Downloads\IMMSS_Camera_Safe_Defaults\Participant_Data\Participant_001\Session_20261102_110017_052871
 2026-11-02 11:12:53,823 INFO [Application] INFO: Application closing
+2026-11-02 12:12:26,951 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-11-02 12:12:28,276 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-02 12:12:28,278 INFO [Audio] INFO: 23 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-02 12:12:43,989 INFO [Preview] INFO: No devices were enabled; microphone selected for Preview automatically
+2026-11-02 12:12:43,990 INFO [Microphone] INFO: Opening microphone: Microphone (2- Logi C270 HD WebCam) | index=15 | backend=Windows WASAPI | rate=48000 Hz | channels=1 | WASAPI exclusive=False
+2026-11-02 12:12:43,995 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Microphone_Audio (1 ch, 48000 Hz)
+2026-11-02 12:12:44,371 INFO [Microphone] RECORDING: device=15, rate=48000 Hz, channels=1
+2026-11-02 12:14:22,173 INFO [Microphone] STOPPED: 4681440 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-02 12:14:26,208 INFO [Microphone] INFO: Opening microphone: Microphone (2- Logi C270 HD WebCam) | index=15 | backend=Windows WASAPI | rate=48000 Hz | channels=1 | WASAPI exclusive=False
+2026-11-02 12:14:26,219 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Microphone_Audio (1 ch, 48000 Hz)
+2026-11-02 12:14:26,293 INFO [Microphone] RECORDING: device=15, rate=48000 Hz, channels=1
+2026-11-02 12:14:34,597 INFO [Microphone] STOPPED: 387840 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-02 12:18:04,421 INFO [Microphone] INFO: Opening microphone: Microphone (2- Logi C270 HD WebCam) | index=15 | backend=Windows WASAPI | rate=48000 Hz | channels=1 | WASAPI exclusive=False
+2026-11-02 12:18:04,428 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Microphone_Audio (1 ch, 48000 Hz)
+2026-11-02 12:18:04,698 INFO [Microphone] RECORDING: device=15, rate=48000 Hz, channels=1
+2026-11-02 12:19:11,554 INFO [Microphone] STOPPED: 3187200 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-02 12:19:13,094 INFO [Microphone] INFO: Opening microphone: Microphone (2- Logi C270 HD WebCam) | index=15 | backend=Windows WASAPI | rate=48000 Hz | channels=1 | WASAPI exclusive=False
+2026-11-02 12:19:13,104 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Microphone_Audio (1 ch, 48000 Hz)
+2026-11-02 12:19:13,139 INFO [Microphone] RECORDING: device=15, rate=48000 Hz, channels=1
+2026-11-02 12:19:20,116 INFO [Microphone] STOPPED: 317280 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-02 12:19:23,457 INFO [Microphone] INFO: Opening microphone: Microphone (2- Logi C270 HD WebCam) | index=15 | backend=Windows WASAPI | rate=48000 Hz | channels=1 | WASAPI exclusive=False
+2026-11-02 12:19:23,461 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Microphone_Audio (1 ch, 48000 Hz)
+2026-11-02 12:19:23,484 INFO [Microphone] RECORDING: device=15, rate=48000 Hz, channels=1
+2026-11-02 12:19:29,295 INFO [Microphone] STOPPED: 266880 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-02 12:19:32,594 INFO [Microphone] INFO: Opening microphone: Microphone (2- Logi C270 HD WebCam) | index=15 | backend=Windows WASAPI | rate=48000 Hz | channels=1 | WASAPI exclusive=False
+2026-11-02 12:19:32,604 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Microphone_Audio (1 ch, 48000 Hz)
+2026-11-02 12:19:32,638 INFO [Microphone] RECORDING: device=15, rate=48000 Hz, channels=1
