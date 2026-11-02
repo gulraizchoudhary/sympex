@@ -1,609 +1,282 @@
-2026-10-28 21:38:17,569 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Downloads\IMMSS_Reviewed_Studio\Intelligent_Multimodal_Microsurgery_Studio\logs\application.log
-2026-10-28 21:38:18,083 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
-2026-10-28 21:38:18,084 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
-2026-10-28 21:39:31,188 INFO [Network LSL] INFO: Discovered 5 LSL outlets; inspect type, source ID and UID before selection
-2026-10-28 21:39:54,411 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
-2026-10-28 21:39:55,362 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
-2026-10-28 21:39:55,362 INFO [Cameras] INFO: index 0: available via DirectShow
-2026-10-28 21:39:55,769 INFO [Cameras] INFO: index 1 / DirectShow: could not open
-2026-10-28 21:39:55,820 INFO [Cameras] INFO: index 1 / Media Foundation: could not open
-2026-10-28 21:39:55,860 INFO [Cameras] INFO: index 1 / Default: could not open
-2026-10-28 21:39:55,860 INFO [Cameras] INFO: index 2 / DirectShow: could not open
-2026-10-28 21:39:55,899 INFO [Cameras] INFO: index 2 / Media Foundation: could not open
-2026-10-28 21:39:55,941 INFO [Cameras] INFO: index 2 / Default: could not open
-2026-10-28 21:39:55,942 INFO [Cameras] INFO: index 3 / DirectShow: could not open
-2026-10-28 21:39:55,981 INFO [Cameras] INFO: index 3 / Media Foundation: could not open
-2026-10-28 21:39:56,031 INFO [Cameras] INFO: index 3 / Default: could not open
-2026-10-28 21:39:56,032 INFO [Cameras] INFO: index 4 / DirectShow: could not open
-2026-10-28 21:39:56,076 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
-2026-10-28 21:39:56,121 INFO [Cameras] INFO: index 4 / Default: could not open
-2026-10-28 21:39:56,122 INFO [Cameras] INFO: index 5 / DirectShow: could not open
-2026-10-28 21:39:56,165 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
-2026-10-28 21:39:56,208 INFO [Cameras] INFO: index 5 / Default: could not open
-2026-10-28 21:39:56,209 INFO [Cameras] INFO: index 6 / DirectShow: could not open
-2026-10-28 21:39:56,255 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
-2026-10-28 21:39:56,299 INFO [Cameras] INFO: index 6 / Default: could not open
-2026-10-28 21:39:56,299 INFO [Cameras] INFO: index 7 / DirectShow: could not open
-2026-10-28 21:39:56,341 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
-2026-10-28 21:39:56,389 INFO [Cameras] INFO: index 7 / Default: could not open
-2026-10-28 21:39:56,390 INFO [Cameras] INFO: index 8 / DirectShow: could not open
-2026-10-28 21:39:56,433 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
-2026-10-28 21:39:56,476 INFO [Cameras] INFO: index 8 / Default: could not open
-2026-10-28 21:39:56,477 INFO [Cameras] INFO: index 9 / DirectShow: could not open
-2026-10-28 21:39:56,522 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
-2026-10-28 21:39:56,565 INFO [Cameras] INFO: index 9 / Default: could not open
-2026-10-28 21:39:56,736 INFO [Cameras] INFO: Camera scan finished: 1 available
-2026-10-28 21:40:01,190 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
-2026-10-28 21:40:02,005 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
-2026-10-28 21:40:02,005 INFO [Cameras] INFO: index 0: available via DirectShow
-2026-10-28 21:40:02,412 INFO [Cameras] INFO: index 1 / DirectShow: could not open
-2026-10-28 21:40:02,458 INFO [Cameras] INFO: index 1 / Media Foundation: could not open
-2026-10-28 21:40:02,506 INFO [Cameras] INFO: index 1 / Default: could not open
-2026-10-28 21:40:02,507 INFO [Cameras] INFO: index 2 / DirectShow: could not open
-2026-10-28 21:40:02,547 INFO [Cameras] INFO: index 2 / Media Foundation: could not open
-2026-10-28 21:40:02,588 INFO [Cameras] INFO: index 2 / Default: could not open
-2026-10-28 21:40:02,588 INFO [Cameras] INFO: index 3 / DirectShow: could not open
-2026-10-28 21:40:02,633 INFO [Cameras] INFO: index 3 / Media Foundation: could not open
-2026-10-28 21:40:02,681 INFO [Cameras] INFO: index 3 / Default: could not open
-2026-10-28 21:40:02,682 INFO [Cameras] INFO: index 4 / DirectShow: could not open
-2026-10-28 21:40:02,722 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
-2026-10-28 21:40:02,765 INFO [Cameras] INFO: index 4 / Default: could not open
-2026-10-28 21:40:02,766 INFO [Cameras] INFO: index 5 / DirectShow: could not open
-2026-10-28 21:40:02,807 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
-2026-10-28 21:40:02,849 INFO [Cameras] INFO: index 5 / Default: could not open
-2026-10-28 21:40:02,850 INFO [Cameras] INFO: index 6 / DirectShow: could not open
-2026-10-28 21:40:02,893 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
-2026-10-28 21:40:02,937 INFO [Cameras] INFO: index 6 / Default: could not open
-2026-10-28 21:40:02,937 INFO [Cameras] INFO: index 7 / DirectShow: could not open
-2026-10-28 21:40:02,981 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
-2026-10-28 21:40:03,033 INFO [Cameras] INFO: index 7 / Default: could not open
-2026-10-28 21:40:03,034 INFO [Cameras] INFO: index 8 / DirectShow: could not open
-2026-10-28 21:40:03,076 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
-2026-10-28 21:40:03,116 INFO [Cameras] INFO: index 8 / Default: could not open
-2026-10-28 21:40:03,117 INFO [Cameras] INFO: index 9 / DirectShow: could not open
-2026-10-28 21:40:03,164 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
-2026-10-28 21:40:03,208 INFO [Cameras] INFO: index 9 / Default: could not open
-2026-10-28 21:40:03,510 INFO [Cameras] INFO: Camera scan finished: 1 available
-2026-10-28 21:40:17,062 INFO [Microphone] INFO: Opening microphone: Microphone Array (2- Intel® Smart Sound Technology for Digital Microphones) | index=12 | backend=Windows WASAPI | rate=48000 Hz | channels=1 | WASAPI exclusive=False
-2026-10-28 21:40:17,064 ERROR [Microphone] ERROR: Preview start failed: PortAudioError('Invalid number of channels', -9998)
-2026-10-28 21:40:19,320 INFO [Camera 1] INFO: Camera does not support setting autofocus=True
-2026-10-28 21:40:19,374 INFO [Camera 1] INFO: Camera does not support setting gain=0.0
-2026-10-28 21:40:19,535 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
-2026-10-28 21:40:19,536 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
-2026-10-28 21:40:25,233 INFO [Camera 1] INFO: Preview capture stopped
-2026-10-28 21:40:36,539 INFO [Microphone] INFO: Opening microphone: Microphone Array (2- Intel® Sma | index=1 | backend=MME | rate=44100 Hz | channels=1 | WASAPI exclusive=False
-2026-10-28 21:40:36,544 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Microphone_Audio (1 ch, 44100 Hz)
-2026-10-28 21:40:36,587 INFO [Microphone] RECORDING: device=1, rate=44100 Hz, channels=1
-2026-10-28 21:40:38,949 INFO [Camera 1] INFO: Camera does not support setting autofocus=True
-2026-10-28 21:40:39,004 INFO [Camera 1] INFO: Camera does not support setting gain=0.0
-2026-10-28 21:40:39,155 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
-2026-10-28 21:40:39,155 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
-2026-10-28 21:41:43,128 INFO [Microphone] STOPPED: 2930880 samples saved; queue drops=0; LSL drops=0; LSL errors=0
-2026-10-28 21:41:43,699 INFO [Camera 1] INFO: Preview capture stopped
-2026-10-28 21:41:45,111 INFO [Microphone] INFO: Opening microphone: Microphone Array (2- Intel® Sma | index=1 | backend=MME | rate=44100 Hz | channels=1 | WASAPI exclusive=False
-2026-10-28 21:41:45,116 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Microphone_Audio (1 ch, 44100 Hz)
-2026-10-28 21:41:45,148 INFO [Microphone] RECORDING: device=1, rate=44100 Hz, channels=1
-2026-10-28 21:41:47,469 INFO [Camera 1] INFO: Camera does not support setting autofocus=True
-2026-10-28 21:41:47,519 INFO [Camera 1] INFO: Camera does not support setting gain=0.0
-2026-10-28 21:41:47,676 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
-2026-10-28 21:41:47,681 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
-2026-10-28 21:41:47,681 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
-2026-10-28 21:41:47,683 INFO [Session] RECORDING: ca7d9351276e46f1aa0723d8d2a82e18 | C:\Users\chgul\Downloads\IMMSS_Reviewed_Studio\Participant_Data\Participant_001\Session_20261028_214145_106865
-2026-10-28 21:42:10,347 INFO [Microphone] STOPPED: 1107600 samples saved; queue drops=0; LSL drops=0; LSL errors=0
-2026-10-28 21:42:10,901 INFO [Camera 1] INFO: Camera stopped; 228 frames saved
-2026-10-28 21:42:10,902 INFO [Session] STOPPED: C:\Users\chgul\Downloads\IMMSS_Reviewed_Studio\Participant_Data\Participant_001\Session_20261028_214145_106865
-2026-10-28 21:42:10,963 INFO [Application] INFO: Application closing
-2026-10-29 08:36:04,964 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Downloads\IMMSS_Reviewed_Studio\Intelligent_Multimodal_Microsurgery_Studio\logs\application.log
-2026-10-29 08:36:06,608 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
-2026-10-29 08:36:06,610 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
-2026-10-29 08:36:25,764 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
-2026-10-29 08:36:27,428 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
-2026-10-29 08:36:27,428 INFO [Cameras] INFO: index 0: available via DirectShow
-2026-10-29 08:36:27,922 INFO [Cameras] INFO: index 1 / DirectShow: could not open
-2026-10-29 08:36:27,997 INFO [Cameras] INFO: index 1 / Media Foundation: could not open
-2026-10-29 08:36:28,045 INFO [Cameras] INFO: index 1 / Default: could not open
-2026-10-29 08:36:28,046 INFO [Cameras] INFO: index 2 / DirectShow: could not open
-2026-10-29 08:36:28,088 INFO [Cameras] INFO: index 2 / Media Foundation: could not open
-2026-10-29 08:36:28,139 INFO [Cameras] INFO: index 2 / Default: could not open
-2026-10-29 08:36:28,140 INFO [Cameras] INFO: index 3 / DirectShow: could not open
-2026-10-29 08:36:28,260 INFO [Cameras] INFO: index 3 / Media Foundation: could not open
-2026-10-29 08:36:28,358 INFO [Cameras] INFO: index 3 / Default: could not open
-2026-10-29 08:36:28,359 INFO [Cameras] INFO: index 4 / DirectShow: could not open
-2026-10-29 08:36:28,420 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
-2026-10-29 08:36:28,469 INFO [Cameras] INFO: index 4 / Default: could not open
-2026-10-29 08:36:28,470 INFO [Cameras] INFO: index 5 / DirectShow: could not open
-2026-10-29 08:36:28,515 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
-2026-10-29 08:36:28,562 INFO [Cameras] INFO: index 5 / Default: could not open
-2026-10-29 08:36:28,563 INFO [Cameras] INFO: index 6 / DirectShow: could not open
-2026-10-29 08:36:28,614 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
-2026-10-29 08:36:28,677 INFO [Cameras] INFO: index 6 / Default: could not open
-2026-10-29 08:36:28,678 INFO [Cameras] INFO: index 7 / DirectShow: could not open
-2026-10-29 08:36:28,727 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
-2026-10-29 08:36:28,778 INFO [Cameras] INFO: index 7 / Default: could not open
-2026-10-29 08:36:28,778 INFO [Cameras] INFO: index 8 / DirectShow: could not open
-2026-10-29 08:36:28,822 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
-2026-10-29 08:36:28,887 INFO [Cameras] INFO: index 8 / Default: could not open
-2026-10-29 08:36:28,888 INFO [Cameras] INFO: index 9 / DirectShow: could not open
-2026-10-29 08:36:28,973 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
-2026-10-29 08:36:29,021 INFO [Cameras] INFO: index 9 / Default: could not open
-2026-10-29 08:36:29,236 INFO [Cameras] INFO: Camera scan finished: 1 available
-2026-10-29 08:36:33,036 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
-2026-10-29 08:36:33,866 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
-2026-10-29 08:36:33,866 INFO [Cameras] INFO: index 0: available via DirectShow
-2026-10-29 08:36:34,366 INFO [Cameras] INFO: index 1 / DirectShow: could not open
-2026-10-29 08:36:34,423 INFO [Cameras] INFO: index 1 / Media Foundation: could not open
-2026-10-29 08:36:34,473 INFO [Cameras] INFO: index 1 / Default: could not open
-2026-10-29 08:36:34,475 INFO [Cameras] INFO: index 2 / DirectShow: could not open
-2026-10-29 08:36:34,524 INFO [Cameras] INFO: index 2 / Media Foundation: could not open
-2026-10-29 08:36:34,573 INFO [Cameras] INFO: index 2 / Default: could not open
-2026-10-29 08:36:34,574 INFO [Cameras] INFO: index 3 / DirectShow: could not open
-2026-10-29 08:36:34,629 INFO [Cameras] INFO: index 3 / Media Foundation: could not open
-2026-10-29 08:36:34,703 INFO [Cameras] INFO: index 3 / Default: could not open
-2026-10-29 08:36:34,704 INFO [Cameras] INFO: index 4 / DirectShow: could not open
-2026-10-29 08:36:34,764 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
-2026-10-29 08:36:34,846 INFO [Cameras] INFO: index 4 / Default: could not open
-2026-10-29 08:36:34,847 INFO [Cameras] INFO: index 5 / DirectShow: could not open
-2026-10-29 08:36:34,936 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
-2026-10-29 08:36:35,020 INFO [Cameras] INFO: index 5 / Default: could not open
-2026-10-29 08:36:35,022 INFO [Cameras] INFO: index 6 / DirectShow: could not open
-2026-10-29 08:36:35,119 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
-2026-10-29 08:36:35,181 INFO [Cameras] INFO: index 6 / Default: could not open
-2026-10-29 08:36:35,182 INFO [Cameras] INFO: index 7 / DirectShow: could not open
-2026-10-29 08:36:35,237 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
-2026-10-29 08:36:35,286 INFO [Cameras] INFO: index 7 / Default: could not open
-2026-10-29 08:36:35,287 INFO [Cameras] INFO: index 8 / DirectShow: could not open
-2026-10-29 08:36:35,331 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
-2026-10-29 08:36:35,378 INFO [Cameras] INFO: index 8 / Default: could not open
-2026-10-29 08:36:35,378 INFO [Cameras] INFO: index 9 / DirectShow: could not open
-2026-10-29 08:36:35,421 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
-2026-10-29 08:36:35,466 INFO [Cameras] INFO: index 9 / Default: could not open
-2026-10-29 08:36:35,634 INFO [Cameras] INFO: Camera scan finished: 1 available
-2026-10-29 08:37:23,215 INFO [Microphone] INFO: Opening microphone: Microphone Array (2- Intel® Sma | index=1 | backend=MME | rate=44100 Hz | channels=1 | WASAPI exclusive=False
-2026-10-29 08:37:23,224 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Microphone_Audio (1 ch, 44100 Hz)
-2026-10-29 08:37:23,583 INFO [Microphone] RECORDING: device=1, rate=44100 Hz, channels=1
-2026-10-29 08:37:26,505 INFO [Camera 1] INFO: Camera does not support setting autofocus=True
-2026-10-29 08:37:26,555 INFO [Camera 1] INFO: Camera does not support setting gain=0.0
-2026-10-29 08:37:26,725 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
-2026-10-29 08:37:26,726 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
-2026-10-29 08:37:31,337 INFO [Microphone] STOPPED: 336256 samples saved; queue drops=0; LSL drops=0; LSL errors=0
-2026-10-29 08:37:32,025 INFO [Camera 1] INFO: Preview capture stopped
-2026-10-29 08:37:39,478 INFO [Application] INFO: Application closing
-2026-10-29 10:32:23,741 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Downloads\IMMSS_Reviewed_Studio\Intelligent_Multimodal_Microsurgery_Studio\logs\application.log
-2026-10-29 10:32:24,289 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
-2026-10-29 10:32:24,290 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
-2026-10-29 18:44:08,997 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Downloads\IMMSS_Reviewed_Studio\Intelligent_Multimodal_Microsurgery_Studio\logs\application.log
-2026-10-29 18:44:10,039 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
-2026-10-29 18:44:10,042 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
-2026-10-30 11:13:36,326 INFO [Application] INFO: Application closing
-2026-11-02 10:20:40,688 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Downloads\IMMSS_Reviewed_Studio\Intelligent_Multimodal_Microsurgery_Studio\logs\application.log
-2026-11-02 10:20:42,574 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
-2026-11-02 10:20:42,576 INFO [Audio] INFO: 26 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
-2026-11-02 10:20:57,626 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
-2026-11-02 10:20:58,307 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
-2026-11-02 10:20:58,307 INFO [Cameras] INFO: index 0: available via DirectShow
-2026-11-02 10:20:59,255 INFO [Cameras] INFO: index 1 / DirectShow: frames OK (default, 640x480)
-2026-11-02 10:20:59,255 INFO [Cameras] INFO: index 1: available via DirectShow
-2026-11-02 10:21:00,517 INFO [Cameras] INFO: index 2 / DirectShow: frames OK (default, 640x480)
-2026-11-02 10:21:00,517 INFO [Cameras] INFO: index 2: available via DirectShow
-2026-11-02 10:21:01,940 INFO [Cameras] INFO: index 3 / DirectShow: frames OK (default, 640x480)
-2026-11-02 10:21:01,940 INFO [Cameras] INFO: index 3: available via DirectShow
-2026-11-02 10:21:02,539 INFO [Cameras] INFO: index 4 / DirectShow: could not open
-2026-11-02 10:21:02,603 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
-2026-11-02 10:21:02,661 INFO [Cameras] INFO: index 4 / Default: could not open
-2026-11-02 10:21:02,662 INFO [Cameras] INFO: index 5 / DirectShow: could not open
-2026-11-02 10:21:02,700 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
-2026-11-02 10:21:02,745 INFO [Cameras] INFO: index 5 / Default: could not open
-2026-11-02 10:21:02,747 INFO [Cameras] INFO: index 6 / DirectShow: could not open
-2026-11-02 10:21:02,791 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
-2026-11-02 10:21:02,837 INFO [Cameras] INFO: index 6 / Default: could not open
-2026-11-02 10:21:02,838 INFO [Cameras] INFO: index 7 / DirectShow: could not open
-2026-11-02 10:21:02,876 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
-2026-11-02 10:21:02,917 INFO [Cameras] INFO: index 7 / Default: could not open
-2026-11-02 10:21:02,918 INFO [Cameras] INFO: index 8 / DirectShow: could not open
-2026-11-02 10:21:02,957 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
-2026-11-02 10:21:02,997 INFO [Cameras] INFO: index 8 / Default: could not open
-2026-11-02 10:21:02,998 INFO [Cameras] INFO: index 9 / DirectShow: could not open
-2026-11-02 10:21:03,039 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
-2026-11-02 10:21:03,081 INFO [Cameras] INFO: index 9 / Default: could not open
-2026-11-02 10:21:03,259 INFO [Cameras] INFO: Camera scan finished: 4 available
-2026-11-02 10:21:06,357 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
-2026-11-02 10:21:06,796 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
-2026-11-02 10:21:06,796 INFO [Cameras] INFO: index 0: available via DirectShow
-2026-11-02 10:21:07,686 INFO [Cameras] INFO: index 1 / DirectShow: frames OK (default, 640x480)
-2026-11-02 10:21:07,687 INFO [Cameras] INFO: index 1: available via DirectShow
-2026-11-02 10:21:08,949 INFO [Cameras] INFO: index 2 / DirectShow: frames OK (default, 640x480)
-2026-11-02 10:21:08,950 INFO [Cameras] INFO: index 2: available via DirectShow
-2026-11-02 10:21:10,178 WARNING [Cameras] WARNING: Stop experiment Preview/Record before scanning cameras
-2026-11-02 10:21:10,454 INFO [Cameras] INFO: index 3 / DirectShow: frames OK (default, 640x480)
-2026-11-02 10:21:10,454 INFO [Cameras] INFO: index 3: available via DirectShow
-2026-11-02 10:21:11,092 INFO [Cameras] INFO: index 4 / DirectShow: could not open
-2026-11-02 10:21:11,138 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
-2026-11-02 10:21:11,177 INFO [Cameras] INFO: index 4 / Default: could not open
-2026-11-02 10:21:11,179 INFO [Cameras] INFO: index 5 / DirectShow: could not open
-2026-11-02 10:21:11,216 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
-2026-11-02 10:21:11,260 INFO [Cameras] INFO: index 5 / Default: could not open
-2026-11-02 10:21:11,261 INFO [Cameras] INFO: index 6 / DirectShow: could not open
-2026-11-02 10:21:11,306 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
-2026-11-02 10:21:11,346 INFO [Cameras] INFO: index 6 / Default: could not open
-2026-11-02 10:21:11,348 INFO [Cameras] INFO: index 7 / DirectShow: could not open
-2026-11-02 10:21:11,385 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
-2026-11-02 10:21:11,426 INFO [Cameras] INFO: index 7 / Default: could not open
-2026-11-02 10:21:11,427 INFO [Cameras] INFO: index 8 / DirectShow: could not open
-2026-11-02 10:21:11,466 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
-2026-11-02 10:21:11,508 INFO [Cameras] INFO: index 8 / Default: could not open
-2026-11-02 10:21:11,510 INFO [Cameras] INFO: index 9 / DirectShow: could not open
-2026-11-02 10:21:11,549 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
-2026-11-02 10:21:11,591 INFO [Cameras] INFO: index 9 / Default: could not open
-2026-11-02 10:21:11,990 INFO [Cameras] INFO: Camera scan finished: 4 available
-2026-11-02 10:21:20,854 INFO [Camera 1] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:21:20,958 INFO [Camera 1] INFO: Camera does not support setting gain=0.0
-2026-11-02 10:21:21,107 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:21:21,107 INFO [Camera 1] PREVIEW: Opened camera 1 via DirectShow
-2026-11-02 10:21:24,911 INFO [Camera 1] INFO: Preview capture stopped
-2026-11-02 10:21:35,209 INFO [Camera 1] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:21:35,313 INFO [Camera 1] INFO: Camera does not support setting gain=0.0
-2026-11-02 10:21:35,464 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:21:35,465 INFO [Camera 1] PREVIEW: Opened camera 1 via DirectShow
-2026-11-02 10:21:48,745 INFO [Camera 1] INFO: Preview capture stopped
-2026-11-02 10:21:48,746 INFO [Camera 1] INFO: Camera properties applied to next preview/recording; verify actual values in log
-2026-11-02 10:21:51,046 INFO [Camera 1] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:21:51,152 INFO [Camera 1] INFO: Camera does not support setting gain=0.0
-2026-11-02 10:21:51,301 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:21:51,301 INFO [Camera 1] PREVIEW: Opened camera 1 via DirectShow
-2026-11-02 10:22:06,338 ERROR [Camera 1] ERROR: Cannot apply settings: Camera 1: invalid property value: could not convert string to float: ''
-2026-11-02 10:22:16,501 INFO [Camera 1] INFO: Preview capture stopped
-2026-11-02 10:22:31,332 ERROR [Camera 1] ERROR: Preview start failed: ValueError("Camera 1: invalid property value: could not convert string to float: ''")
-2026-11-02 10:22:37,949 ERROR [Camera 1] ERROR: Preview start failed: ValueError("Camera 1: invalid property value: could not convert string to float: ''")
-2026-11-02 10:22:44,477 ERROR [Camera 1] ERROR: Preview start failed: ValueError("Camera 1: invalid property value: could not convert string to float: ''")
-2026-11-02 10:22:54,835 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:22:55,224 INFO [Camera 2] INFO: index 2 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:22:55,224 INFO [Camera 2] PREVIEW: Opened camera 2 via DirectShow
-2026-11-02 10:23:13,447 INFO [Camera 3] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:23:13,899 INFO [Camera 3] INFO: index 3 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:23:13,899 INFO [Camera 3] PREVIEW: Opened camera 3 via DirectShow
-2026-11-02 10:23:20,902 ERROR [Camera 1] ERROR: Preview start failed: ValueError("Camera 1: invalid property value: could not convert string to float: ''")
-2026-11-02 10:23:26,981 ERROR [Camera 1] ERROR: Preview start failed: ValueError("Camera 1: invalid property value: could not convert string to float: ''")
-2026-11-02 10:23:40,423 ERROR [Preview] ERROR: Preview setup failed: ValueError("Camera 1: invalid property value: could not convert string to float: ''")
-2026-11-02 10:23:55,434 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:23:55,434 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
-2026-11-02 10:24:07,351 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=17 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
-2026-11-02 10:24:07,378 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
-2026-11-02 10:24:07,394 INFO [Microphone] RECORDING: device=17, rate=384000 Hz, channels=1
-2026-11-02 10:24:17,603 WARNING [Microphone] DROPPED: Audio stream became inactive
-2026-11-02 10:24:39,412 INFO [Microphone] STOPPED: 0 samples saved; queue drops=0; LSL drops=0; LSL errors=0
-2026-11-02 10:24:39,995 INFO [Camera 1] INFO: Preview capture stopped
-2026-11-02 10:24:40,602 INFO [Camera 2] INFO: Preview capture stopped
-2026-11-02 10:24:41,187 INFO [Camera 3] INFO: Preview capture stopped
-2026-11-02 10:25:07,345 ERROR [Camera 1] ERROR: Preview start failed: ValueError("Camera 1: invalid property value: could not convert string to float: '/5'")
-2026-11-02 10:25:14,449 ERROR [Camera 1] ERROR: Preview start failed: ValueError("Camera 1: invalid property value: could not convert string to float: '/5'")
-2026-11-02 10:25:17,720 ERROR [Preview] ERROR: Preview setup failed: ValueError("Camera 1: invalid property value: could not convert string to float: '/5'")
-2026-11-02 10:25:36,226 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:25:36,226 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
-2026-11-02 10:25:45,703 INFO [Camera 1] INFO: Preview capture stopped
-2026-11-02 10:25:57,446 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:25:57,446 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
-2026-11-02 10:26:02,891 INFO [Camera 1] INFO: Preview capture stopped
-2026-11-02 10:26:02,893 INFO [Camera 1] INFO: Camera properties applied to next preview/recording; verify actual values in log
-2026-11-02 10:26:05,321 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:26:05,321 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
-2026-11-02 10:26:10,234 INFO [Camera 1] INFO: Preview capture stopped
-2026-11-02 10:26:10,235 INFO [Camera 1] INFO: Camera properties applied to next preview/recording; verify actual values in log
-2026-11-02 10:26:12,655 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:26:12,655 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
-2026-11-02 10:26:15,437 INFO [Camera 1] INFO: Preview capture stopped
-2026-11-02 10:26:20,560 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:26:20,560 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
-2026-11-02 10:26:23,772 INFO [Camera 1] INFO: Preview capture stopped
-2026-11-02 10:26:38,368 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=17 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
-2026-11-02 10:26:38,397 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
-2026-11-02 10:26:38,409 INFO [Microphone] RECORDING: device=17, rate=384000 Hz, channels=1
-2026-11-02 10:26:41,362 INFO [Camera 3] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:26:41,517 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:26:41,517 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
-2026-11-02 10:26:41,749 INFO [Camera 3] INFO: index 3 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:26:41,749 INFO [Camera 3] PREVIEW: Opened camera 3 via DirectShow
-2026-11-02 10:26:43,425 INFO [Camera 2] INFO: Camera does not support setting fps=25.0
-2026-11-02 10:26:43,427 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:26:43,428 INFO [Camera 2] INFO: Camera does not support setting brightness=0.0
-2026-11-02 10:26:43,428 INFO [Camera 2] INFO: Camera does not support setting gain=0.0
-2026-11-02 10:26:47,399 INFO [Camera 2] INFO: Camera does not support setting height=480
-2026-11-02 10:26:49,333 INFO [Camera 2] INFO: Camera does not support setting fps=25.0
-2026-11-02 10:26:49,333 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:26:49,333 INFO [Camera 2] INFO: Camera does not support setting brightness=0.0
-2026-11-02 10:26:49,333 INFO [Camera 2] INFO: Camera does not support setting gain=0.0
-2026-11-02 10:26:56,939 INFO [Camera 2] INFO: Camera does not support setting width=640
-2026-11-02 10:26:57,246 WARNING [Camera 2] WARNING: Stop session Preview/Record before changing camera test preview
-2026-11-02 10:26:58,757 INFO [Camera 2] INFO: Camera does not support setting height=480
-2026-11-02 10:27:00,682 INFO [Camera 2] INFO: Camera does not support setting fps=25.0
-2026-11-02 10:27:00,682 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:27:00,682 INFO [Camera 2] INFO: Camera does not support setting brightness=0.0
-2026-11-02 10:27:00,682 INFO [Camera 2] INFO: Camera does not support setting gain=0.0
-2026-11-02 10:27:04,062 INFO [Microphone] STOPPED: 9822720 samples saved; queue drops=0; LSL drops=0; LSL errors=0
-2026-11-02 10:27:04,362 INFO [Camera 1] INFO: Preview capture stopped
-2026-11-02 10:27:06,363 WARNING [Camera 2] WARNING: Preview thread has not exited yet
-2026-11-02 10:27:06,945 INFO [Camera 3] INFO: Preview capture stopped
-2026-11-02 10:27:07,561 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:27:07,950 INFO [Camera 2] INFO: index 2 / DirectShow: frames OK (640x480 MJPG, 640x480)
-2026-11-02 10:27:07,950 INFO [Camera 2] PREVIEW: Opened camera 2 via DirectShow
-2026-11-02 10:27:08,511 INFO [Camera 2] INFO: Preview capture stopped
-2026-11-02 10:27:16,347 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=17 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
-2026-11-02 10:27:16,378 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
-2026-11-02 10:27:16,386 INFO [Microphone] RECORDING: device=17, rate=384000 Hz, channels=1
-2026-11-02 10:27:18,981 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:27:18,981 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
-2026-11-02 10:27:19,365 INFO [Camera 3] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:27:19,768 INFO [Camera 3] INFO: index 3 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:27:19,768 INFO [Camera 3] PREVIEW: Opened camera 3 via DirectShow
-2026-11-02 10:27:20,944 INFO [Camera 2] INFO: Camera does not support setting width=640
-2026-11-02 10:27:22,767 INFO [Camera 2] INFO: Camera does not support setting height=480
-2026-11-02 10:27:24,698 INFO [Camera 2] INFO: Camera does not support setting fps=25.0
-2026-11-02 10:27:24,698 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:27:24,698 INFO [Camera 2] INFO: Camera does not support setting brightness=0.0
-2026-11-02 10:27:24,698 INFO [Camera 2] INFO: Camera does not support setting gain=0.0
-2026-11-02 10:27:28,677 INFO [Camera 2] INFO: Camera does not support setting width=640
-2026-11-02 10:27:30,497 INFO [Camera 2] INFO: Camera does not support setting height=480
-2026-11-02 10:27:32,426 INFO [Camera 2] INFO: Camera does not support setting fps=25.0
-2026-11-02 10:27:32,426 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:27:32,426 INFO [Camera 2] INFO: Camera does not support setting brightness=0.0
-2026-11-02 10:27:32,426 INFO [Camera 2] INFO: Camera does not support setting gain=0.0
-2026-11-02 10:27:34,115 WARNING [Camera 2] WARNING: Stop session Preview/Record before changing camera test preview
-2026-11-02 10:27:40,018 INFO [Camera 2] INFO: Camera does not support setting width=640
-2026-11-02 10:27:41,059 INFO [Microphone] STOPPED: 9431040 samples saved; queue drops=0; LSL drops=0; LSL errors=0
-2026-11-02 10:27:41,387 INFO [Camera 1] INFO: Preview capture stopped
-2026-11-02 10:27:41,852 INFO [Camera 2] INFO: Camera does not support setting height=480
-2026-11-02 10:27:42,202 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:27:42,574 INFO [Camera 2] INFO: index 2 / DirectShow: frames OK (640x480, 640x480)
-2026-11-02 10:27:42,574 INFO [Camera 2] PREVIEW: Opened camera 2 via DirectShow
-2026-11-02 10:27:43,132 INFO [Camera 2] INFO: Preview capture stopped
-2026-11-02 10:27:43,758 INFO [Camera 3] INFO: Preview capture stopped
-2026-11-02 10:28:37,724 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:28:38,210 INFO [Camera 2] INFO: index 2 / DirectShow: frames OK (requested, 800x600)
-2026-11-02 10:28:38,210 INFO [Camera 2] PREVIEW: Opened camera 2 via DirectShow
-2026-11-02 10:28:46,644 INFO [Camera 1] INFO: index 0 / DirectShow: could not open
-2026-11-02 10:29:05,774 INFO [Camera 3] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:29:06,178 INFO [Camera 3] INFO: index 3 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:29:06,178 INFO [Camera 3] PREVIEW: Opened camera 3 via DirectShow
-2026-11-02 10:29:31,107 INFO [Camera 3] INFO: Preview capture stopped
-2026-11-02 10:29:33,063 INFO [Camera 2] INFO: Preview capture stopped
-2026-11-02 10:29:40,871 WARNING [Camera 1] WARNING: Preview thread has not exited yet
-2026-11-02 10:29:43,740 WARNING [Camera 1] WARNING: Preview thread has not exited yet
-2026-11-02 10:29:48,647 WARNING [Camera 1] WARNING: Preview thread has not exited yet
-2026-11-02 10:29:57,915 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:29:58,301 INFO [Camera 2] INFO: index 2 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:29:58,301 INFO [Camera 2] PREVIEW: Opened camera 2 via DirectShow
-2026-11-02 10:30:01,567 INFO [Camera 2] INFO: Preview capture stopped
-2026-11-02 10:30:04,842 WARNING [Camera 1] WARNING: Preview thread has not exited yet
-2026-11-02 10:30:09,871 INFO [Camera 1] INFO: index 0 / Media Foundation: frames OK (requested, 640x480)
-2026-11-02 10:30:09,871 INFO [Camera 1] PREVIEW: Opened camera 0 via Media Foundation
-2026-11-02 10:30:10,201 INFO [Camera 1] INFO: Preview capture stopped
-2026-11-02 10:30:23,297 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:30:23,298 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
-2026-11-02 10:30:28,174 INFO [Camera 2] INFO: index 2 / DirectShow: could not open
-2026-11-02 10:30:52,090 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:30:53,998 WARNING [Camera 2] WARNING: Preview thread has not exited yet
-2026-11-02 10:30:54,763 INFO [Camera 2] INFO: Camera does not support setting width=640
-2026-11-02 10:30:54,763 INFO [Camera 2] INFO: Camera does not support setting height=480
-2026-11-02 10:30:54,763 INFO [Camera 2] INFO: Camera does not support setting fps=25.0
-2026-11-02 10:30:54,763 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:30:54,763 INFO [Camera 2] INFO: Camera does not support setting brightness=0.0
-2026-11-02 10:30:54,763 INFO [Camera 2] INFO: Camera does not support setting gain=0.0
-2026-11-02 10:30:56,291 WARNING [Camera 2] WARNING: Preview thread has not exited yet
-2026-11-02 10:30:56,874 INFO [Camera 2] INFO: Camera does not support setting width=640
-2026-11-02 10:30:56,874 INFO [Camera 2] INFO: Camera does not support setting height=480
-2026-11-02 10:30:56,874 INFO [Camera 2] INFO: Camera does not support setting fps=25.0
-2026-11-02 10:30:56,874 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:30:56,874 INFO [Camera 2] INFO: Camera does not support setting brightness=0.0
-2026-11-02 10:30:56,874 INFO [Camera 2] INFO: Camera does not support setting gain=0.0
-2026-11-02 10:30:58,308 WARNING [Camera 2] WARNING: Preview thread has not exited yet
-2026-11-02 10:30:58,984 INFO [Camera 2] INFO: Camera does not support setting width=640
-2026-11-02 10:30:58,985 INFO [Camera 2] INFO: Camera does not support setting height=480
-2026-11-02 10:30:58,985 INFO [Camera 2] INFO: Camera does not support setting fps=25.0
-2026-11-02 10:30:58,985 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:30:58,985 INFO [Camera 2] INFO: Camera does not support setting brightness=0.0
-2026-11-02 10:30:58,985 INFO [Camera 2] INFO: Camera does not support setting gain=0.0
-2026-11-02 10:31:01,102 INFO [Camera 2] INFO: index 2 / Media Foundation: device opened, but no valid frames with tested formats
-2026-11-02 10:31:17,601 INFO [Camera 1] INFO: Preview capture stopped
-2026-11-02 10:31:23,120 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:31:23,120 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
-2026-11-02 10:31:24,660 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:31:27,264 INFO [Camera 2] INFO: Camera does not support setting width=640
-2026-11-02 10:31:27,264 INFO [Camera 2] INFO: Camera does not support setting height=480
-2026-11-02 10:31:27,264 INFO [Camera 2] INFO: Camera does not support setting fps=25.0
-2026-11-02 10:31:27,264 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:31:27,264 INFO [Camera 2] INFO: Camera does not support setting brightness=0.0
-2026-11-02 10:31:27,264 INFO [Camera 2] INFO: Camera does not support setting gain=0.0
-2026-11-02 10:31:27,827 WARNING [Camera 2] WARNING: Preview thread has not exited yet
-2026-11-02 10:31:29,375 INFO [Camera 2] INFO: Camera does not support setting width=640
-2026-11-02 10:31:29,375 INFO [Camera 2] INFO: Camera does not support setting height=480
-2026-11-02 10:31:29,375 INFO [Camera 2] INFO: Camera does not support setting fps=25.0
-2026-11-02 10:31:29,375 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:31:29,375 INFO [Camera 2] INFO: Camera does not support setting brightness=0.0
-2026-11-02 10:31:29,375 INFO [Camera 2] INFO: Camera does not support setting gain=0.0
-2026-11-02 10:31:31,487 INFO [Camera 2] INFO: Camera does not support setting width=640
-2026-11-02 10:31:31,487 INFO [Camera 2] INFO: Camera does not support setting height=480
-2026-11-02 10:31:31,487 INFO [Camera 2] INFO: Camera does not support setting fps=25.0
-2026-11-02 10:31:31,487 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:31:31,487 INFO [Camera 2] INFO: Camera does not support setting brightness=0.0
-2026-11-02 10:31:31,487 INFO [Camera 2] INFO: Camera does not support setting gain=0.0
-2026-11-02 10:31:33,599 INFO [Camera 2] INFO: index 2 / Default: device opened, but no valid frames with tested formats
-2026-11-02 10:31:33,604 ERROR [Camera 2] ERROR: Camera preview failed: RuntimeError('Camera 2 unavailable via DirectShow, Media Foundation, or default backend')
-2026-11-02 10:31:33,604 INFO [Camera 2] INFO: Preview capture stopped
-2026-11-02 10:31:34,628 INFO [Camera 3] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:31:35,209 INFO [Camera 3] INFO: index 3 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:31:35,209 INFO [Camera 3] PREVIEW: Opened camera 3 via DirectShow
-2026-11-02 10:31:42,074 INFO [Camera 3] INFO: Preview capture stopped
-2026-11-02 10:31:45,651 INFO [Camera 2] INFO: index 2 / DirectShow: could not open
-2026-11-02 10:32:09,596 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:32:12,250 INFO [Camera 2] INFO: Camera does not support setting width=640
-2026-11-02 10:32:12,250 INFO [Camera 2] INFO: Camera does not support setting height=480
-2026-11-02 10:32:12,250 INFO [Camera 2] INFO: Camera does not support setting fps=25.0
-2026-11-02 10:32:12,250 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:32:12,250 INFO [Camera 2] INFO: Camera does not support setting brightness=0.0
-2026-11-02 10:32:12,250 INFO [Camera 2] INFO: Camera does not support setting gain=0.0
-2026-11-02 10:32:14,369 INFO [Camera 2] INFO: Camera does not support setting width=640
-2026-11-02 10:32:14,369 INFO [Camera 2] INFO: Camera does not support setting height=480
-2026-11-02 10:32:14,369 INFO [Camera 2] INFO: Camera does not support setting fps=25.0
-2026-11-02 10:32:14,369 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:32:14,369 INFO [Camera 2] INFO: Camera does not support setting brightness=0.0
-2026-11-02 10:32:14,369 INFO [Camera 2] INFO: Camera does not support setting gain=0.0
-2026-11-02 10:32:16,485 INFO [Camera 2] INFO: Camera does not support setting width=640
-2026-11-02 10:32:16,485 INFO [Camera 2] INFO: Camera does not support setting height=480
-2026-11-02 10:32:16,485 INFO [Camera 2] INFO: Camera does not support setting fps=25.0
-2026-11-02 10:32:16,485 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:32:16,486 INFO [Camera 2] INFO: Camera does not support setting brightness=0.0
-2026-11-02 10:32:16,486 INFO [Camera 2] INFO: Camera does not support setting gain=0.0
-2026-11-02 10:32:18,601 INFO [Camera 2] INFO: index 2 / Media Foundation: device opened, but no valid frames with tested formats
-2026-11-02 10:32:20,070 WARNING [Camera 2] WARNING: Preview thread has not exited yet
-2026-11-02 10:32:24,330 WARNING [Camera 2] WARNING: Preview thread has not exited yet
-2026-11-02 10:32:29,874 WARNING [Camera 2] WARNING: Preview thread has not exited yet
-2026-11-02 10:32:40,920 WARNING [Camera 2] WARNING: Preview thread has not exited yet
-2026-11-02 10:32:42,496 INFO [Camera 3] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:32:42,882 INFO [Camera 3] INFO: index 3 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:32:42,882 INFO [Camera 3] PREVIEW: Opened camera 3 via DirectShow
-2026-11-02 10:32:42,926 WARNING [Camera 2] WARNING: Preview thread has not exited yet
-2026-11-02 10:32:44,210 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:32:44,935 WARNING [Camera 2] WARNING: Preview thread has not exited yet
-2026-11-02 10:32:46,888 INFO [Camera 2] INFO: Camera does not support setting width=640
-2026-11-02 10:32:46,888 INFO [Camera 2] INFO: Camera does not support setting height=480
-2026-11-02 10:32:46,888 INFO [Camera 2] INFO: Camera does not support setting fps=25.0
-2026-11-02 10:32:46,888 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:32:46,888 INFO [Camera 2] INFO: Camera does not support setting brightness=0.0
-2026-11-02 10:32:46,888 INFO [Camera 2] INFO: Camera does not support setting gain=0.0
-2026-11-02 10:32:46,958 WARNING [Camera 2] WARNING: Preview thread has not exited yet
-2026-11-02 10:32:49,002 INFO [Camera 2] INFO: Camera does not support setting width=640
-2026-11-02 10:32:49,003 INFO [Camera 2] INFO: Camera does not support setting height=480
-2026-11-02 10:32:49,003 INFO [Camera 2] INFO: Camera does not support setting fps=25.0
-2026-11-02 10:32:49,003 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:32:49,003 INFO [Camera 2] INFO: Camera does not support setting brightness=0.0
-2026-11-02 10:32:49,003 INFO [Camera 2] INFO: Camera does not support setting gain=0.0
-2026-11-02 10:32:51,123 INFO [Camera 2] INFO: Camera does not support setting width=640
-2026-11-02 10:32:51,124 INFO [Camera 2] INFO: Camera does not support setting height=480
-2026-11-02 10:32:51,124 INFO [Camera 2] INFO: Camera does not support setting fps=25.0
-2026-11-02 10:32:51,124 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:32:51,124 INFO [Camera 2] INFO: Camera does not support setting brightness=0.0
-2026-11-02 10:32:51,124 INFO [Camera 2] INFO: Camera does not support setting gain=0.0
-2026-11-02 10:32:53,239 INFO [Camera 2] INFO: index 2 / Default: device opened, but no valid frames with tested formats
-2026-11-02 10:32:53,276 ERROR [Camera 2] ERROR: Camera preview failed: RuntimeError('Camera 2 unavailable via DirectShow, Media Foundation, or default backend')
-2026-11-02 10:32:53,276 INFO [Camera 2] INFO: Preview capture stopped
-2026-11-02 10:32:55,375 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=17 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
-2026-11-02 10:32:55,403 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
-2026-11-02 10:32:55,481 INFO [Microphone] RECORDING: device=17, rate=384000 Hz, channels=1
-2026-11-02 10:32:57,545 INFO [Camera 2] INFO: index 2 / DirectShow: could not open
-2026-11-02 10:33:16,540 INFO [Microphone] STOPPED: 8048640 samples saved; queue drops=0; LSL drops=0; LSL errors=0
-2026-11-02 10:33:16,829 INFO [Camera 1] INFO: Preview capture stopped
-2026-11-02 10:33:18,832 WARNING [Camera 2] WARNING: Preview thread has not exited yet
-2026-11-02 10:33:19,410 INFO [Camera 3] INFO: Preview capture stopped
-2026-11-02 10:33:21,979 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=17 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
-2026-11-02 10:33:22,013 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
-2026-11-02 10:33:22,027 INFO [Microphone] RECORDING: device=17, rate=384000 Hz, channels=1
-2026-11-02 10:33:22,250 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:33:22,874 INFO [Camera 2] INFO: index 2 / Media Foundation: frames OK (requested, 640x480)
-2026-11-02 10:33:22,874 INFO [Camera 2] PREVIEW: Opened camera 2 via Media Foundation
-2026-11-02 10:33:23,293 INFO [Camera 1] INFO: index 0 / DirectShow: could not open
-2026-11-02 10:33:23,453 INFO [Camera 2] INFO: Preview capture stopped
-2026-11-02 10:33:34,807 INFO [Camera 3] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:33:35,194 INFO [Camera 3] INFO: index 3 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:33:35,194 INFO [Camera 3] PREVIEW: Opened camera 3 via DirectShow
-2026-11-02 10:34:03,995 INFO [Microphone] STOPPED: 16089600 samples saved; queue drops=0; LSL drops=0; LSL errors=0
-2026-11-02 10:34:05,995 WARNING [Camera 1] WARNING: Preview thread has not exited yet
-2026-11-02 10:34:06,608 INFO [Camera 3] INFO: Preview capture stopped
-2026-11-02 10:35:55,564 INFO [Camera 1] INFO: index 0 / Media Foundation: frames OK (requested, 640x480)
-2026-11-02 10:35:55,565 INFO [Camera 1] PREVIEW: Opened camera 0 via Media Foundation
-2026-11-02 10:35:56,085 INFO [Camera 1] INFO: Preview capture stopped
-2026-11-02 10:36:46,483 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=17 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
-2026-11-02 10:36:46,516 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
-2026-11-02 10:36:46,600 INFO [Microphone] RECORDING: device=17, rate=384000 Hz, channels=1
-2026-11-02 10:36:50,005 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:36:50,006 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
-2026-11-02 10:36:50,361 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:36:50,778 INFO [Camera 2] INFO: index 2 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:36:50,778 INFO [Camera 2] PREVIEW: Opened camera 2 via DirectShow
-2026-11-02 10:36:59,455 INFO [Camera 3] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:36:59,879 INFO [Camera 3] INFO: index 3 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:36:59,884 INFO [Camera 3] PREVIEW: Opened camera 3 via DirectShow
-2026-11-02 10:37:31,449 INFO [Microphone] STOPPED: 17195520 samples saved; queue drops=0; LSL drops=0; LSL errors=0
-2026-11-02 10:37:31,747 INFO [Camera 1] INFO: Preview capture stopped
-2026-11-02 10:37:32,332 INFO [Camera 2] INFO: Preview capture stopped
-2026-11-02 10:37:32,973 INFO [Camera 3] INFO: Preview capture stopped
-2026-11-02 10:37:50,575 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=17 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
-2026-11-02 10:37:50,622 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
-2026-11-02 10:37:50,636 INFO [Microphone] RECORDING: device=17, rate=384000 Hz, channels=1
-2026-11-02 10:37:53,727 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:37:54,014 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:37:54,024 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
-2026-11-02 10:37:54,113 INFO [Camera 2] INFO: index 2 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:37:54,113 INFO [Camera 2] PREVIEW: Opened camera 2 via DirectShow
-2026-11-02 10:37:58,730 INFO [Camera 3] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:37:59,232 INFO [Camera 3] INFO: index 3 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:37:59,232 INFO [Camera 3] PREVIEW: Opened camera 3 via DirectShow
-2026-11-02 10:38:15,664 INFO [Microphone] STOPPED: 9569280 samples saved; queue drops=0; LSL drops=0; LSL errors=0
-2026-11-02 10:38:15,996 INFO [Camera 1] INFO: Preview capture stopped
-2026-11-02 10:38:16,557 INFO [Camera 2] INFO: Preview capture stopped
-2026-11-02 10:38:17,238 INFO [Camera 3] INFO: Preview capture stopped
-2026-11-02 10:39:48,025 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=17 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
-2026-11-02 10:39:48,068 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
-2026-11-02 10:39:48,153 INFO [Microphone] RECORDING: device=17, rate=384000 Hz, channels=1
-2026-11-02 10:39:49,546 INFO [Camera 1] INFO: index 0 / DirectShow: could not open
-2026-11-02 10:39:51,395 INFO [Camera 3] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:39:51,847 INFO [Camera 3] INFO: index 3 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:39:51,847 INFO [Camera 3] PREVIEW: Opened camera 3 via DirectShow
-2026-11-02 10:39:55,878 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:39:56,265 INFO [Camera 2] INFO: index 2 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:39:56,265 INFO [Camera 2] PREVIEW: Opened camera 2 via DirectShow
-2026-11-02 10:40:18,048 INFO [Microphone] STOPPED: 11435520 samples saved; queue drops=0; LSL drops=0; LSL errors=0
-2026-11-02 10:40:20,051 WARNING [Camera 1] WARNING: Preview thread has not exited yet
-2026-11-02 10:40:20,678 INFO [Camera 2] INFO: Preview capture stopped
-2026-11-02 10:40:21,295 INFO [Camera 3] INFO: Preview capture stopped
-2026-11-02 10:40:28,471 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:40:28,876 INFO [Camera 2] INFO: index 2 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:40:28,876 INFO [Camera 2] PREVIEW: Opened camera 2 via DirectShow
-2026-11-02 10:40:33,256 INFO [Camera 3] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:40:33,708 INFO [Camera 3] INFO: index 3 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:40:33,708 INFO [Camera 3] PREVIEW: Opened camera 3 via DirectShow
-2026-11-02 10:41:00,137 WARNING [Camera 1] WARNING: Preview thread has not exited yet
-2026-11-02 10:41:00,758 INFO [Camera 2] INFO: Preview capture stopped
-2026-11-02 10:41:01,340 INFO [Camera 3] INFO: Preview capture stopped
-2026-11-02 10:41:04,743 INFO [Camera 3] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:41:05,177 INFO [Camera 3] INFO: index 3 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:41:05,177 INFO [Camera 3] PREVIEW: Opened camera 3 via DirectShow
-2026-11-02 10:41:05,263 WARNING [Camera 1] WARNING: Stop session Preview/Record before changing camera test preview
-2026-11-02 10:41:11,257 WARNING [Camera 1] WARNING: Stop session Preview/Record before changing camera test preview
-2026-11-02 10:41:13,790 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:41:14,178 INFO [Camera 2] INFO: index 2 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:41:14,178 INFO [Camera 2] PREVIEW: Opened camera 2 via DirectShow
-2026-11-02 10:41:15,306 INFO [Camera 1] INFO: index 0 / Media Foundation: frames OK (requested, 640x480)
-2026-11-02 10:41:15,306 INFO [Camera 1] PREVIEW: Opened camera 0 via Media Foundation
-2026-11-02 10:41:15,615 INFO [Camera 1] INFO: Preview capture stopped
-2026-11-02 10:41:18,614 INFO [Camera 2] INFO: Preview capture stopped
-2026-11-02 10:41:19,199 INFO [Camera 3] INFO: Preview capture stopped
-2026-11-02 10:41:23,912 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:41:23,913 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
-2026-11-02 10:41:27,502 INFO [Camera 1] INFO: Preview capture stopped
-2026-11-02 10:41:36,279 INFO [Camera 2] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:41:36,650 INFO [Camera 2] INFO: index 2 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:41:36,650 INFO [Camera 2] PREVIEW: Opened camera 2 via DirectShow
-2026-11-02 10:41:36,715 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:41:36,716 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
-2026-11-02 10:41:41,939 INFO [Camera 3] INFO: Camera does not support setting autofocus=True
-2026-11-02 10:41:42,945 INFO [Camera 3] INFO: index 3 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:41:42,945 INFO [Camera 3] PREVIEW: Opened camera 3 via DirectShow
-2026-11-02 10:41:44,627 INFO [Camera 1] INFO: Preview capture stopped
-2026-11-02 10:41:45,194 INFO [Camera 2] INFO: Preview capture stopped
-2026-11-02 10:41:47,208 WARNING [Camera 3] WARNING: Preview thread has not exited yet
-2026-11-02 10:41:50,496 INFO [Camera 3] INFO: Preview capture stopped
-2026-11-02 10:43:02,833 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:43:02,833 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
-2026-11-02 10:43:05,052 INFO [Camera 1] INFO: Preview capture stopped
-2026-11-02 10:43:12,255 INFO [Camera 1] INFO: Camera properties applied to next preview/recording; verify actual values in log
-2026-11-02 10:43:18,282 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:43:18,283 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
-2026-11-02 10:43:26,677 INFO [Camera 1] INFO: Preview capture stopped
-2026-11-02 10:43:26,713 INFO [Camera 1] INFO: Camera properties applied to next preview/recording; verify actual values in log
-2026-11-02 10:43:29,423 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:43:29,424 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
-2026-11-02 10:43:29,852 INFO [Camera 1] INFO: Preview capture stopped
-2026-11-02 10:43:31,385 INFO [Camera 1] INFO: Camera properties applied to next preview/recording; verify actual values in log
-2026-11-02 10:43:36,204 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
-2026-11-02 10:43:36,204 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
-2026-11-02 10:44:52,127 INFO [Camera 1] INFO: Preview capture stopped
-2026-11-02 10:44:52,130 INFO [Application] INFO: Application closing
+2026-11-02 10:49:16,033 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Downloads\IMMSS_Camera_Safe_Defaults\Intelligent_Multimodal_Microsurgery_Studio\logs\application.log
+2026-11-02 10:49:17,570 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-02 10:49:17,572 INFO [Audio] INFO: 26 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-02 10:49:40,738 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
+2026-11-02 10:49:41,403 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
+2026-11-02 10:49:41,403 INFO [Cameras] INFO: index 0: available via DirectShow
+2026-11-02 10:49:42,545 INFO [Cameras] INFO: index 1 / DirectShow: frames OK (default, 640x480)
+2026-11-02 10:49:42,545 INFO [Cameras] INFO: index 1: available via DirectShow
+2026-11-02 10:49:43,837 INFO [Cameras] INFO: index 2 / DirectShow: frames OK (default, 640x480)
+2026-11-02 10:49:43,838 INFO [Cameras] INFO: index 2: available via DirectShow
+2026-11-02 10:49:45,280 INFO [Cameras] INFO: index 3 / DirectShow: frames OK (default, 640x480)
+2026-11-02 10:49:45,281 INFO [Cameras] INFO: index 3: available via DirectShow
+2026-11-02 10:49:45,918 INFO [Cameras] INFO: index 4 / DirectShow: could not open
+2026-11-02 10:49:45,982 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
+2026-11-02 10:49:46,038 INFO [Cameras] INFO: index 4 / Default: could not open
+2026-11-02 10:49:46,040 INFO [Cameras] INFO: index 5 / DirectShow: could not open
+2026-11-02 10:49:46,091 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
+2026-11-02 10:49:46,152 INFO [Cameras] INFO: index 5 / Default: could not open
+2026-11-02 10:49:46,155 INFO [Cameras] INFO: index 6 / DirectShow: could not open
+2026-11-02 10:49:46,212 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
+2026-11-02 10:49:46,263 INFO [Cameras] INFO: index 6 / Default: could not open
+2026-11-02 10:49:46,264 INFO [Cameras] INFO: index 7 / DirectShow: could not open
+2026-11-02 10:49:46,304 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
+2026-11-02 10:49:46,346 INFO [Cameras] INFO: index 7 / Default: could not open
+2026-11-02 10:49:46,348 INFO [Cameras] INFO: index 8 / DirectShow: could not open
+2026-11-02 10:49:46,389 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
+2026-11-02 10:49:46,431 INFO [Cameras] INFO: index 8 / Default: could not open
+2026-11-02 10:49:46,433 INFO [Cameras] INFO: index 9 / DirectShow: could not open
+2026-11-02 10:49:46,473 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
+2026-11-02 10:49:46,524 INFO [Cameras] INFO: index 9 / Default: could not open
+2026-11-02 10:49:46,631 INFO [Cameras] INFO: Camera scan finished: 4 available
+2026-11-02 10:49:53,465 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 1280x720)
+2026-11-02 10:49:53,465 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
+2026-11-02 10:50:01,933 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-02 10:50:09,473 INFO [Camera 1] INFO: Camera properties applied to next preview/recording; verify actual values in log
+2026-11-02 10:50:13,839 INFO [Camera 1] INFO: Camera properties applied to next preview/recording; verify actual values in log
+2026-11-02 10:50:21,834 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 1280x720)
+2026-11-02 10:50:21,834 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
+2026-11-02 10:50:33,510 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-02 10:50:40,568 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
+2026-11-02 10:50:40,568 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
+2026-11-02 10:50:48,363 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-02 10:50:59,164 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:50:59,429 INFO [Camera 2] INFO: index 1 / DirectShow: frames OK (requested, 1280x720)
+2026-11-02 10:50:59,429 INFO [Camera 2] PREVIEW: Opened camera 1 via DirectShow
+2026-11-02 10:51:05,229 INFO [Camera 2] INFO: Preview capture stopped
+2026-11-02 10:51:05,231 INFO [Camera 2] INFO: Camera properties applied to next preview/recording; verify actual values in log
+2026-11-02 10:51:07,826 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:51:08,130 INFO [Camera 2] INFO: index 1 / DirectShow: frames OK (requested, 1280x720)
+2026-11-02 10:51:08,130 INFO [Camera 2] PREVIEW: Opened camera 1 via DirectShow
+2026-11-02 10:51:15,035 INFO [Camera 2] INFO: Preview capture stopped
+2026-11-02 10:51:16,567 INFO [Camera 2] INFO: Camera properties applied to next preview/recording; verify actual values in log
+2026-11-02 10:51:22,872 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:51:23,156 INFO [Camera 2] INFO: index 1 / DirectShow: frames OK (requested, 1280x720)
+2026-11-02 10:51:23,156 INFO [Camera 2] PREVIEW: Opened camera 1 via DirectShow
+2026-11-02 10:51:26,777 INFO [Camera 2] INFO: Preview capture stopped
+2026-11-02 10:51:30,536 INFO [Camera 2] INFO: Camera properties applied to next preview/recording; verify actual values in log
+2026-11-02 10:51:31,033 INFO [Camera 2] INFO: Camera properties applied to next preview/recording; verify actual values in log
+2026-11-02 10:51:31,343 INFO [Camera 2] INFO: Camera properties applied to next preview/recording; verify actual values in log
+2026-11-02 10:51:31,593 INFO [Camera 2] INFO: Camera properties applied to next preview/recording; verify actual values in log
+2026-11-02 10:51:31,850 INFO [Camera 2] INFO: Camera properties applied to next preview/recording; verify actual values in log
+2026-11-02 10:51:36,000 INFO [Camera 2] INFO: Camera properties applied to next preview/recording; verify actual values in log
+2026-11-02 10:51:42,621 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:51:42,893 INFO [Camera 2] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-02 10:51:42,893 INFO [Camera 2] PREVIEW: Opened camera 1 via DirectShow
+2026-11-02 10:51:51,584 INFO [Camera 2] INFO: Preview capture stopped
+2026-11-02 10:52:13,430 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:52:13,800 INFO [Camera 2] INFO: index 2 / DirectShow: frames OK (requested, 640x480)
+2026-11-02 10:52:13,800 INFO [Camera 2] PREVIEW: Opened camera 2 via DirectShow
+2026-11-02 10:52:17,196 INFO [Camera 2] INFO: Preview capture stopped
+2026-11-02 10:52:23,620 WARNING [Camera 3] WARNING: Select a camera from the dropdown first
+2026-11-02 10:52:38,797 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:52:39,248 INFO [Camera 3] INFO: index 3 / DirectShow: frames OK (requested, 640x480)
+2026-11-02 10:52:39,248 INFO [Camera 3] PREVIEW: Opened camera 3 via DirectShow
+2026-11-02 10:52:42,310 INFO [Camera 3] INFO: Preview capture stopped
+2026-11-02 10:52:48,187 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
+2026-11-02 10:52:48,188 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
+2026-11-02 10:52:48,730 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:52:49,102 INFO [Camera 2] INFO: index 2 / DirectShow: frames OK (requested, 640x480)
+2026-11-02 10:52:49,102 INFO [Camera 2] PREVIEW: Opened camera 2 via DirectShow
+2026-11-02 10:52:52,956 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:52:53,344 INFO [Camera 3] INFO: index 3 / DirectShow: frames OK (requested, 640x480)
+2026-11-02 10:52:53,345 INFO [Camera 3] PREVIEW: Opened camera 3 via DirectShow
+2026-11-02 10:53:53,811 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-02 10:53:54,372 INFO [Camera 2] INFO: Preview capture stopped
+2026-11-02 10:53:54,969 INFO [Camera 3] INFO: Preview capture stopped
+2026-11-02 10:53:59,093 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
+2026-11-02 10:53:59,184 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-02 10:53:59,184 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-02 10:54:01,135 INFO [Camera 2] INFO: index 2 / DirectShow: could not open
+2026-11-02 10:54:14,190 WARNING [Camera 2] WARNING: Camera initialization still pending; check status/logs
+2026-11-02 10:54:17,339 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:54:17,726 INFO [Camera 3] INFO: index 3 / DirectShow: frames OK (requested, 640x480)
+2026-11-02 10:54:17,757 INFO [Camera 3] INFO: LSL video frame metadata: IMS_Camera3_Frames
+2026-11-02 10:54:17,758 INFO [Camera 3] RECORDING: Video capture started: camera_3.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-02 10:54:17,760 INFO [Session] RECORDING: f3cbec72e3c442d898eb87ab1e24fef9 | C:\Users\chgul\Downloads\IMMSS_Camera_Safe_Defaults\Participant_Data\Participant_001\Session_20261102_105356_128606
+2026-11-02 10:54:26,233 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:54:26,233 INFO [Camera 2] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 10:54:27,703 INFO [Camera 2] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 10:54:27,704 INFO [Camera 2] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 10:54:27,704 INFO [Camera 2] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 10:54:27,704 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:54:27,704 INFO [Camera 2] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 10:54:28,555 INFO [Camera 2] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 10:54:28,555 INFO [Camera 2] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 10:54:28,555 INFO [Camera 2] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 10:54:28,555 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:54:28,555 INFO [Camera 2] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 10:54:29,413 INFO [Camera 2] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 10:54:29,413 INFO [Camera 2] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 10:54:29,413 INFO [Camera 2] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 10:54:29,413 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:54:29,413 INFO [Camera 2] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 10:54:30,261 INFO [Camera 2] INFO: index 2 / Media Foundation: device opened, but no valid frames with tested formats
+2026-11-02 10:54:55,552 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:54:55,553 INFO [Camera 2] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 10:54:56,940 INFO [Camera 2] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 10:54:56,941 INFO [Camera 2] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 10:54:56,941 INFO [Camera 2] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 10:54:56,941 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:54:56,941 INFO [Camera 2] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 10:54:57,789 INFO [Camera 2] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 10:54:57,789 INFO [Camera 2] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 10:54:57,789 INFO [Camera 2] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 10:54:57,789 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:54:57,790 INFO [Camera 2] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 10:54:58,639 INFO [Camera 2] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 10:54:58,667 INFO [Camera 2] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 10:54:58,667 INFO [Camera 2] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 10:54:58,667 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:54:58,667 INFO [Camera 2] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 10:54:59,515 INFO [Camera 2] INFO: index 2 / Default: device opened, but no valid frames with tested formats
+2026-11-02 10:54:59,561 ERROR [Camera 2] ERROR: Video recording interrupted: RuntimeError('Cannot open camera index 2'); other devices continue
+2026-11-02 10:54:59,561 INFO [Camera 2] INFO: Camera stopped; 0 frames saved
+2026-11-02 10:55:06,676 INFO [Camera 1] INFO: Camera stopped; 1610 frames saved
+2026-11-02 10:55:07,312 INFO [Camera 3] INFO: Camera stopped; 942 frames saved
+2026-11-02 10:55:07,313 INFO [Session] STOPPED: C:\Users\chgul\Downloads\IMMSS_Camera_Safe_Defaults\Participant_Data\Participant_001\Session_20261102_105356_128606
+2026-11-02 10:55:11,473 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
+2026-11-02 10:55:11,510 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-02 10:55:11,511 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-02 10:55:13,414 INFO [Camera 2] INFO: index 2 / DirectShow: could not open
+2026-11-02 10:55:26,516 WARNING [Camera 2] WARNING: Camera initialization still pending; check status/logs
+2026-11-02 10:55:34,270 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:55:34,738 INFO [Camera 3] INFO: index 3 / DirectShow: frames OK (requested, 640x480)
+2026-11-02 10:55:34,740 INFO [Camera 3] INFO: LSL video frame metadata: IMS_Camera3_Frames
+2026-11-02 10:55:34,776 INFO [Camera 3] RECORDING: Video capture started: camera_3.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-02 10:55:34,778 INFO [Session] RECORDING: 73ede425bc82451e92154b45a46461b7 | C:\Users\chgul\Downloads\IMMSS_Camera_Safe_Defaults\Participant_Data\Participant_001\Session_20261102_105508_770613
+2026-11-02 10:55:38,512 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:55:38,512 INFO [Camera 2] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 10:55:39,323 INFO [Camera 1] INFO: Camera stopped; 661 frames saved
+2026-11-02 10:55:39,910 INFO [Camera 2] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 10:55:39,910 INFO [Camera 2] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 10:55:39,910 INFO [Camera 2] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 10:55:39,910 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:55:39,910 INFO [Camera 2] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 10:55:40,758 INFO [Camera 2] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 10:55:40,759 INFO [Camera 2] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 10:55:40,759 INFO [Camera 2] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 10:55:40,759 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:55:40,759 INFO [Camera 2] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 10:55:41,609 INFO [Camera 2] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 10:55:41,609 INFO [Camera 2] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 10:55:41,609 INFO [Camera 2] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 10:55:41,609 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:55:41,610 INFO [Camera 2] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 10:55:42,459 INFO [Camera 2] INFO: index 2 / Media Foundation: device opened, but no valid frames with tested formats
+2026-11-02 10:55:47,326 WARNING [Camera 2] WARNING: Camera thread did not stop within 8s; file may not be finalized yet
+2026-11-02 10:55:47,969 INFO [Camera 3] INFO: Camera stopped; 246 frames saved
+2026-11-02 10:55:47,970 INFO [Session] STOPPED: C:\Users\chgul\Downloads\IMMSS_Camera_Safe_Defaults\Participant_Data\Participant_001\Session_20261102_105508_770613
+2026-11-02 10:56:00,340 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
+2026-11-02 10:56:00,347 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-02 10:56:00,347 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-02 10:56:00,347 ERROR [Camera 2] ERROR: start failed: RuntimeError('Camera is already active')
+2026-11-02 10:56:03,411 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:56:03,799 INFO [Camera 3] INFO: index 3 / DirectShow: frames OK (requested, 640x480)
+2026-11-02 10:56:03,802 INFO [Camera 3] INFO: LSL video frame metadata: IMS_Camera3_Frames
+2026-11-02 10:56:03,802 INFO [Camera 3] RECORDING: Video capture started: camera_3.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-02 10:56:03,833 INFO [Session] RECORDING: 4709975122244048bd4599e0d60e5480 | C:\Users\chgul\Downloads\IMMSS_Camera_Safe_Defaults\Participant_Data\Participant_001\Session_20261102_105557_677197
+2026-11-02 10:56:06,799 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:56:06,799 INFO [Camera 2] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 10:56:08,179 INFO [Camera 2] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 10:56:08,195 INFO [Camera 2] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 10:56:08,196 INFO [Camera 2] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 10:56:08,196 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:56:08,196 INFO [Camera 2] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 10:56:09,042 INFO [Camera 2] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 10:56:09,043 INFO [Camera 2] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 10:56:09,043 INFO [Camera 2] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 10:56:09,043 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:56:09,043 INFO [Camera 2] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 10:56:09,890 INFO [Camera 2] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 10:56:09,891 INFO [Camera 2] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 10:56:09,891 INFO [Camera 2] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 10:56:09,891 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:56:09,892 INFO [Camera 2] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 10:56:10,742 INFO [Camera 2] INFO: index 2 / Default: device opened, but no valid frames with tested formats
+2026-11-02 10:56:10,809 ERROR [Camera 2] ERROR: Video recording interrupted: RuntimeError('Cannot open camera index 2'); other devices continue
+2026-11-02 10:56:10,809 INFO [Camera 2] INFO: Camera stopped; 0 frames saved
+2026-11-02 10:56:22,060 INFO [Camera 1] INFO: Camera stopped; 514 frames saved
+2026-11-02 10:56:22,736 INFO [Camera 3] INFO: Camera stopped; 367 frames saved
+2026-11-02 10:56:22,738 INFO [Session] STOPPED: C:\Users\chgul\Downloads\IMMSS_Camera_Safe_Defaults\Participant_Data\Participant_001\Session_20261102_105557_677197
+2026-11-02 10:56:40,918 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
+2026-11-02 10:56:40,923 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-02 10:56:40,923 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-02 10:56:42,826 INFO [Camera 2] INFO: index 2 / DirectShow: could not open
+2026-11-02 10:56:55,929 WARNING [Camera 2] WARNING: Camera initialization still pending; check status/logs
+2026-11-02 10:56:59,037 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:56:59,486 INFO [Camera 3] INFO: index 3 / DirectShow: frames OK (requested, 640x480)
+2026-11-02 10:56:59,489 INFO [Camera 3] INFO: LSL video frame metadata: IMS_Camera3_Frames
+2026-11-02 10:56:59,521 INFO [Camera 3] RECORDING: Video capture started: camera_3.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-02 10:56:59,521 INFO [Session] RECORDING: 42825d47b12f4f48aa58b6600e2082fb | C:\Users\chgul\Downloads\IMMSS_Camera_Safe_Defaults\Participant_Data\Participant_001\Session_20261102_105638_138195
+2026-11-02 10:57:07,732 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:57:07,732 INFO [Camera 2] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 10:57:09,136 INFO [Camera 2] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 10:57:09,136 INFO [Camera 2] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 10:57:09,136 INFO [Camera 2] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 10:57:09,136 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:57:09,136 INFO [Camera 2] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 10:57:09,991 INFO [Camera 2] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 10:57:09,991 INFO [Camera 2] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 10:57:09,991 INFO [Camera 2] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 10:57:09,991 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:57:09,991 INFO [Camera 2] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 10:57:10,840 INFO [Camera 2] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 10:57:10,840 INFO [Camera 2] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 10:57:10,840 INFO [Camera 2] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 10:57:10,840 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:57:10,840 INFO [Camera 2] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 10:57:11,685 INFO [Camera 2] INFO: index 2 / Media Foundation: device opened, but no valid frames with tested formats
+2026-11-02 10:57:36,916 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:57:36,916 INFO [Camera 2] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 10:57:38,304 INFO [Camera 2] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 10:57:38,305 INFO [Camera 2] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 10:57:38,305 INFO [Camera 2] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 10:57:38,305 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:57:38,305 INFO [Camera 2] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 10:57:39,152 INFO [Camera 2] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 10:57:39,152 INFO [Camera 2] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 10:57:39,153 INFO [Camera 2] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 10:57:39,153 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:57:39,153 INFO [Camera 2] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 10:57:39,999 INFO [Camera 2] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 10:57:40,000 INFO [Camera 2] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 10:57:40,000 INFO [Camera 2] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 10:57:40,000 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:57:40,000 INFO [Camera 2] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 10:57:40,847 INFO [Camera 2] INFO: index 2 / Default: device opened, but no valid frames with tested formats
+2026-11-02 10:57:40,901 ERROR [Camera 2] ERROR: Video recording interrupted: RuntimeError('Cannot open camera index 2'); other devices continue
+2026-11-02 10:57:40,927 INFO [Camera 2] INFO: Camera stopped; 0 frames saved
+2026-11-02 10:59:13,425 INFO [Camera 1] INFO: Camera stopped; 3653 frames saved
+2026-11-02 10:59:14,010 INFO [Camera 3] INFO: Camera stopped; 2543 frames saved
+2026-11-02 10:59:14,012 INFO [Session] STOPPED: C:\Users\chgul\Downloads\IMMSS_Camera_Safe_Defaults\Participant_Data\Participant_001\Session_20261102_105638_138195
+2026-11-02 10:59:25,918 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:59:26,289 INFO [Camera 2] INFO: index 2 / DirectShow: frames OK (requested, 640x480)
+2026-11-02 10:59:26,326 INFO [Camera 2] INFO: LSL video frame metadata: IMS_Camera2_Frames
+2026-11-02 10:59:26,326 INFO [Camera 2] RECORDING: Video capture started: camera_2.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-02 10:59:39,005 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 10:59:39,377 INFO [Camera 3] INFO: index 3 / DirectShow: frames OK (requested, 640x480)
+2026-11-02 10:59:39,382 INFO [Camera 3] INFO: LSL video frame metadata: IMS_Camera3_Frames
+2026-11-02 10:59:39,382 INFO [Camera 3] RECORDING: Video capture started: camera_3.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-02 10:59:39,391 INFO [Session] RECORDING: 32b3144e36a042fca3a4dde21fac05cc | C:\Users\chgul\Downloads\IMMSS_Camera_Safe_Defaults\Participant_Data\Participant_001\Session_20261102_105922_332704
+2026-11-02 11:00:11,696 INFO [Camera 2] INFO: Camera stopped; 899 frames saved
+2026-11-02 11:00:12,276 INFO [Camera 3] INFO: Camera stopped; 648 frames saved
+2026-11-02 11:00:12,278 INFO [Session] STOPPED: C:\Users\chgul\Downloads\IMMSS_Camera_Safe_Defaults\Participant_Data\Participant_001\Session_20261102_105922_332704
+2026-11-02 11:00:17,055 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=17 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-02 11:00:17,093 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-02 11:00:17,106 INFO [Microphone] RECORDING: device=17, rate=384000 Hz, channels=1
+2026-11-02 11:00:18,393 WARNING [Microphone] WARNING: LSL audio queue saturated; WAV continues uninterrupted
+2026-11-02 11:00:20,609 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 11:00:20,982 INFO [Camera 2] INFO: index 2 / DirectShow: frames OK (requested, 640x480)
+2026-11-02 11:00:20,987 INFO [Camera 2] INFO: LSL video frame metadata: IMS_Camera2_Frames
+2026-11-02 11:00:21,019 INFO [Camera 2] RECORDING: Video capture started: camera_2.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-02 11:00:24,249 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 11:00:24,615 INFO [Camera 3] INFO: index 3 / DirectShow: frames OK (requested, 640x480)
+2026-11-02 11:00:24,618 INFO [Camera 3] INFO: LSL video frame metadata: IMS_Camera3_Frames
+2026-11-02 11:00:24,618 INFO [Camera 3] RECORDING: Video capture started: camera_3.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-02 11:00:24,620 INFO [Session] RECORDING: 714ec33acf694ab0b480676899373ca8 | C:\Users\chgul\Downloads\IMMSS_Camera_Safe_Defaults\Participant_Data\Participant_001\Session_20261102_110017_052871
+2026-11-02 11:12:51,803 INFO [Microphone] STOPPED: 289466880 samples saved; queue drops=0; LSL drops=79; LSL errors=0
+2026-11-02 11:12:52,389 INFO [Camera 2] INFO: Camera stopped; 14959 frames saved
+2026-11-02 11:12:53,021 INFO [Camera 3] INFO: Camera stopped; 14388 frames saved
+2026-11-02 11:12:53,022 INFO [Session] STOPPED: C:\Users\chgul\Downloads\IMMSS_Camera_Safe_Defaults\Participant_Data\Participant_001\Session_20261102_110017_052871
+2026-11-02 11:12:53,823 INFO [Application] INFO: Application closing

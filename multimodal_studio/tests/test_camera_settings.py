@@ -18,7 +18,7 @@ class TestCameraSettings(unittest.TestCase):
         cap.set.return_value=False
         cap.get.return_value=0
         messages=[]
-        result=apply_camera_settings(cap,CV,{'autofocus':False,'autoexposure':False},report=messages.append)
+        result=apply_camera_settings(cap,CV,{'autofocus':False,'focus':40,'autoexposure':False,'exposure':-6},report=messages.append)
         self.assertIn('focus',result)
         self.assertIn('exposure',result)
         self.assertTrue(messages)

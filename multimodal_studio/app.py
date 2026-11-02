@@ -295,14 +295,15 @@ class App:
     def _build_camera_properties(self, frame, slot):
         self.label(frame, 'CAMERA PROPERTIES', 10, WHITE, True).pack(anchor='w', padx=10, pady=(4, 3))
         vars_ = {
-            'resolution': tk.StringVar(value='640x480'),
+            'resolution': tk.StringVar(value='1280x720'),
             'fps': tk.StringVar(value='25'),
             'autofocus': tk.BooleanVar(value=True),
-            'focus': tk.StringVar(value='0'),
+            'focus': tk.StringVar(value=''),
             'autoexposure': tk.BooleanVar(value=True),
-            'exposure': tk.StringVar(value='-5'),
-            'brightness': tk.StringVar(value='0'),
-            'gain': tk.StringVar(value='0'),
+            'exposure': tk.StringVar(value=''),
+            'brightness': tk.StringVar(value=''),
+            'gain': tk.StringVar(value=''),
+            'auto_white_balance': tk.BooleanVar(value=True),
         }
         self.camera_setting_vars[slot] = vars_
         widgets = []
@@ -318,7 +319,7 @@ class App:
             widgets.append(widget)
         line('Dimensions', vars_['resolution'], ['640x480','800x600','1280x720','1920x1080'])
         line('FPS', vars_['fps'], ['15','25','30','60'])
-        for label, key in [('Autofocus','autofocus'), ('Auto exposure','autoexposure')]:
+        for label, key in [('Autofocus','autofocus'), ('Auto exposure','autoexposure'), ('Auto white balance','auto_white_balance')]:
             widget = tk.Checkbutton(frame, text=label, variable=vars_[key], bg='#0b1423', fg=WHITE,
                                     activebackground='#0b1423', selectcolor=BG)
             widget.pack(anchor='w', padx=10)
@@ -326,8 +327,17 @@ class App:
         for label,key in [('Manual focus','focus'),('Exposure','exposure'),('Brightness','brightness'),('Gain','gain')]:
             line(label, vars_[key])
         self.camera_setting_widgets[slot] = widgets
+        self.action(frame,'Restore safe defaults',lambda i=slot:self.restore_camera_defaults(i)).pack(pady=(6,2))
         self.action(frame,'Apply settings & restart preview',lambda i=slot:self.apply_camera_preview_settings(i)).pack(pady=(8,12))
-        self.label(frame,'Controls depend on camera and Windows backend; readback and warnings appear in Activity.',8,MUTED,wraplength=250).pack(padx=10,pady=(0,8))
+        self.label(frame,'Leave manual values blank to retain camera defaults. Apply settings and verify the image; unsupported settings appear in Activity.',8,MUTED,wraplength=250).pack(padx=10,pady=(0,8))
+
+    def restore_camera_defaults(self, slot):
+        v = self.camera_setting_vars[slot]
+        for key, value in {'resolution':'1280x720', 'fps':'25', 'focus':'', 'exposure':'', 'brightness':'', 'gain':''}.items():
+            v[key].set(value)
+        for key in ('autofocus','autoexposure','auto_white_balance'):
+            v[key].set(True)
+        self.apply_camera_preview_settings(slot)
 
     def camera_settings(self, slot):
         v = self.camera_setting_vars[slot]
@@ -335,9 +345,10 @@ class App:
             w,h = (int(x) for x in v['resolution'].get().split('x'))
             return normalize_settings({
                 'width': w, 'height': h, 'fps': float(v['fps'].get()),
-                'autofocus': v['autofocus'].get(), 'focus': float(v['focus'].get()),
-                'autoexposure': v['autoexposure'].get(), 'exposure': float(v['exposure'].get()),
-                'brightness': float(v['brightness'].get()), 'gain': float(v['gain'].get()),
+                'autofocus': v['autofocus'].get(), 'focus': v['focus'].get(),
+                'autoexposure': v['autoexposure'].get(), 'exposure': v['exposure'].get(),
+                'brightness': v['brightness'].get(), 'gain': v['gain'].get(),
+                'auto_white_balance': v['auto_white_balance'].get(),
             })
         except (ValueError, TypeError) as exc:
             raise ValueError(f'Camera {slot}: invalid property value: {exc}') from exc
