@@ -307,3 +307,1176 @@
 2026-11-02 12:19:32,594 INFO [Microphone] INFO: Opening microphone: Microphone (2- Logi C270 HD WebCam) | index=15 | backend=Windows WASAPI | rate=48000 Hz | channels=1 | WASAPI exclusive=False
 2026-11-02 12:19:32,604 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Microphone_Audio (1 ch, 48000 Hz)
 2026-11-02 12:19:32,638 INFO [Microphone] RECORDING: device=15, rate=48000 Hz, channels=1
+2026-11-02 12:23:05,438 INFO [Microphone] STOPPED: 10201440 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-02 12:24:49,358 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-02 12:24:55,718 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-02 12:40:17,871 WARNING [Cameras] WARNING: Stop experiment Preview/Record before scanning cameras
+2026-11-02 12:40:28,812 INFO [Polar H10] STOPPED: Polar finished
+2026-11-02 12:40:30,396 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
+2026-11-02 12:40:31,121 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
+2026-11-02 12:40:31,121 INFO [Cameras] INFO: index 0: available via DirectShow
+2026-11-02 12:40:32,108 INFO [Cameras] INFO: index 1 / DirectShow: frames OK (default, 640x480)
+2026-11-02 12:40:32,109 INFO [Cameras] INFO: index 1: available via DirectShow
+2026-11-02 12:40:33,351 INFO [Cameras] INFO: index 2 / DirectShow: frames OK (default, 640x480)
+2026-11-02 12:40:33,351 INFO [Cameras] INFO: index 2: available via DirectShow
+2026-11-02 12:40:34,763 INFO [Cameras] INFO: index 3 / DirectShow: frames OK (default, 640x480)
+2026-11-02 12:40:34,763 INFO [Cameras] INFO: index 3: available via DirectShow
+2026-11-02 12:40:35,363 INFO [Cameras] INFO: index 4 / DirectShow: could not open
+2026-11-02 12:40:35,439 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
+2026-11-02 12:40:35,492 INFO [Cameras] INFO: index 4 / Default: could not open
+2026-11-02 12:40:35,495 INFO [Cameras] INFO: index 5 / DirectShow: could not open
+2026-11-02 12:40:35,539 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
+2026-11-02 12:40:35,610 INFO [Cameras] INFO: index 5 / Default: could not open
+2026-11-02 12:40:35,612 INFO [Cameras] INFO: index 6 / DirectShow: could not open
+2026-11-02 12:40:35,676 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
+2026-11-02 12:40:35,727 INFO [Cameras] INFO: index 6 / Default: could not open
+2026-11-02 12:40:35,729 INFO [Cameras] INFO: index 7 / DirectShow: could not open
+2026-11-02 12:40:35,774 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
+2026-11-02 12:40:35,828 INFO [Cameras] INFO: index 7 / Default: could not open
+2026-11-02 12:40:35,830 INFO [Cameras] INFO: index 8 / DirectShow: could not open
+2026-11-02 12:40:35,880 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
+2026-11-02 12:40:35,934 INFO [Cameras] INFO: index 8 / Default: could not open
+2026-11-02 12:40:35,936 INFO [Cameras] INFO: index 9 / DirectShow: could not open
+2026-11-02 12:40:35,986 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
+2026-11-02 12:40:36,042 INFO [Cameras] INFO: index 9 / Default: could not open
+2026-11-02 12:40:36,218 INFO [Cameras] INFO: Camera scan finished: 4 available
+2026-11-02 12:40:42,384 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 1280x720)
+2026-11-02 12:40:42,384 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
+2026-11-02 12:40:47,122 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-02 12:40:54,679 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 12:40:54,968 INFO [Camera 2] INFO: index 1 / DirectShow: frames OK (requested, 1280x720)
+2026-11-02 12:40:54,968 INFO [Camera 2] PREVIEW: Opened camera 1 via DirectShow
+2026-11-02 12:40:57,302 INFO [Camera 2] INFO: Preview capture stopped
+2026-11-02 12:41:09,481 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 12:41:10,498 INFO [Camera 2] INFO: index 2 / DirectShow: frames OK (requested, 1280x720)
+2026-11-02 12:41:10,498 INFO [Camera 2] PREVIEW: Opened camera 2 via DirectShow
+2026-11-02 12:41:18,078 WARNING [Camera 2] WARNING: Preview thread has not exited yet
+2026-11-02 12:41:19,508 INFO [Camera 2] INFO: Preview capture stopped
+2026-11-02 12:41:26,861 INFO [Camera 2] INFO: Camera properties applied to next preview/recording; verify actual values in log
+2026-11-02 12:41:33,874 INFO [Camera 2] INFO: Camera properties applied to next preview/recording; verify actual values in log
+2026-11-02 12:41:35,329 INFO [Camera 1] INFO: Camera properties applied to next preview/recording; verify actual values in log
+2026-11-02 12:41:39,241 INFO [Camera 3] INFO: Camera properties applied to next preview/recording; verify actual values in log
+2026-11-02 12:41:51,059 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 12:41:51,429 INFO [Camera 3] INFO: index 3 / DirectShow: frames OK (requested, 640x480)
+2026-11-02 12:41:51,429 INFO [Camera 3] PREVIEW: Opened camera 3 via DirectShow
+2026-11-02 12:41:54,094 INFO [Camera 3] INFO: Preview capture stopped
+2026-11-02 12:42:01,608 INFO [Polar H10] INFO: Preflight: connect and await live HR/ECG/ACC as selected before session marker
+2026-11-02 12:42:01,609 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-02 12:42:07,472 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-02 12:42:10,288 INFO [Polar H10] READY: Live samples confirmed: hr, ecg, acc
+2026-11-02 12:42:13,124 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
+2026-11-02 12:42:13,130 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-02 12:42:13,130 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-02 12:42:16,315 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 12:42:16,686 INFO [Camera 2] INFO: index 2 / DirectShow: frames OK (requested, 640x480)
+2026-11-02 12:42:16,691 INFO [Camera 2] INFO: LSL video frame metadata: IMS_Camera2_Frames
+2026-11-02 12:42:16,691 INFO [Camera 2] RECORDING: Video capture started: camera_2.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-02 12:42:18,620 INFO [Camera 3] INFO: index 3 / DirectShow: could not open
+2026-11-02 12:42:31,694 WARNING [Camera 3] WARNING: Camera initialization still pending; check status/logs
+2026-11-02 12:42:31,695 INFO [Session] RECORDING: c7885b9361fa4090adb6be54cf739a54 | C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_001\Session_20261102_124201_602307
+2026-11-02 12:42:43,074 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 12:42:43,074 INFO [Camera 3] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 12:42:44,554 INFO [Camera 3] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 12:42:44,554 INFO [Camera 3] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 12:42:44,554 INFO [Camera 3] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 12:42:44,554 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 12:42:44,554 INFO [Camera 3] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 12:42:45,413 INFO [Camera 3] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 12:42:45,413 INFO [Camera 3] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 12:42:45,414 INFO [Camera 3] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 12:42:45,414 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 12:42:45,414 INFO [Camera 3] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 12:42:46,266 INFO [Camera 3] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 12:42:46,266 INFO [Camera 3] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 12:42:46,267 INFO [Camera 3] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 12:42:46,267 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 12:42:46,267 INFO [Camera 3] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 12:42:47,115 INFO [Camera 3] INFO: index 3 / Media Foundation: device opened, but no valid frames with tested formats
+2026-11-02 12:43:11,529 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 12:43:11,529 INFO [Camera 3] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 12:43:12,921 INFO [Camera 3] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 12:43:12,921 INFO [Camera 3] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 12:43:12,921 INFO [Camera 3] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 12:43:12,922 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 12:43:12,922 INFO [Camera 3] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 12:43:13,767 INFO [Camera 3] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 12:43:13,770 INFO [Camera 3] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 12:43:13,770 INFO [Camera 3] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 12:43:13,770 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 12:43:13,771 INFO [Camera 3] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 12:43:14,626 INFO [Camera 3] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 12:43:14,627 INFO [Camera 3] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 12:43:14,627 INFO [Camera 3] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 12:43:14,627 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 12:43:14,627 INFO [Camera 3] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 12:43:15,480 INFO [Camera 3] INFO: index 3 / Default: device opened, but no valid frames with tested formats
+2026-11-02 12:43:15,538 ERROR [Camera 3] ERROR: Video recording interrupted: RuntimeError('Cannot open camera index 3'); other devices continue
+2026-11-02 12:43:15,539 INFO [Camera 3] INFO: Camera stopped; 0 frames saved
+2026-11-02 12:44:11,137 INFO [Polar H10] STOPPED: Polar finished
+2026-11-02 12:44:11,508 INFO [Camera 1] INFO: Camera stopped; 2834 frames saved
+2026-11-02 12:44:12,145 INFO [Camera 2] INFO: Camera stopped; 2301 frames saved
+2026-11-02 12:44:12,147 INFO [Session] STOPPED: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_001\Session_20261102_124201_602307
+2026-11-02 12:44:14,113 INFO [Polar H10] INFO: Preflight: connect and await live HR/ECG/ACC as selected before session marker
+2026-11-02 12:44:14,114 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-02 12:44:19,322 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-02 12:44:22,185 INFO [Polar H10] READY: Live samples confirmed: hr, ecg, acc
+2026-11-02 12:44:24,818 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
+2026-11-02 12:44:24,820 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-02 12:44:24,821 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-02 12:44:28,162 INFO [Camera 2] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 12:44:28,534 INFO [Camera 2] INFO: index 2 / DirectShow: frames OK (requested, 640x480)
+2026-11-02 12:44:28,540 INFO [Camera 2] INFO: LSL video frame metadata: IMS_Camera2_Frames
+2026-11-02 12:44:28,541 INFO [Camera 2] RECORDING: Video capture started: camera_2.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-02 12:44:30,469 INFO [Camera 3] INFO: index 3 / DirectShow: could not open
+2026-11-02 12:44:43,548 WARNING [Camera 3] WARNING: Camera initialization still pending; check status/logs
+2026-11-02 12:44:43,549 INFO [Session] RECORDING: e563af59dd7f4dd19c6575337a8f2862 | C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_001\Session_20261102_124414_110162
+2026-11-02 12:44:54,627 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 12:44:54,628 INFO [Camera 3] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 12:44:56,060 INFO [Camera 3] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 12:44:56,060 INFO [Camera 3] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 12:44:56,060 INFO [Camera 3] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 12:44:56,061 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 12:44:56,061 INFO [Camera 3] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 12:44:56,914 INFO [Camera 3] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 12:44:56,915 INFO [Camera 3] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 12:44:56,915 INFO [Camera 3] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 12:44:56,915 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 12:44:56,915 INFO [Camera 3] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 12:44:57,768 INFO [Camera 3] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 12:44:57,768 INFO [Camera 3] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 12:44:57,768 INFO [Camera 3] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 12:44:57,768 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 12:44:57,768 INFO [Camera 3] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 12:44:58,620 INFO [Camera 3] INFO: index 3 / Media Foundation: device opened, but no valid frames with tested formats
+2026-11-02 12:45:23,005 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 12:45:23,005 INFO [Camera 3] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 12:45:28,959 INFO [Camera 3] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 12:45:28,960 INFO [Camera 3] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 12:45:28,960 INFO [Camera 3] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 12:45:28,960 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 12:45:28,960 INFO [Camera 3] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 12:45:29,809 INFO [Camera 3] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 12:45:29,810 INFO [Camera 3] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 12:45:29,810 INFO [Camera 3] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 12:45:29,810 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 12:45:29,810 INFO [Camera 3] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 12:45:30,664 INFO [Camera 3] INFO: Camera property unsupported/rejected: width=640
+2026-11-02 12:45:30,664 INFO [Camera 3] INFO: Camera property unsupported/rejected: height=480
+2026-11-02 12:45:30,664 INFO [Camera 3] INFO: Camera property unsupported/rejected: fps=25.0
+2026-11-02 12:45:30,664 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-02 12:45:30,664 INFO [Camera 3] INFO: Camera property unsupported/rejected: auto_white_balance=1
+2026-11-02 12:45:31,513 INFO [Camera 3] INFO: index 3 / Default: device opened, but no valid frames with tested formats
+2026-11-02 12:45:31,567 ERROR [Camera 3] ERROR: Video recording interrupted: RuntimeError('Cannot open camera index 3'); other devices continue
+2026-11-02 12:45:31,567 INFO [Camera 3] INFO: Camera stopped; 0 frames saved
+2026-11-02 12:53:11,194 INFO [Polar H10] STOPPED: Polar finished
+2026-11-02 12:53:11,577 INFO [Camera 1] INFO: Camera stopped; 12635 frames saved
+2026-11-02 12:53:12,183 INFO [Camera 2] INFO: Camera stopped; 10476 frames saved
+2026-11-02 12:53:12,184 INFO [Session] STOPPED: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_001\Session_20261102_124414_110162
+2026-11-02 12:54:46,940 INFO [Application] INFO: Application closing
+2026-11-02 14:07:53,525 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-11-02 14:07:54,721 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-02 14:07:54,723 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-02 14:18:18,017 INFO [Post-analysis] INFO: QA report saved: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_001\Session_20261102_124201_602307\analysis_reports\20261102_141817_300040
+2026-11-02 16:08:04,111 INFO [Application] INFO: Application closing
+2026-11-03 14:06:44,943 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-11-03 14:06:45,872 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-03 14:06:45,874 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:07:01,777 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
+2026-11-03 14:07:03,004 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
+2026-11-03 14:07:03,004 INFO [Cameras] INFO: index 0: available via DirectShow
+2026-11-03 14:07:04,304 INFO [Cameras] INFO: index 1 / DirectShow: frames OK (default, 640x480)
+2026-11-03 14:07:04,304 INFO [Cameras] INFO: index 1: available via DirectShow
+2026-11-03 14:07:04,901 INFO [Cameras] INFO: index 2 / DirectShow: could not open
+2026-11-03 14:07:05,022 INFO [Cameras] INFO: index 2 / Media Foundation: could not open
+2026-11-03 14:07:05,096 INFO [Cameras] INFO: index 2 / Default: could not open
+2026-11-03 14:07:05,097 INFO [Cameras] INFO: index 3 / DirectShow: could not open
+2026-11-03 14:07:05,167 INFO [Cameras] INFO: index 3 / Media Foundation: could not open
+2026-11-03 14:07:05,227 INFO [Cameras] INFO: index 3 / Default: could not open
+2026-11-03 14:07:05,228 INFO [Cameras] INFO: index 4 / DirectShow: could not open
+2026-11-03 14:07:05,288 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
+2026-11-03 14:07:05,368 INFO [Cameras] INFO: index 4 / Default: could not open
+2026-11-03 14:07:05,370 INFO [Cameras] INFO: index 5 / DirectShow: could not open
+2026-11-03 14:07:05,593 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
+2026-11-03 14:07:05,678 INFO [Cameras] INFO: index 5 / Default: could not open
+2026-11-03 14:07:05,679 INFO [Cameras] INFO: index 6 / DirectShow: could not open
+2026-11-03 14:07:05,727 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
+2026-11-03 14:07:05,774 INFO [Cameras] INFO: index 6 / Default: could not open
+2026-11-03 14:07:05,774 INFO [Cameras] INFO: index 7 / DirectShow: could not open
+2026-11-03 14:07:05,857 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
+2026-11-03 14:07:05,912 INFO [Cameras] INFO: index 7 / Default: could not open
+2026-11-03 14:07:05,913 INFO [Cameras] INFO: index 8 / DirectShow: could not open
+2026-11-03 14:07:05,961 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
+2026-11-03 14:07:06,006 INFO [Cameras] INFO: index 8 / Default: could not open
+2026-11-03 14:07:06,007 INFO [Cameras] INFO: index 9 / DirectShow: could not open
+2026-11-03 14:07:06,056 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
+2026-11-03 14:07:06,099 INFO [Cameras] INFO: index 9 / Default: could not open
+2026-11-03 14:07:06,337 INFO [Cameras] INFO: Camera scan finished: 2 available
+2026-11-03 14:07:07,790 WARNING [Camera 3] WARNING: Select a camera from the dropdown first
+2026-11-03 14:07:27,400 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-03 14:07:28,412 INFO [Camera 3] INFO: index 1 / DirectShow: frames OK (requested, 1280x720)
+2026-11-03 14:07:28,412 INFO [Camera 3] PREVIEW: Opened camera 1 via DirectShow
+2026-11-03 14:07:42,510 WARNING [Camera 3] WARNING: Preview thread has not exited yet
+2026-11-03 14:07:42,914 INFO [Camera 3] INFO: Preview capture stopped
+2026-11-03 14:07:54,350 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-03 14:07:55,366 INFO [Camera 3] INFO: index 1 / DirectShow: frames OK (requested, 1280x720)
+2026-11-03 14:07:55,366 INFO [Camera 3] PREVIEW: Opened camera 1 via DirectShow
+2026-11-03 14:08:00,585 WARNING [Camera 3] WARNING: Preview thread has not exited yet
+2026-11-03 14:08:01,872 INFO [Camera 3] INFO: Preview capture stopped
+2026-11-03 14:08:11,952 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-03 14:08:12,239 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 1280x720)
+2026-11-03 14:08:12,239 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
+2026-11-03 14:08:16,473 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-03 14:08:29,812 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-03 14:08:30,824 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 1280x720)
+2026-11-03 14:08:30,825 INFO [Camera 1] PREVIEW: Opened camera 1 via DirectShow
+2026-11-03 14:08:38,063 WARNING [Camera 1] WARNING: Preview thread has not exited yet
+2026-11-03 14:08:38,329 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-03 14:08:45,039 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-03 14:08:45,412 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-03 14:08:45,413 INFO [Camera 1] PREVIEW: Opened camera 1 via DirectShow
+2026-11-03 14:09:22,725 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-03 14:09:24,868 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-03 14:09:28,607 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-03 14:09:28,979 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-03 14:09:28,979 INFO [Camera 1] PREVIEW: Opened camera 1 via DirectShow
+2026-11-03 14:09:33,841 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-03 14:09:56,676 INFO [Polar H10] STOPPED: Polar finished
+2026-11-03 14:09:57,255 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-03 14:10:27,696 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-03 14:10:27,698 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:10:28,448 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-03 14:10:28,449 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:10:28,792 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-03 14:10:28,793 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:10:29,158 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-03 14:10:29,159 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:10:29,544 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-03 14:10:29,545 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:10:29,934 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-03 14:10:29,935 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:10:30,664 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-03 14:10:30,665 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:10:31,052 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-03 14:10:31,053 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:10:31,449 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-03 14:10:31,450 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:10:33,092 INFO [Application] INFO: Application closing
+2026-11-03 14:10:41,763 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-11-03 14:10:42,393 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-03 14:10:42,395 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:11:25,800 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-03 14:11:25,802 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:11:26,594 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-03 14:11:26,595 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:11:27,018 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-03 14:11:27,019 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:11:27,430 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-03 14:11:27,431 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:11:27,803 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-03 14:11:27,804 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:11:28,298 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-03 14:11:28,300 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:11:38,773 INFO [Application] INFO: Application closing
+2026-11-03 14:11:41,233 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-11-03 14:11:41,656 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-03 14:11:41,658 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:12:45,827 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-03 14:12:45,828 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:12:46,512 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-03 14:12:46,514 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:12:46,896 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-03 14:12:46,897 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:12:47,240 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-03 14:12:47,241 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:12:47,599 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-03 14:12:47,600 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:12:47,923 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-03 14:12:47,924 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:12:56,676 INFO [Application] INFO: Application closing
+2026-11-03 14:12:58,642 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-11-03 14:12:59,136 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-03 14:12:59,138 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:13:23,022 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-03 14:13:23,024 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:13:23,380 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-03 14:13:23,381 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:13:23,775 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-03 14:13:23,776 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:13:24,230 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-03 14:13:24,230 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:13:24,654 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-03 14:13:24,657 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:13:24,997 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-03 14:13:24,998 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:13:27,535 INFO [Application] INFO: Application closing
+2026-11-03 14:13:29,692 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-11-03 14:13:30,395 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-03 14:13:30,396 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:14:29,432 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-03 14:14:29,434 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:14:29,766 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-03 14:14:29,768 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:14:30,269 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-03 14:14:30,270 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:14:37,625 INFO [Application] INFO: Application closing
+2026-11-03 14:15:02,611 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-11-03 14:15:03,061 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-03 14:15:03,062 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:15:25,608 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-03 14:15:25,609 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:15:26,165 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-03 14:15:26,166 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:15:26,595 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-03 14:15:26,596 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:15:27,013 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-03 14:15:27,014 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:15:27,519 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-03 14:15:27,521 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:15:27,917 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-03 14:15:27,918 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:15:37,490 INFO [Application] INFO: Application closing
+2026-11-03 14:15:39,303 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-11-03 14:15:40,109 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-03 14:15:40,110 INFO [Audio] INFO: 15 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:16:32,279 INFO [Application] INFO: Application closing
+2026-11-03 14:16:42,618 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-11-03 14:16:43,112 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-03 14:16:43,113 INFO [Audio] INFO: 14 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-03 14:16:57,791 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
+2026-11-03 14:16:58,748 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
+2026-11-03 14:16:58,749 INFO [Cameras] INFO: index 0: available via DirectShow
+2026-11-03 14:16:59,185 INFO [Cameras] INFO: index 1 / DirectShow: could not open
+2026-11-03 14:16:59,247 INFO [Cameras] INFO: index 1 / Media Foundation: could not open
+2026-11-03 14:16:59,302 INFO [Cameras] INFO: index 1 / Default: could not open
+2026-11-03 14:16:59,303 INFO [Cameras] INFO: index 2 / DirectShow: could not open
+2026-11-03 14:16:59,363 INFO [Cameras] INFO: index 2 / Media Foundation: could not open
+2026-11-03 14:16:59,436 INFO [Cameras] INFO: index 2 / Default: could not open
+2026-11-03 14:16:59,437 INFO [Cameras] INFO: index 3 / DirectShow: could not open
+2026-11-03 14:16:59,489 INFO [Cameras] INFO: index 3 / Media Foundation: could not open
+2026-11-03 14:16:59,564 INFO [Cameras] INFO: index 3 / Default: could not open
+2026-11-03 14:16:59,565 INFO [Cameras] INFO: index 4 / DirectShow: could not open
+2026-11-03 14:16:59,605 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
+2026-11-03 14:16:59,652 INFO [Cameras] INFO: index 4 / Default: could not open
+2026-11-03 14:16:59,652 INFO [Cameras] INFO: index 5 / DirectShow: could not open
+2026-11-03 14:16:59,702 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
+2026-11-03 14:16:59,752 INFO [Cameras] INFO: index 5 / Default: could not open
+2026-11-03 14:16:59,752 INFO [Cameras] INFO: index 6 / DirectShow: could not open
+2026-11-03 14:16:59,802 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
+2026-11-03 14:16:59,892 INFO [Cameras] INFO: index 6 / Default: could not open
+2026-11-03 14:16:59,894 INFO [Cameras] INFO: index 7 / DirectShow: could not open
+2026-11-03 14:16:59,982 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
+2026-11-03 14:17:00,046 INFO [Cameras] INFO: index 7 / Default: could not open
+2026-11-03 14:17:00,047 INFO [Cameras] INFO: index 8 / DirectShow: could not open
+2026-11-03 14:17:00,100 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
+2026-11-03 14:17:00,153 INFO [Cameras] INFO: index 8 / Default: could not open
+2026-11-03 14:17:00,153 INFO [Cameras] INFO: index 9 / DirectShow: could not open
+2026-11-03 14:17:00,207 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
+2026-11-03 14:17:00,266 INFO [Cameras] INFO: index 9 / Default: could not open
+2026-11-03 14:17:00,567 INFO [Cameras] INFO: Camera scan finished: 1 available
+2026-11-03 14:17:11,842 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
+2026-11-03 14:17:12,571 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
+2026-11-03 14:17:12,572 INFO [Cameras] INFO: index 0: available via DirectShow
+2026-11-03 14:17:12,669 WARNING [Cameras] WARNING: Stop experiment Preview/Record before scanning cameras
+2026-11-03 14:17:12,973 WARNING [Cameras] WARNING: Stop experiment Preview/Record before scanning cameras
+2026-11-03 14:17:13,267 WARNING [Cameras] WARNING: Stop experiment Preview/Record before scanning cameras
+2026-11-03 14:17:13,834 INFO [Cameras] INFO: index 1 / DirectShow: frames OK (default, 640x480)
+2026-11-03 14:17:13,835 INFO [Cameras] INFO: index 1: available via DirectShow
+2026-11-03 14:17:14,558 INFO [Cameras] INFO: index 2 / DirectShow: could not open
+2026-11-03 14:17:14,634 INFO [Cameras] INFO: index 2 / Media Foundation: could not open
+2026-11-03 14:17:14,684 INFO [Cameras] INFO: index 2 / Default: could not open
+2026-11-03 14:17:14,685 INFO [Cameras] INFO: index 3 / DirectShow: could not open
+2026-11-03 14:17:14,730 INFO [Cameras] INFO: index 3 / Media Foundation: could not open
+2026-11-03 14:17:14,799 INFO [Cameras] INFO: index 3 / Default: could not open
+2026-11-03 14:17:14,801 INFO [Cameras] INFO: index 4 / DirectShow: could not open
+2026-11-03 14:17:14,856 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
+2026-11-03 14:17:14,903 INFO [Cameras] INFO: index 4 / Default: could not open
+2026-11-03 14:17:14,904 INFO [Cameras] INFO: index 5 / DirectShow: could not open
+2026-11-03 14:17:14,946 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
+2026-11-03 14:17:14,991 INFO [Cameras] INFO: index 5 / Default: could not open
+2026-11-03 14:17:14,992 INFO [Cameras] INFO: index 6 / DirectShow: could not open
+2026-11-03 14:17:15,039 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
+2026-11-03 14:17:15,087 INFO [Cameras] INFO: index 6 / Default: could not open
+2026-11-03 14:17:15,087 INFO [Cameras] INFO: index 7 / DirectShow: could not open
+2026-11-03 14:17:15,131 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
+2026-11-03 14:17:15,180 INFO [Cameras] INFO: index 7 / Default: could not open
+2026-11-03 14:17:15,181 INFO [Cameras] INFO: index 8 / DirectShow: could not open
+2026-11-03 14:17:15,221 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
+2026-11-03 14:17:15,265 INFO [Cameras] INFO: index 8 / Default: could not open
+2026-11-03 14:17:15,266 INFO [Cameras] INFO: index 9 / DirectShow: could not open
+2026-11-03 14:17:15,311 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
+2026-11-03 14:17:15,358 INFO [Cameras] INFO: index 9 / Default: could not open
+2026-11-03 14:17:15,681 INFO [Cameras] INFO: Camera scan finished: 2 available
+2026-11-03 14:17:17,670 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
+2026-11-03 14:17:18,420 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
+2026-11-03 14:17:18,421 INFO [Cameras] INFO: index 0: available via DirectShow
+2026-11-03 14:17:19,729 INFO [Cameras] INFO: index 1 / DirectShow: frames OK (default, 640x480)
+2026-11-03 14:17:19,729 INFO [Cameras] INFO: index 1: available via DirectShow
+2026-11-03 14:17:20,305 INFO [Cameras] INFO: index 2 / DirectShow: could not open
+2026-11-03 14:17:20,411 INFO [Cameras] INFO: index 2 / Media Foundation: could not open
+2026-11-03 14:17:20,465 INFO [Cameras] INFO: index 2 / Default: could not open
+2026-11-03 14:17:20,466 INFO [Cameras] INFO: index 3 / DirectShow: could not open
+2026-11-03 14:17:20,518 INFO [Cameras] INFO: index 3 / Media Foundation: could not open
+2026-11-03 14:17:20,579 INFO [Cameras] INFO: index 3 / Default: could not open
+2026-11-03 14:17:20,580 INFO [Cameras] INFO: index 4 / DirectShow: could not open
+2026-11-03 14:17:20,635 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
+2026-11-03 14:17:20,688 INFO [Cameras] INFO: index 4 / Default: could not open
+2026-11-03 14:17:20,689 INFO [Cameras] INFO: index 5 / DirectShow: could not open
+2026-11-03 14:17:20,731 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
+2026-11-03 14:17:20,775 INFO [Cameras] INFO: index 5 / Default: could not open
+2026-11-03 14:17:20,776 INFO [Cameras] INFO: index 6 / DirectShow: could not open
+2026-11-03 14:17:20,818 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
+2026-11-03 14:17:20,863 INFO [Cameras] INFO: index 6 / Default: could not open
+2026-11-03 14:17:20,864 INFO [Cameras] INFO: index 7 / DirectShow: could not open
+2026-11-03 14:17:20,909 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
+2026-11-03 14:17:20,952 INFO [Cameras] INFO: index 7 / Default: could not open
+2026-11-03 14:17:20,954 INFO [Cameras] INFO: index 8 / DirectShow: could not open
+2026-11-03 14:17:20,993 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
+2026-11-03 14:17:21,034 INFO [Cameras] INFO: index 8 / Default: could not open
+2026-11-03 14:17:21,035 INFO [Cameras] INFO: index 9 / DirectShow: could not open
+2026-11-03 14:17:21,076 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
+2026-11-03 14:17:21,119 INFO [Cameras] INFO: index 9 / Default: could not open
+2026-11-03 14:17:21,442 INFO [Cameras] INFO: Camera scan finished: 2 available
+2026-11-03 14:17:26,941 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-03 14:17:27,955 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 1280x720)
+2026-11-03 14:17:27,956 INFO [Camera 1] PREVIEW: Opened camera 1 via DirectShow
+2026-11-03 14:17:56,450 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-03 14:18:25,541 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=11 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-03 14:18:25,582 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-03 14:18:25,674 INFO [Microphone] RECORDING: device=11, rate=384000 Hz, channels=1
+2026-11-03 14:18:25,675 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-03 14:18:32,039 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-03 14:18:35,092 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-03 14:18:36,155 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 1280x720)
+2026-11-03 14:18:36,155 INFO [Camera 1] PREVIEW: Opened camera 1 via DirectShow
+2026-11-03 14:19:04,405 INFO [Microphone] STOPPED: 14822400 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-03 14:19:04,625 INFO [Polar H10] STOPPED: Polar finished
+2026-11-03 14:19:06,627 WARNING [Camera 1] WARNING: Preview thread has not exited yet
+2026-11-03 14:19:08,313 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-03 14:19:08,808 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=11 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-03 14:19:08,836 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-03 14:19:08,844 INFO [Microphone] RECORDING: device=11, rate=384000 Hz, channels=1
+2026-11-03 14:19:08,844 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-03 14:19:14,296 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-03 14:19:26,889 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-03 14:19:27,901 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 1280x720)
+2026-11-03 14:19:27,901 INFO [Camera 1] PREVIEW: Opened camera 1 via DirectShow
+2026-11-03 14:20:00,226 INFO [Microphone] STOPPED: 19614720 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-03 14:20:00,450 INFO [Polar H10] STOPPED: Polar finished
+2026-11-03 14:20:02,452 WARNING [Camera 1] WARNING: Preview thread has not exited yet
+2026-11-03 14:20:04,018 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=11 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-03 14:20:04,058 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-03 14:20:04,073 INFO [Microphone] RECORDING: device=11, rate=384000 Hz, channels=1
+2026-11-03 14:20:04,074 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-03 14:20:05,619 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-03 14:20:09,735 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-03 14:20:11,586 INFO [Microphone] STOPPED: 2841600 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-03 14:20:11,804 INFO [Polar H10] STOPPED: Polar finished
+2026-11-03 14:20:19,424 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-03 14:20:19,814 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-03 14:20:19,814 INFO [Camera 1] PREVIEW: Opened camera 1 via DirectShow
+2026-11-03 14:20:24,046 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=11 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-03 14:20:24,090 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-03 14:20:24,098 INFO [Microphone] RECORDING: device=11, rate=384000 Hz, channels=1
+2026-11-03 14:20:24,099 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-03 14:20:29,632 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-03 14:20:37,545 INFO [Microphone] STOPPED: 5122560 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-03 14:20:37,765 INFO [Polar H10] STOPPED: Polar finished
+2026-11-03 14:20:38,382 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-03 14:20:39,488 INFO [Polar H10] INFO: Preflight: connect and await live HR/ECG/ACC as selected before session marker
+2026-11-03 14:20:39,489 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-03 14:20:42,272 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-03 14:20:42,423 INFO [Polar H10] READY: Live samples confirmed: hr, ecg, acc
+2026-11-03 14:20:42,423 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=11 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-03 14:20:42,469 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-03 14:20:42,514 INFO [Microphone] RECORDING: device=11, rate=384000 Hz, channels=1
+2026-11-03 14:20:45,767 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-03 14:20:46,140 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-03 14:20:46,192 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-03 14:20:46,194 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-03 14:20:46,197 INFO [Session] RECORDING: 17496eeb34d4450db02164cca7ab1967 | C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_001\Session_20261103_142039_427812
+2026-11-03 14:36:33,781 INFO [Polar H10] STOPPED: Polar finished
+2026-11-03 14:36:33,943 INFO [Microphone] STOPPED: 365214720 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-03 14:36:34,576 INFO [Camera 1] INFO: Camera stopped; 18919 frames saved
+2026-11-03 14:36:34,577 INFO [Session] STOPPED: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_001\Session_20261103_142039_427812
+2026-11-03 14:37:13,414 INFO [Polar H10] INFO: Preflight: connect and await live HR/ECG/ACC as selected before session marker
+2026-11-03 14:37:13,415 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-03 14:37:19,656 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-03 14:37:22,607 INFO [Polar H10] READY: Live samples confirmed: hr, ecg, acc
+2026-11-03 14:37:22,608 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=11 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-03 14:37:22,651 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-03 14:37:22,766 INFO [Microphone] RECORDING: device=11, rate=384000 Hz, channels=1
+2026-11-03 14:37:26,317 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-03 14:37:26,709 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-03 14:37:26,731 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-03 14:37:26,731 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-03 14:37:26,739 INFO [Session] RECORDING: 4600abaf0b6e41c8812edb9a805b83b5 | C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_001\Session_20261103_143713_409560
+2026-11-03 14:41:07,848 INFO [Polar H10] STOPPED: Polar finished
+2026-11-03 14:41:08,026 INFO [Microphone] STOPPED: 86976000 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-03 14:41:08,652 INFO [Camera 1] INFO: Camera stopped; 4454 frames saved
+2026-11-03 14:41:08,653 INFO [Session] STOPPED: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_001\Session_20261103_143713_409560
+2026-11-03 15:20:31,142 INFO [Application] INFO: Application closing
+2026-11-04 11:14:58,820 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-11-04 11:15:00,166 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-04 11:15:00,169 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-04 11:26:53,548 WARNING [Camera 1] WARNING: Select a camera from the dropdown first
+2026-11-04 11:27:04,577 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
+2026-11-04 11:27:05,482 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
+2026-11-04 11:27:05,482 INFO [Cameras] INFO: index 0: available via DirectShow
+2026-11-04 11:27:06,676 INFO [Cameras] INFO: index 1 / DirectShow: frames OK (default, 640x480)
+2026-11-04 11:27:06,677 INFO [Cameras] INFO: index 1: available via DirectShow
+2026-11-04 11:27:07,291 INFO [Cameras] INFO: index 2 / DirectShow: could not open
+2026-11-04 11:27:07,372 INFO [Cameras] INFO: index 2 / Media Foundation: could not open
+2026-11-04 11:27:07,419 INFO [Cameras] INFO: index 2 / Default: could not open
+2026-11-04 11:27:07,420 INFO [Cameras] INFO: index 3 / DirectShow: could not open
+2026-11-04 11:27:07,465 INFO [Cameras] INFO: index 3 / Media Foundation: could not open
+2026-11-04 11:27:07,512 INFO [Cameras] INFO: index 3 / Default: could not open
+2026-11-04 11:27:07,513 INFO [Cameras] INFO: index 4 / DirectShow: could not open
+2026-11-04 11:27:07,583 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
+2026-11-04 11:27:07,651 INFO [Cameras] INFO: index 4 / Default: could not open
+2026-11-04 11:27:07,652 INFO [Cameras] INFO: index 5 / DirectShow: could not open
+2026-11-04 11:27:07,703 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
+2026-11-04 11:27:07,781 INFO [Cameras] INFO: index 5 / Default: could not open
+2026-11-04 11:27:07,781 INFO [Cameras] INFO: index 6 / DirectShow: could not open
+2026-11-04 11:27:07,824 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
+2026-11-04 11:27:07,870 INFO [Cameras] INFO: index 6 / Default: could not open
+2026-11-04 11:27:07,871 INFO [Cameras] INFO: index 7 / DirectShow: could not open
+2026-11-04 11:27:07,917 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
+2026-11-04 11:27:07,964 INFO [Cameras] INFO: index 7 / Default: could not open
+2026-11-04 11:27:07,965 INFO [Cameras] INFO: index 8 / DirectShow: could not open
+2026-11-04 11:27:08,015 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
+2026-11-04 11:27:08,063 INFO [Cameras] INFO: index 8 / Default: could not open
+2026-11-04 11:27:08,065 INFO [Cameras] INFO: index 9 / DirectShow: could not open
+2026-11-04 11:27:08,110 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
+2026-11-04 11:27:08,156 INFO [Cameras] INFO: index 9 / Default: could not open
+2026-11-04 11:27:08,197 INFO [Cameras] INFO: Camera scan finished: 2 available
+2026-11-04 11:27:36,493 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 11:27:37,507 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 1280x720)
+2026-11-04 11:27:37,507 INFO [Camera 1] PREVIEW: Opened camera 1 via DirectShow
+2026-11-04 11:27:45,044 WARNING [Camera 1] WARNING: Preview thread has not exited yet
+2026-11-04 11:27:45,272 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-04 11:27:56,416 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 11:27:57,429 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 1280x720)
+2026-11-04 11:27:57,429 INFO [Camera 1] PREVIEW: Opened camera 1 via DirectShow
+2026-11-04 11:28:03,079 WARNING [Camera 1] WARNING: Preview thread has not exited yet
+2026-11-04 11:28:03,435 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-04 11:28:10,197 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 11:28:10,451 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 1280x720)
+2026-11-04 11:28:10,452 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
+2026-11-04 11:28:13,467 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-04 11:28:38,375 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 11:28:39,387 INFO [Camera 3] INFO: index 1 / DirectShow: frames OK (requested, 1280x720)
+2026-11-04 11:28:39,387 INFO [Camera 3] PREVIEW: Opened camera 1 via DirectShow
+2026-11-04 11:28:44,702 WARNING [Camera 3] WARNING: Preview thread has not exited yet
+2026-11-04 11:28:45,398 INFO [Camera 3] INFO: Preview capture stopped
+2026-11-04 11:28:56,025 INFO [Camera 3] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 11:28:57,039 INFO [Camera 3] INFO: index 1 / DirectShow: frames OK (requested, 1280x720)
+2026-11-04 11:28:57,039 INFO [Camera 3] PREVIEW: Opened camera 1 via DirectShow
+2026-11-04 11:29:18,686 WARNING [Camera 3] WARNING: Preview thread has not exited yet
+2026-11-04 11:29:19,079 INFO [Camera 3] INFO: Preview capture stopped
+2026-11-04 11:29:21,516 INFO [Application] INFO: Application closing
+2026-11-04 11:30:01,548 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-11-04 11:30:02,004 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-04 11:30:02,005 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-04 11:31:30,300 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
+2026-11-04 11:31:31,154 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
+2026-11-04 11:31:31,155 INFO [Cameras] INFO: index 0: available via DirectShow
+2026-11-04 11:31:32,361 INFO [Cameras] INFO: index 1 / DirectShow: frames OK (default, 640x480)
+2026-11-04 11:31:32,362 INFO [Cameras] INFO: index 1: available via DirectShow
+2026-11-04 11:31:32,948 INFO [Cameras] INFO: index 2 / DirectShow: could not open
+2026-11-04 11:31:33,042 INFO [Cameras] INFO: index 2 / Media Foundation: could not open
+2026-11-04 11:31:33,112 INFO [Cameras] INFO: index 2 / Default: could not open
+2026-11-04 11:31:33,113 INFO [Cameras] INFO: index 3 / DirectShow: could not open
+2026-11-04 11:31:33,194 INFO [Cameras] INFO: index 3 / Media Foundation: could not open
+2026-11-04 11:31:33,261 INFO [Cameras] INFO: index 3 / Default: could not open
+2026-11-04 11:31:33,262 INFO [Cameras] INFO: index 4 / DirectShow: could not open
+2026-11-04 11:31:33,327 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
+2026-11-04 11:31:33,392 INFO [Cameras] INFO: index 4 / Default: could not open
+2026-11-04 11:31:33,393 INFO [Cameras] INFO: index 5 / DirectShow: could not open
+2026-11-04 11:31:33,450 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
+2026-11-04 11:31:33,507 INFO [Cameras] INFO: index 5 / Default: could not open
+2026-11-04 11:31:33,509 INFO [Cameras] INFO: index 6 / DirectShow: could not open
+2026-11-04 11:31:33,570 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
+2026-11-04 11:31:33,621 INFO [Cameras] INFO: index 6 / Default: could not open
+2026-11-04 11:31:33,622 INFO [Cameras] INFO: index 7 / DirectShow: could not open
+2026-11-04 11:31:33,670 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
+2026-11-04 11:31:33,713 INFO [Cameras] INFO: index 7 / Default: could not open
+2026-11-04 11:31:33,713 INFO [Cameras] INFO: index 8 / DirectShow: could not open
+2026-11-04 11:31:33,757 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
+2026-11-04 11:31:33,804 INFO [Cameras] INFO: index 8 / Default: could not open
+2026-11-04 11:31:33,805 INFO [Cameras] INFO: index 9 / DirectShow: could not open
+2026-11-04 11:31:33,856 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
+2026-11-04 11:31:33,901 INFO [Cameras] INFO: index 9 / Default: could not open
+2026-11-04 11:31:34,180 INFO [Cameras] INFO: Camera scan finished: 2 available
+2026-11-04 11:31:49,032 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 11:31:50,048 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 1280x720)
+2026-11-04 11:31:50,048 INFO [Camera 1] PREVIEW: Opened camera 1 via DirectShow
+2026-11-04 11:31:58,523 WARNING [Camera 1] WARNING: Preview thread has not exited yet
+2026-11-04 11:32:01,584 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-04 11:32:16,622 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 11:32:16,995 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-04 11:32:16,995 INFO [Camera 1] PREVIEW: Opened camera 1 via DirectShow
+2026-11-04 11:32:45,970 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-04 11:33:51,698 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-04 11:33:51,700 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-04 11:33:52,545 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-04 11:33:52,546 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-04 11:34:02,973 INFO [Application] INFO: Application closing
+2026-11-04 11:34:05,938 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-11-04 11:34:06,423 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-04 11:34:06,425 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-04 11:34:37,398 INFO [Application] INFO: Application closing
+2026-11-04 11:34:40,047 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-11-04 11:34:40,457 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-04 11:34:40,458 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-04 11:35:07,912 INFO [Application] INFO: Application closing
+2026-11-04 11:35:33,147 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-11-04 11:35:33,629 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-04 11:35:33,631 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-04 11:35:44,538 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
+2026-11-04 11:35:45,492 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
+2026-11-04 11:35:45,492 INFO [Cameras] INFO: index 0: available via DirectShow
+2026-11-04 11:35:46,579 INFO [Cameras] INFO: index 1 / DirectShow: frames OK (default, 640x480)
+2026-11-04 11:35:46,580 INFO [Cameras] INFO: index 1: available via DirectShow
+2026-11-04 11:35:47,133 INFO [Cameras] INFO: index 2 / DirectShow: could not open
+2026-11-04 11:35:47,194 INFO [Cameras] INFO: index 2 / Media Foundation: could not open
+2026-11-04 11:35:47,260 INFO [Cameras] INFO: index 2 / Default: could not open
+2026-11-04 11:35:47,260 INFO [Cameras] INFO: index 3 / DirectShow: could not open
+2026-11-04 11:35:47,317 INFO [Cameras] INFO: index 3 / Media Foundation: could not open
+2026-11-04 11:35:47,377 INFO [Cameras] INFO: index 3 / Default: could not open
+2026-11-04 11:35:47,378 INFO [Cameras] INFO: index 4 / DirectShow: could not open
+2026-11-04 11:35:47,427 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
+2026-11-04 11:35:47,479 INFO [Cameras] INFO: index 4 / Default: could not open
+2026-11-04 11:35:47,480 INFO [Cameras] INFO: index 5 / DirectShow: could not open
+2026-11-04 11:35:47,544 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
+2026-11-04 11:35:47,626 INFO [Cameras] INFO: index 5 / Default: could not open
+2026-11-04 11:35:47,627 INFO [Cameras] INFO: index 6 / DirectShow: could not open
+2026-11-04 11:35:47,694 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
+2026-11-04 11:35:47,750 INFO [Cameras] INFO: index 6 / Default: could not open
+2026-11-04 11:35:47,751 INFO [Cameras] INFO: index 7 / DirectShow: could not open
+2026-11-04 11:35:47,808 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
+2026-11-04 11:35:47,858 INFO [Cameras] INFO: index 7 / Default: could not open
+2026-11-04 11:35:47,859 INFO [Cameras] INFO: index 8 / DirectShow: could not open
+2026-11-04 11:35:47,903 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
+2026-11-04 11:35:47,949 INFO [Cameras] INFO: index 8 / Default: could not open
+2026-11-04 11:35:47,950 INFO [Cameras] INFO: index 9 / DirectShow: could not open
+2026-11-04 11:35:47,992 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
+2026-11-04 11:35:48,035 INFO [Cameras] INFO: index 9 / Default: could not open
+2026-11-04 11:35:48,170 INFO [Cameras] INFO: Camera scan finished: 2 available
+2026-11-04 11:35:58,476 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-04 11:35:58,477 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-04 11:35:58,804 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-04 11:35:58,805 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-04 11:35:59,456 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-04 11:35:59,457 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-04 11:36:00,254 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-04 11:36:00,255 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-04 11:36:00,635 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-04 11:36:00,636 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-04 11:36:00,987 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-04 11:36:00,988 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-04 11:36:01,349 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-04 11:36:01,351 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-04 11:36:01,731 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-04 11:36:01,733 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-04 11:36:02,187 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-04 11:36:02,189 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-04 11:36:02,539 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-04 11:36:02,540 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-04 11:36:03,061 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-04 11:36:03,063 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-04 11:36:03,431 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-04 11:36:03,432 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-04 11:36:03,888 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-04 11:36:03,890 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-04 11:36:03,910 INFO [Application] INFO: Application closing
+2026-11-04 11:36:15,928 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-11-04 11:36:16,752 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-04 11:36:16,753 INFO [Audio] INFO: 18 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-04 11:36:37,264 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
+2026-11-04 11:36:38,219 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
+2026-11-04 11:36:38,219 INFO [Cameras] INFO: index 0: available via DirectShow
+2026-11-04 11:36:40,726 INFO [Cameras] INFO: index 1 / DirectShow: frames OK (default, 640x480)
+2026-11-04 11:36:40,726 INFO [Cameras] INFO: index 1: available via DirectShow
+2026-11-04 11:36:45,203 INFO [Cameras] INFO: index 2 / DirectShow: could not open
+2026-11-04 11:36:45,280 INFO [Cameras] INFO: index 2 / Media Foundation: could not open
+2026-11-04 11:36:45,338 INFO [Cameras] INFO: index 2 / Default: could not open
+2026-11-04 11:36:45,340 INFO [Cameras] INFO: index 3 / DirectShow: could not open
+2026-11-04 11:36:45,385 INFO [Cameras] INFO: index 3 / Media Foundation: could not open
+2026-11-04 11:36:45,432 INFO [Cameras] INFO: index 3 / Default: could not open
+2026-11-04 11:36:45,433 INFO [Cameras] INFO: index 4 / DirectShow: could not open
+2026-11-04 11:36:45,501 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
+2026-11-04 11:36:45,552 INFO [Cameras] INFO: index 4 / Default: could not open
+2026-11-04 11:36:45,553 INFO [Cameras] INFO: index 5 / DirectShow: could not open
+2026-11-04 11:36:45,597 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
+2026-11-04 11:36:45,643 INFO [Cameras] INFO: index 5 / Default: could not open
+2026-11-04 11:36:45,644 INFO [Cameras] INFO: index 6 / DirectShow: could not open
+2026-11-04 11:36:45,686 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
+2026-11-04 11:36:45,737 INFO [Cameras] INFO: index 6 / Default: could not open
+2026-11-04 11:36:45,738 INFO [Cameras] INFO: index 7 / DirectShow: could not open
+2026-11-04 11:36:45,782 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
+2026-11-04 11:36:45,828 INFO [Cameras] INFO: index 7 / Default: could not open
+2026-11-04 11:36:45,828 INFO [Cameras] INFO: index 8 / DirectShow: could not open
+2026-11-04 11:36:45,873 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
+2026-11-04 11:36:45,931 INFO [Cameras] INFO: index 8 / Default: could not open
+2026-11-04 11:36:45,932 INFO [Cameras] INFO: index 9 / DirectShow: could not open
+2026-11-04 11:36:46,003 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
+2026-11-04 11:36:46,056 INFO [Cameras] INFO: index 9 / Default: could not open
+2026-11-04 11:36:46,432 WARNING [Cameras] WARNING: Stop experiment Preview/Record before scanning cameras
+2026-11-04 11:36:46,529 INFO [Cameras] INFO: Camera scan finished: 2 available
+2026-11-04 11:36:47,269 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
+2026-11-04 11:36:47,939 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
+2026-11-04 11:36:47,939 INFO [Cameras] INFO: index 0: available via DirectShow
+2026-11-04 11:36:49,067 INFO [Cameras] INFO: index 1 / DirectShow: frames OK (default, 640x480)
+2026-11-04 11:36:49,067 INFO [Cameras] INFO: index 1: available via DirectShow
+2026-11-04 11:36:49,663 INFO [Cameras] INFO: index 2 / DirectShow: could not open
+2026-11-04 11:36:49,755 INFO [Cameras] INFO: index 2 / Media Foundation: could not open
+2026-11-04 11:36:49,812 INFO [Cameras] INFO: index 2 / Default: could not open
+2026-11-04 11:36:49,814 INFO [Cameras] INFO: index 3 / DirectShow: could not open
+2026-11-04 11:36:49,865 INFO [Cameras] INFO: index 3 / Media Foundation: could not open
+2026-11-04 11:36:49,922 INFO [Cameras] INFO: index 3 / Default: could not open
+2026-11-04 11:36:49,923 INFO [Cameras] INFO: index 4 / DirectShow: could not open
+2026-11-04 11:36:49,974 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
+2026-11-04 11:36:50,029 INFO [Cameras] INFO: index 4 / Default: could not open
+2026-11-04 11:36:50,030 INFO [Cameras] INFO: index 5 / DirectShow: could not open
+2026-11-04 11:36:50,078 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
+2026-11-04 11:36:50,134 INFO [Cameras] INFO: index 5 / Default: could not open
+2026-11-04 11:36:50,135 INFO [Cameras] INFO: index 6 / DirectShow: could not open
+2026-11-04 11:36:50,186 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
+2026-11-04 11:36:50,226 INFO [Cameras] INFO: index 6 / Default: could not open
+2026-11-04 11:36:50,227 INFO [Cameras] INFO: index 7 / DirectShow: could not open
+2026-11-04 11:36:50,289 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
+2026-11-04 11:36:50,346 INFO [Cameras] INFO: index 7 / Default: could not open
+2026-11-04 11:36:50,348 INFO [Cameras] INFO: index 8 / DirectShow: could not open
+2026-11-04 11:36:50,391 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
+2026-11-04 11:36:50,442 INFO [Cameras] INFO: index 8 / Default: could not open
+2026-11-04 11:36:50,443 INFO [Cameras] INFO: index 9 / DirectShow: could not open
+2026-11-04 11:36:50,484 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
+2026-11-04 11:36:50,527 INFO [Cameras] INFO: index 9 / Default: could not open
+2026-11-04 11:36:50,710 INFO [Cameras] INFO: Camera scan finished: 2 available
+2026-11-04 11:36:55,076 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 11:36:55,448 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-04 11:36:55,448 INFO [Camera 1] PREVIEW: Opened camera 1 via DirectShow
+2026-11-04 11:36:58,646 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-04 11:41:58,673 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 11:41:59,045 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-04 11:41:59,046 INFO [Camera 1] PREVIEW: Opened camera 1 via DirectShow
+2026-11-04 11:47:47,848 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-04 13:01:00,304 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=13 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-04 13:01:00,346 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-04 13:01:00,456 INFO [Microphone] RECORDING: device=13, rate=384000 Hz, channels=1
+2026-11-04 13:01:06,501 INFO [Microphone] STOPPED: 2280960 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-04 13:01:14,718 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=13 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-04 13:01:14,764 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-04 13:01:14,778 INFO [Microphone] RECORDING: device=13, rate=384000 Hz, channels=1
+2026-11-04 13:01:14,778 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-04 13:01:22,679 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-04 13:01:56,393 INFO [Microphone] STOPPED: 15889920 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-04 13:01:56,619 INFO [Polar H10] STOPPED: Polar finished
+2026-11-04 13:12:49,721 INFO [Polar H10] INFO: Preflight: connect and await live HR/ECG/ACC as selected before session marker
+2026-11-04 13:12:49,721 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-04 13:12:55,586 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-04 13:12:58,431 INFO [Polar H10] READY: Live samples confirmed: hr, ecg, acc
+2026-11-04 13:12:58,432 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=13 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-04 13:12:58,476 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-04 13:12:58,598 INFO [Microphone] RECORDING: device=13, rate=384000 Hz, channels=1
+2026-11-04 13:12:58,601 INFO [Session] RECORDING: de09da056c9b44d197d1c309a7f84597 | C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_003\Session_20261104_131249_717574
+2026-11-04 13:13:08,036 INFO [Polar H10] STOPPED: Polar finished
+2026-11-04 13:13:08,117 INFO [Microphone] STOPPED: 3571200 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-04 13:13:08,118 INFO [Session] STOPPED: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_003\Session_20261104_131249_717574
+2026-11-04 13:13:10,839 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
+2026-11-04 13:13:11,755 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
+2026-11-04 13:13:11,755 INFO [Cameras] INFO: index 0: available via DirectShow
+2026-11-04 13:13:12,864 INFO [Cameras] INFO: index 1 / DirectShow: frames OK (default, 640x480)
+2026-11-04 13:13:12,864 INFO [Cameras] INFO: index 1: available via DirectShow
+2026-11-04 13:13:13,549 INFO [Cameras] INFO: index 2 / DirectShow: could not open
+2026-11-04 13:13:13,660 INFO [Cameras] INFO: index 2 / Media Foundation: could not open
+2026-11-04 13:13:13,707 INFO [Cameras] INFO: index 2 / Default: could not open
+2026-11-04 13:13:13,708 INFO [Cameras] INFO: index 3 / DirectShow: could not open
+2026-11-04 13:13:13,758 INFO [Cameras] INFO: index 3 / Media Foundation: could not open
+2026-11-04 13:13:13,815 INFO [Cameras] INFO: index 3 / Default: could not open
+2026-11-04 13:13:13,817 INFO [Cameras] INFO: index 4 / DirectShow: could not open
+2026-11-04 13:13:13,884 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
+2026-11-04 13:13:13,958 INFO [Cameras] INFO: index 4 / Default: could not open
+2026-11-04 13:13:13,960 INFO [Cameras] INFO: index 5 / DirectShow: could not open
+2026-11-04 13:13:14,030 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
+2026-11-04 13:13:14,086 INFO [Cameras] INFO: index 5 / Default: could not open
+2026-11-04 13:13:14,087 INFO [Cameras] INFO: index 6 / DirectShow: could not open
+2026-11-04 13:13:14,134 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
+2026-11-04 13:13:14,179 INFO [Cameras] INFO: index 6 / Default: could not open
+2026-11-04 13:13:14,180 INFO [Cameras] INFO: index 7 / DirectShow: could not open
+2026-11-04 13:13:14,233 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
+2026-11-04 13:13:14,333 INFO [Cameras] INFO: index 7 / Default: could not open
+2026-11-04 13:13:14,334 INFO [Cameras] INFO: index 8 / DirectShow: could not open
+2026-11-04 13:13:14,414 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
+2026-11-04 13:13:14,505 INFO [Cameras] INFO: index 8 / Default: could not open
+2026-11-04 13:13:14,506 INFO [Cameras] INFO: index 9 / DirectShow: could not open
+2026-11-04 13:13:14,571 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
+2026-11-04 13:13:14,620 INFO [Cameras] INFO: index 9 / Default: could not open
+2026-11-04 13:13:14,734 INFO [Cameras] INFO: Camera scan finished: 2 available
+2026-11-04 13:13:20,182 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=13 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-04 13:13:20,209 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-04 13:13:20,221 INFO [Microphone] RECORDING: device=13, rate=384000 Hz, channels=1
+2026-11-04 13:13:20,222 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-04 13:13:23,784 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 13:13:24,138 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-04 13:13:24,138 INFO [Camera 1] PREVIEW: Opened camera 1 via DirectShow
+2026-11-04 13:13:25,554 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-04 13:13:30,027 INFO [Microphone] STOPPED: 3709440 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-04 13:13:30,251 INFO [Polar H10] STOPPED: Polar finished
+2026-11-04 13:13:30,883 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-04 13:13:32,206 INFO [Polar H10] INFO: Preflight: connect and await live HR/ECG/ACC as selected before session marker
+2026-11-04 13:13:32,208 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-04 13:13:34,918 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-04 13:13:35,549 INFO [Polar H10] READY: Live samples confirmed: hr, ecg, acc
+2026-11-04 13:13:35,550 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=13 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-04 13:13:35,602 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-04 13:13:35,649 INFO [Microphone] RECORDING: device=13, rate=384000 Hz, channels=1
+2026-11-04 13:13:39,319 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 13:13:39,691 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-04 13:13:39,696 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-04 13:13:39,696 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-04 13:13:39,700 INFO [Session] RECORDING: 8127b48afa85469ba83e640c591349c4 | C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_003\Session_20261104_131332_202435
+2026-11-04 13:17:44,750 INFO [Polar H10] STOPPED: Polar finished
+2026-11-04 13:17:44,832 INFO [Microphone] STOPPED: 95569920 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-04 13:17:45,587 INFO [Camera 1] INFO: Camera stopped; 4897 frames saved
+2026-11-04 13:17:45,589 INFO [Session] STOPPED: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_003\Session_20261104_131332_202435
+2026-11-04 13:18:09,197 INFO [Polar H10] INFO: Preflight: connect and await live HR/ECG/ACC as selected before session marker
+2026-11-04 13:18:09,198 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-04 13:18:14,681 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-04 13:18:17,574 INFO [Polar H10] READY: Live samples confirmed: hr, ecg, acc
+2026-11-04 13:18:17,578 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=13 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-04 13:18:17,607 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-04 13:18:17,637 INFO [Microphone] RECORDING: device=13, rate=384000 Hz, channels=1
+2026-11-04 13:18:21,031 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 13:18:21,405 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-04 13:18:21,411 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-04 13:18:21,411 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-04 13:18:21,413 INFO [Session] RECORDING: 8c44e985aa8e4f9ea8c41b2d1f54fc8d | C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_003\Session_20261104_131809_165270
+2026-11-04 13:20:37,419 INFO [Polar H10] STOPPED: Polar finished
+2026-11-04 13:20:37,774 INFO [Microphone] STOPPED: 53629440 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-04 13:20:38,414 INFO [Camera 1] INFO: Camera stopped; 2728 frames saved
+2026-11-04 13:20:38,415 INFO [Session] STOPPED: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_003\Session_20261104_131809_165270
+2026-11-04 13:20:59,365 INFO [Polar H10] INFO: Preflight: connect and await live HR/ECG/ACC as selected before session marker
+2026-11-04 13:20:59,366 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-04 13:21:04,734 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-04 13:21:07,544 INFO [Polar H10] READY: Live samples confirmed: hr, ecg, acc
+2026-11-04 13:21:07,544 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=13 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-04 13:21:07,592 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-04 13:21:07,662 INFO [Microphone] RECORDING: device=13, rate=384000 Hz, channels=1
+2026-11-04 13:21:15,786 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 13:21:16,160 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-04 13:21:16,167 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-04 13:21:16,167 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-04 13:21:16,169 INFO [Session] RECORDING: d338744a731743d8a8d2df8b137573c1 | C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_003\Session_20261104_132059_361328
+2026-11-04 13:23:28,468 INFO [Polar H10] STOPPED: Polar finished
+2026-11-04 13:23:28,556 INFO [Microphone] STOPPED: 53928960 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-04 13:23:29,172 INFO [Camera 1] INFO: Camera stopped; 2634 frames saved
+2026-11-04 13:23:29,173 INFO [Session] STOPPED: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_003\Session_20261104_132059_361328
+2026-11-04 13:23:59,386 INFO [Polar H10] INFO: Preflight: connect and await live HR/ECG/ACC as selected before session marker
+2026-11-04 13:23:59,387 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-04 13:24:04,778 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-04 13:24:07,661 INFO [Polar H10] READY: Live samples confirmed: hr, ecg, acc
+2026-11-04 13:24:07,661 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=13 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-04 13:24:07,702 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-04 13:24:07,761 INFO [Microphone] RECORDING: device=13, rate=384000 Hz, channels=1
+2026-11-04 13:24:15,903 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 13:24:16,276 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-04 13:24:16,281 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-04 13:24:16,281 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-04 13:24:16,282 INFO [Session] RECORDING: de7a6811ee6f47f2a24356a4976aafb0 | C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_003\Session_20261104_132359_381804
+2026-11-04 13:25:22,351 INFO [Polar H10] STOPPED: Polar finished
+2026-11-04 13:25:22,508 INFO [Microphone] STOPPED: 28500480 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-04 13:25:23,106 INFO [Camera 1] INFO: Camera stopped; 1318 frames saved
+2026-11-04 13:25:23,107 INFO [Session] STOPPED: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_003\Session_20261104_132359_381804
+2026-11-04 13:26:08,002 INFO [Polar H10] INFO: Preflight: connect and await live HR/ECG/ACC as selected before session marker
+2026-11-04 13:26:08,003 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-04 13:26:14,198 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-04 13:26:17,091 INFO [Polar H10] READY: Live samples confirmed: hr, ecg, acc
+2026-11-04 13:26:17,091 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=13 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-04 13:26:17,128 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-04 13:26:17,245 INFO [Microphone] RECORDING: device=13, rate=384000 Hz, channels=1
+2026-11-04 13:26:20,624 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 13:26:21,014 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-04 13:26:21,018 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-04 13:26:21,018 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-04 13:26:21,019 INFO [Session] RECORDING: 789da83a16984e29a3633b36db2664f7 | C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_003\Session_20261104_132607_997564
+2026-11-04 13:28:00,492 INFO [Polar H10] STOPPED: Polar finished
+2026-11-04 13:28:00,587 INFO [Microphone] STOPPED: 39598080 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-04 13:28:01,257 INFO [Camera 1] INFO: Camera stopped; 1985 frames saved
+2026-11-04 13:28:01,259 INFO [Session] STOPPED: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_003\Session_20261104_132607_997564
+2026-11-04 13:29:16,896 INFO [Polar H10] INFO: Preflight: connect and await live HR/ECG/ACC as selected before session marker
+2026-11-04 13:29:16,896 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-04 13:29:23,244 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-04 13:29:26,083 INFO [Polar H10] READY: Live samples confirmed: hr, ecg, acc
+2026-11-04 13:29:26,083 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=13 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-04 13:29:26,115 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-04 13:29:26,195 INFO [Microphone] RECORDING: device=13, rate=384000 Hz, channels=1
+2026-11-04 13:29:29,741 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 13:29:30,126 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-04 13:29:30,134 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-04 13:29:30,135 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-04 13:29:30,139 INFO [Session] RECORDING: c107afcf468242608a36a7059753d437 | C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_003\Session_20261104_132916_895127
+2026-11-04 13:30:59,076 INFO [Polar H10] STOPPED: Polar finished
+2026-11-04 13:30:59,164 INFO [Microphone] STOPPED: 35612160 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-04 13:30:59,775 INFO [Camera 1] INFO: Camera stopped; 1778 frames saved
+2026-11-04 13:30:59,776 INFO [Session] STOPPED: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_003\Session_20261104_132916_895127
+2026-11-04 13:31:36,682 INFO [Polar H10] INFO: Preflight: connect and await live HR/ECG/ACC as selected before session marker
+2026-11-04 13:31:36,683 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-04 13:31:43,191 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-04 13:31:46,080 INFO [Polar H10] READY: Live samples confirmed: hr, ecg, acc
+2026-11-04 13:31:46,081 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=13 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-04 13:31:46,125 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-04 13:31:46,210 INFO [Microphone] RECORDING: device=13, rate=384000 Hz, channels=1
+2026-11-04 13:31:49,822 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 13:31:50,194 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-04 13:31:50,205 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-04 13:31:50,205 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-04 13:31:50,206 INFO [Session] RECORDING: d9f8bdce438f429096bcc81e7676a758 | C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_003\Session_20261104_133136_681219
+2026-11-04 13:33:52,612 INFO [Polar H10] STOPPED: Polar finished
+2026-11-04 13:33:52,724 INFO [Microphone] STOPPED: 48491520 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-04 13:33:53,344 INFO [Camera 1] INFO: Camera stopped; 2450 frames saved
+2026-11-04 13:33:53,345 INFO [Session] STOPPED: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_003\Session_20261104_133136_681219
+2026-11-04 13:34:34,275 INFO [Polar H10] INFO: Preflight: connect and await live HR/ECG/ACC as selected before session marker
+2026-11-04 13:34:34,276 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-04 13:34:39,681 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-04 13:34:42,553 INFO [Polar H10] READY: Live samples confirmed: hr, ecg, acc
+2026-11-04 13:34:42,554 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=13 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-04 13:34:42,599 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-04 13:34:42,716 INFO [Microphone] RECORDING: device=13, rate=384000 Hz, channels=1
+2026-11-04 13:34:46,171 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 13:34:46,544 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-04 13:34:46,550 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-04 13:34:46,550 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-04 13:34:46,551 INFO [Session] RECORDING: 960d3f75f15441a7b139f2eb7b0fc2a5 | C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_003\Session_20261104_133434_269495
+2026-11-04 13:37:02,255 INFO [Polar H10] STOPPED: Polar finished
+2026-11-04 13:37:02,351 INFO [Microphone] STOPPED: 53537280 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-04 13:37:02,967 INFO [Camera 1] INFO: Camera stopped; 2714 frames saved
+2026-11-04 13:37:02,970 INFO [Session] STOPPED: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_003\Session_20261104_133434_269495
+2026-11-04 13:37:34,551 INFO [Polar H10] INFO: Preflight: connect and await live HR/ECG/ACC as selected before session marker
+2026-11-04 13:37:34,552 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-04 13:37:39,906 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-04 13:37:42,734 INFO [Polar H10] READY: Live samples confirmed: hr, ecg, acc
+2026-11-04 13:37:42,735 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=13 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-04 13:37:42,769 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-04 13:37:42,908 INFO [Microphone] RECORDING: device=13, rate=384000 Hz, channels=1
+2026-11-04 13:37:46,499 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 13:37:46,871 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-04 13:37:46,874 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-04 13:37:46,875 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-04 13:37:46,878 INFO [Session] RECORDING: b81d674a86ad42aeb97e1c73d1187005 | C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_003\Session_20261104_133734_535584
+2026-11-04 13:39:49,942 INFO [Polar H10] STOPPED: Polar finished
+2026-11-04 13:39:50,114 INFO [Microphone] STOPPED: 48737280 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-04 13:39:50,751 INFO [Camera 1] INFO: Camera stopped; 2463 frames saved
+2026-11-04 13:39:50,752 INFO [Session] STOPPED: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_003\Session_20261104_133734_535584
+2026-11-04 13:40:19,370 INFO [Polar H10] INFO: Preflight: connect and await live HR/ECG/ACC as selected before session marker
+2026-11-04 13:40:19,372 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-04 13:40:24,515 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-04 13:40:27,445 INFO [Polar H10] READY: Live samples confirmed: hr, ecg, acc
+2026-11-04 13:40:27,446 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=13 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-04 13:40:27,491 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-04 13:40:27,557 INFO [Microphone] RECORDING: device=13, rate=384000 Hz, channels=1
+2026-11-04 13:40:31,038 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 13:40:31,411 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-04 13:40:31,424 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-04 13:40:31,424 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-04 13:40:31,428 INFO [Session] RECORDING: c968aa5eff4e450f8ca0acf3322c74ca | C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_003\Session_20261104_134019_366405
+2026-11-04 13:42:46,750 INFO [Polar H10] STOPPED: Polar finished
+2026-11-04 13:42:46,928 INFO [Microphone] STOPPED: 53360640 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-04 13:42:47,577 INFO [Camera 1] INFO: Camera stopped; 2705 frames saved
+2026-11-04 13:42:47,578 INFO [Session] STOPPED: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_003\Session_20261104_134019_366405
+2026-11-04 13:43:11,693 INFO [Polar H10] INFO: Preflight: connect and await live HR/ECG/ACC as selected before session marker
+2026-11-04 13:43:11,694 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-04 13:43:16,998 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-04 13:43:19,881 INFO [Polar H10] READY: Live samples confirmed: hr, ecg, acc
+2026-11-04 13:43:19,882 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=13 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-04 13:43:19,927 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-04 13:43:19,976 INFO [Microphone] RECORDING: device=13, rate=384000 Hz, channels=1
+2026-11-04 13:43:23,654 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 13:43:24,025 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-04 13:43:24,030 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-04 13:43:24,031 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-04 13:43:24,032 INFO [Session] RECORDING: 3faeffcedcf344b5997d11356069d086 | C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_003\Session_20261104_134311_688979
+2026-11-04 13:45:17,135 INFO [Polar H10] STOPPED: Polar finished
+2026-11-04 13:45:17,278 INFO [Microphone] STOPPED: 44897280 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-04 13:45:17,919 INFO [Camera 1] INFO: Camera stopped; 2260 frames saved
+2026-11-04 13:45:17,920 INFO [Session] STOPPED: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_003\Session_20261104_134311_688979
+2026-11-04 13:53:12,731 INFO [Polar H10] INFO: Preflight: connect and await live HR/ECG/ACC as selected before session marker
+2026-11-04 13:53:12,731 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-04 13:53:18,103 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-04 13:53:21,010 INFO [Polar H10] READY: Live samples confirmed: hr, ecg, acc
+2026-11-04 13:53:21,010 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=13 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-04 13:53:21,067 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-04 13:53:21,193 INFO [Microphone] RECORDING: device=13, rate=384000 Hz, channels=1
+2026-11-04 13:53:24,922 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 13:53:25,294 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-04 13:53:25,300 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-04 13:53:25,300 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-04 13:53:25,301 INFO [Session] RECORDING: 130634b5fb5c453992397436f0e106d8 | C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_003\Session_20261104_135312_730018
+2026-11-04 13:53:50,483 INFO [Polar H10] STOPPED: Polar finished
+2026-11-04 13:53:50,559 INFO [Microphone] STOPPED: 11243520 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-04 13:53:51,120 INFO [Camera 1] INFO: Camera stopped; 506 frames saved
+2026-11-04 13:53:51,122 INFO [Session] STOPPED: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_003\Session_20261104_135312_730018
+2026-11-04 13:54:07,654 INFO [Polar H10] INFO: Preflight: connect and await live HR/ECG/ACC as selected before session marker
+2026-11-04 13:54:07,654 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-04 13:54:12,822 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-04 13:54:15,727 INFO [Polar H10] READY: Live samples confirmed: hr, ecg, acc
+2026-11-04 13:54:15,728 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=13 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-04 13:54:15,781 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-04 13:54:15,800 INFO [Microphone] RECORDING: device=13, rate=384000 Hz, channels=1
+2026-11-04 13:54:19,571 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 13:54:19,944 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-04 13:54:19,948 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-04 13:54:19,949 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-04 13:54:19,950 INFO [Session] RECORDING: 57b07563a01a49d494cc262294499351 | C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_004\Session_20261104_135407_652416
+2026-11-04 13:56:26,388 INFO [Polar H10] STOPPED: Polar finished
+2026-11-04 13:56:26,567 INFO [Microphone] STOPPED: 49958400 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-04 13:56:27,209 INFO [Camera 1] INFO: Camera stopped; 2523 frames saved
+2026-11-04 13:56:27,211 INFO [Session] STOPPED: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_004\Session_20261104_135407_652416
+2026-11-04 13:59:25,601 INFO [Polar H10] INFO: Preflight: connect and await live HR/ECG/ACC as selected before session marker
+2026-11-04 13:59:25,602 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-04 13:59:31,422 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-04 13:59:34,288 INFO [Polar H10] READY: Live samples confirmed: hr, ecg, acc
+2026-11-04 13:59:34,288 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=13 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-04 13:59:34,330 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-04 13:59:34,444 INFO [Microphone] RECORDING: device=13, rate=384000 Hz, channels=1
+2026-11-04 13:59:38,075 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 13:59:38,446 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-04 13:59:38,452 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-04 13:59:38,453 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-04 13:59:38,455 INFO [Session] RECORDING: 8eaee737f7534a07a4dd716bc9ab36b8 | C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_004\Session_20261104_135925_594326
+2026-11-04 14:02:26,066 INFO [Polar H10] STOPPED: Polar finished
+2026-11-04 14:02:26,222 INFO [Microphone] STOPPED: 65863680 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-04 14:02:26,829 INFO [Camera 1] INFO: Camera stopped; 3346 frames saved
+2026-11-04 14:02:26,830 INFO [Session] STOPPED: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_004\Session_20261104_135925_594326
+2026-11-04 14:03:28,832 INFO [Polar H10] INFO: Preflight: connect and await live HR/ECG/ACC as selected before session marker
+2026-11-04 14:03:28,832 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-04 14:03:34,689 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-04 14:03:37,527 INFO [Polar H10] READY: Live samples confirmed: hr, ecg, acc
+2026-11-04 14:03:37,528 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=13 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-04 14:03:37,581 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-04 14:03:37,695 INFO [Microphone] RECORDING: device=13, rate=384000 Hz, channels=1
+2026-11-04 14:03:41,261 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 14:03:41,634 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-04 14:03:41,639 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-04 14:03:41,640 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-04 14:03:41,640 INFO [Session] RECORDING: 0d94736c669b4f91b678401a23179e71 | C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_004\Session_20261104_140328_827597
+2026-11-04 14:05:08,786 INFO [Polar H10] STOPPED: Polar finished
+2026-11-04 14:05:08,880 INFO [Microphone] STOPPED: 34974720 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-04 14:05:09,572 INFO [Camera 1] INFO: Camera stopped; 1742 frames saved
+2026-11-04 14:05:09,573 INFO [Session] STOPPED: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_004\Session_20261104_140328_827597
+2026-11-04 14:06:04,622 INFO [Polar H10] INFO: Preflight: connect and await live HR/ECG/ACC as selected before session marker
+2026-11-04 14:06:04,623 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-04 14:06:09,942 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-04 14:06:12,807 INFO [Polar H10] READY: Live samples confirmed: hr, ecg, acc
+2026-11-04 14:06:12,808 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=13 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-04 14:06:12,850 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-04 14:06:12,940 INFO [Microphone] RECORDING: device=13, rate=384000 Hz, channels=1
+2026-11-04 14:06:16,503 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 14:06:16,875 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-04 14:06:16,879 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-04 14:06:16,879 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-04 14:06:16,880 INFO [Session] RECORDING: d1b8bf24c1d94aeea352a5aed2da9eb9 | C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_004\Session_20261104_140604_617362
+2026-11-04 14:07:39,892 INFO [Polar H10] STOPPED: Polar finished
+2026-11-04 14:07:39,993 INFO [Microphone] STOPPED: 33346560 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-04 14:07:40,582 INFO [Camera 1] INFO: Camera stopped; 1659 frames saved
+2026-11-04 14:07:40,584 INFO [Session] STOPPED: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_004\Session_20261104_140604_617362
+2026-11-04 14:08:50,697 INFO [Polar H10] INFO: Preflight: connect and await live HR/ECG/ACC as selected before session marker
+2026-11-04 14:08:50,698 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-04 14:08:56,171 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-04 14:08:59,067 INFO [Polar H10] READY: Live samples confirmed: hr, ecg, acc
+2026-11-04 14:08:59,068 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=13 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-04 14:08:59,103 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-04 14:08:59,185 INFO [Microphone] RECORDING: device=13, rate=384000 Hz, channels=1
+2026-11-04 14:09:02,566 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 14:09:02,937 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-04 14:09:02,975 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-04 14:09:02,975 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-04 14:09:02,978 INFO [Session] RECORDING: b3879a1cb4cc413c9fe90c9a908c33b6 | C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_004\Session_20261104_140850_692726
+2026-11-04 14:10:29,527 INFO [Polar H10] STOPPED: Polar finished
+2026-11-04 14:10:29,588 INFO [Microphone] STOPPED: 34544640 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-04 14:10:30,244 INFO [Camera 1] INFO: Camera stopped; 1730 frames saved
+2026-11-04 14:10:30,247 INFO [Session] STOPPED: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_004\Session_20261104_140850_692726
+2026-11-04 14:14:26,000 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=13 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-04 14:14:26,044 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-04 14:14:26,126 INFO [Microphone] RECORDING: device=13, rate=384000 Hz, channels=1
+2026-11-04 14:14:26,127 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-04 14:14:29,676 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 14:14:30,047 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-04 14:14:30,047 INFO [Camera 1] PREVIEW: Opened camera 1 via DirectShow
+2026-11-04 14:14:31,687 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-04 14:14:34,308 INFO [Microphone] STOPPED: 3087360 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-04 14:14:34,546 INFO [Polar H10] STOPPED: Polar finished
+2026-11-04 14:14:35,188 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-04 14:19:28,271 INFO [Polar H10] INFO: Preflight: connect and await live HR/ECG/ACC as selected before session marker
+2026-11-04 14:19:28,272 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-04 14:19:34,043 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-04 14:19:36,955 INFO [Polar H10] READY: Live samples confirmed: hr, ecg, acc
+2026-11-04 14:19:36,961 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=13 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-04 14:19:37,002 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-04 14:19:37,150 INFO [Microphone] RECORDING: device=13, rate=384000 Hz, channels=1
+2026-11-04 14:19:40,607 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 14:19:40,980 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-04 14:19:40,986 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-04 14:19:40,986 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-04 14:19:40,989 INFO [Session] RECORDING: 7ddc78e7b90f4fd285db46bb070a6f54 | C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_005\Session_20261104_141928_266789
+2026-11-04 14:22:48,203 INFO [Polar H10] STOPPED: Polar finished
+2026-11-04 14:22:48,373 INFO [Microphone] STOPPED: 73228800 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-04 14:22:48,972 INFO [Camera 1] INFO: Camera stopped; 3743 frames saved
+2026-11-04 14:22:48,974 INFO [Session] STOPPED: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_005\Session_20261104_141928_266789
+2026-11-04 14:24:46,827 INFO [Polar H10] INFO: Preflight: connect and await live HR/ECG/ACC as selected before session marker
+2026-11-04 14:24:46,828 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-04 14:24:52,736 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-04 14:24:55,620 INFO [Polar H10] READY: Live samples confirmed: hr, ecg, acc
+2026-11-04 14:24:55,621 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=13 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-04 14:24:55,659 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-04 14:24:55,774 INFO [Microphone] RECORDING: device=13, rate=384000 Hz, channels=1
+2026-11-04 14:25:03,836 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 14:25:04,208 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-04 14:25:04,213 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-04 14:25:04,213 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-04 14:25:04,213 INFO [Session] RECORDING: d4f0e5d829f04dc2a72d6d7254da0265 | C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_005\Session_20261104_142446_825036
+2026-11-04 14:29:39,153 INFO [Polar H10] STOPPED: Polar finished
+2026-11-04 14:29:39,283 INFO [Microphone] STOPPED: 108741120 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-04 14:29:39,904 INFO [Camera 1] INFO: Camera stopped; 5494 frames saved
+2026-11-04 14:29:39,905 INFO [Session] STOPPED: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_005\Session_20261104_142446_825036
+2026-11-04 14:30:45,719 INFO [Polar H10] INFO: Preflight: connect and await live HR/ECG/ACC as selected before session marker
+2026-11-04 14:30:45,720 INFO [Polar H10] CONNECTING: EB:6F:6D:8B:46:2A: Polar H10 57E41E2B
+2026-11-04 14:30:51,381 INFO [Polar H10] RECORDING: Polar HR/RR streaming; requested optional streams attempted
+2026-11-04 14:30:54,323 INFO [Polar H10] READY: Live samples confirmed: hr, ecg, acc
+2026-11-04 14:30:54,324 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=13 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-04 14:30:54,350 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-04 14:30:54,436 INFO [Microphone] RECORDING: device=13, rate=384000 Hz, channels=1
+2026-11-04 14:30:57,898 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-04 14:30:58,270 INFO [Camera 1] INFO: index 1 / DirectShow: frames OK (requested, 640x480)
+2026-11-04 14:30:58,275 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-04 14:30:58,275 INFO [Camera 1] RECORDING: Video capture started: camera_1.mp4; 640x480, writer 25 fps (DirectShow)
+2026-11-04 14:30:58,277 INFO [Session] RECORDING: 748e7d80754440b39f7dd583f1108bfc | C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_005\Session_20261104_143045_682795
+2026-11-04 14:36:16,133 INFO [Polar H10] STOPPED: Polar finished
+2026-11-04 14:36:16,230 INFO [Microphone] STOPPED: 123310080 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-04 14:36:16,853 INFO [Camera 1] INFO: Camera stopped; 6336 frames saved
+2026-11-04 14:36:16,854 INFO [Session] STOPPED: C:\Users\chgul\Desktop\projects\sympex\Participant_Data\Participant_005\Session_20261104_143045_682795
+2026-11-04 20:24:31,101 INFO [Application] INFO: Application closing
+2026-11-06 07:53:12,917 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-11-06 07:53:13,940 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-06 07:53:13,942 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-06 09:28:08,649 INFO [Application] INFO: Application closing
+2026-11-09 13:51:01,563 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-11-09 13:51:02,729 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-09 13:51:02,731 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-09 13:51:15,039 INFO [Application] INFO: Application closing
+2026-11-09 13:54:50,904 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-11-09 13:54:51,359 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-09 13:54:51,360 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-09 13:55:07,997 INFO [Application] INFO: Application closing
+2026-11-09 22:05:28,236 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-11-09 22:05:29,256 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-09 22:05:29,258 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-09 22:05:32,662 INFO [Application] INFO: Application closing
+2026-11-10 11:07:53,272 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-11-10 11:07:54,230 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-10 11:07:54,232 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-10 11:07:58,818 INFO [Application] INFO: Application closing
+2026-11-11 10:40:26,296 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\projects\sympex\multimodal_studio\logs\application.log
+2026-11-11 10:40:27,363 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-11 10:40:27,365 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-11 10:40:32,374 INFO [Application] INFO: Application closing
