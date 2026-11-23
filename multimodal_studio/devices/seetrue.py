@@ -1,3 +1,4 @@
+from output_names import session_file
 import csv
 import json
 from collections import deque
@@ -87,7 +88,7 @@ class SeeTrueRecorder(RecorderBase):
             self.selected_indices = selected
             headers = [f'ch_{i+1:03d}_{self.channels[i]}' for i in selected]
             # Store the exact mapping from saved columns to original LSL indices.
-            (folder / f'{self.filename_prefix}_channels.json').write_text(json.dumps({
+            (session_file(folder, f'{self.filename_prefix}_channels.json')).write_text(json.dumps({
                 'stream_name': info.name(), 'source_id': info.source_id(), 'uid': info.uid(),
                 'host': info.hostname(), 'nominal_srate': info.nominal_srate(),
                 'channel_count': info.channel_count(),
@@ -95,7 +96,7 @@ class SeeTrueRecorder(RecorderBase):
                                     'label': self.channels[i], 'csv_column': headers[k]}
                                    for k, i in enumerate(selected)]
             }, indent=2), encoding='utf-8')
-            with open(folder / f'{self.filename_prefix}_lsl.csv', 'w', newline='', encoding='utf-8') as fd:
+            with open(session_file(folder, f'{self.filename_prefix}_lsl.csv'), 'w', newline='', encoding='utf-8') as fd:
                 writer = csv.writer(fd)
                 writer.writerow(['lsl_timestamp', 'local_receive_clock'] + headers)
                 self.report('RECORDING', f'LSL stream={info.name()}, channels={self.channels}')

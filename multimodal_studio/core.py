@@ -3,36 +3,41 @@ import hashlib
 import uuid
 import json
 import logging
+from logging.handlers import RotatingFileHandler
 import sys
 import traceback
 import threading
 from datetime import datetime
 from pathlib import Path
 from pylsl import StreamInfo, StreamOutlet, local_clock
+from output_names import session_file
 
 class EventBus:
     """Centralized, thread-safe event delivery and persistent logging.
 
-    Application events are always written to logs/application.log, including Preview
-    and startup failures. Formal experiment events are ALSO written to events.log.
+    Application events use a bounded rotating log. A separate per-session event
+    log is optional because it duplicates the application log and markers.csv.
     """
-    def __init__(self, log_directory=None):
+    def __init__(self, log_directory=None, session_event_log=False):
         import queue
         self.events = queue.Queue()
         self.logger = logging.getLogger(f'multimodal.{id(self)}')
         self.logger.setLevel(logging.DEBUG)
         self.logger.propagate = False
         self.handler = None
+        self.session_event_log = session_event_log
         directory = Path(log_directory) if log_directory else Path(__file__).resolve().parent / 'logs'
         directory.mkdir(parents=True, exist_ok=True)
         self.application_log = directory / 'application.log'
-        self.application_handler = logging.FileHandler(self.application_log, encoding='utf-8')
+        self.application_handler = RotatingFileHandler(self.application_log, maxBytes=5*1024*1024, backupCount=2, encoding='utf-8')
         self.application_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(message)s'))
         self.logger.addHandler(self.application_handler)
 
     def open_session(self, folder):
         self.close_session()
-        self.handler = logging.FileHandler(Path(folder) / 'events.log', encoding='utf-8')
+        if not self.session_event_log:
+            return
+        self.handler = logging.FileHandler(session_file(folder, 'events.log'), encoding='utf-8')
         self.handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(message)s'))
         self.logger.addHandler(self.handler)
 
@@ -114,22 +119,23 @@ class SessionManager:
         """
         if self.active:
             return self.folder
-        name = datetime.now().strftime('Session_%Y%m%d_%H%M%S_%f')
+        name = datetime.now().strftime('Session_%Y%m%d_%H%M%S_%f') + '_' + uuid.uuid4().hex[:8]
         safe_id = ''.join(c if c.isalnum() or c in '-_' else '_' for c in participant.strip()) or 'Unknown'
         self.session_id = uuid.uuid4().hex
         self.folder = Path(root).expanduser().resolve() / f'Participant_{safe_id}' / name
         self.folder.mkdir(parents=True, exist_ok=False)
         self.bus.open_session(self.folder)
         self._session_config = {
-            'schema_version': 2,
+            'schema_version': 3,
+            'file_naming': 'participant__session__original_filename',
             'session_id': self.session_id,
             'participant': safe_id,
             'devices': list(selected),
             'settings': {k:v[1] for k,v in selected.items()},
             'started_wall_time': datetime.now().astimezone().isoformat(),
-            'file_metadata': 'Each generated file has a corresponding .session.json sidecar; see session_manifest.json',
+            'file_metadata': 'File identities, hashes and sizes are consolidated in session_manifest.json; no per-file sidecars.',
         }
-        (self.folder / 'config.json').write_text(json.dumps(self._session_config, indent=2, default=str), encoding='utf-8')
+        (session_file(self.folder, 'config.json')).write_text(json.dumps(self._session_config, indent=2, default=str), encoding='utf-8')
         self.recorders = {}
         try:
             polar = selected.get('Polar H10')
@@ -148,7 +154,7 @@ class SessionManager:
                     recorder.start(self.folder, **settings)
                 except Exception as exc:
                     recorder.report('ERROR', f'start failed: {exc!r}')
-            self.mark_file = open(self.folder / 'markers.csv', 'w', newline='', encoding='utf-8')
+            self.mark_file = open(session_file(self.folder, 'markers.csv'), 'w', newline='', encoding='utf-8')
             self.mark_writer = csv.writer(self.mark_file)
             self.mark_writer.writerow(['lsl_time', 'marker', 'session_id'])
             self.active = True
@@ -173,7 +179,7 @@ class SessionManager:
             return
         items = []
         for path in sorted(self.folder.iterdir()):
-            if not path.is_file() or path.name.endswith('.session.json') or path.name == 'session_manifest.json':
+            if not path.is_file() or path == session_file(self.folder, 'session_manifest.json'):
                 continue
             # Hash files by streaming chunks (can include multi-GB WAV/MP4).
             digest = hashlib.sha256()
@@ -185,13 +191,13 @@ class SessionManager:
                        'file_role': path.suffix.lower().lstrip('.'), 'size_bytes': path.stat().st_size,
                        'sha256': digest.hexdigest(), 'status': status,
                        'created_wall_time': self._session_config['started_wall_time']}
-            path.with_name(path.name + '.session.json').write_text(json.dumps(details,indent=2),encoding='utf-8')
             items.append(details)
-        manifest = {'session_id':self.session_id,'participant':self._session_config['participant'],
+        manifest = {'schema_version': 3, 'config': self._session_config,
+                    'session_id':self.session_id,'participant':self._session_config['participant'],
                     'session_folder':self.folder.name,'status':status,
                     'reason':reason,'files':items,
                     'finalized_wall_time':datetime.now().astimezone().isoformat()}
-        (self.folder / 'session_manifest.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8')
+        (session_file(self.folder, 'session_manifest.json')).write_text(json.dumps(manifest,indent=2),encoding='utf-8')
 
     def marker(self, label):
         with self.lock:

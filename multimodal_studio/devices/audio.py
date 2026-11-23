@@ -1,3 +1,4 @@
+from output_names import session_file
 import csv
 from collections import deque
 import queue
@@ -179,7 +180,7 @@ class AudioRecorder(RecorderBase):
     def _writer(self, folder, stem, rate, channels):
         index = 0
         try:
-            with sf.SoundFile(folder / f'{stem}.wav', 'w', samplerate=rate, channels=channels, subtype='PCM_16', format='WAV') as wav, open(folder / f'{stem}_timestamps.csv', 'w', newline='', encoding='utf-8') as fd:
+            with sf.SoundFile(session_file(folder, f'{stem}.wav'), 'w', samplerate=rate, channels=channels, subtype='PCM_16', format='WAV') as wav, open(session_file(folder, f'{stem}_timestamps.csv'), 'w', newline='', encoding='utf-8') as fd:
                 writer = csv.writer(fd)
                 writer.writerow(['file_sample_index', 'frames', 'lsl_estimated_first_sample', 'overflow'])
                 while True:

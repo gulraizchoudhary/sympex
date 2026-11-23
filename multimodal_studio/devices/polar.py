@@ -1,3 +1,4 @@
+from output_names import session_file
 import asyncio
 import uuid
 import csv
@@ -89,7 +90,7 @@ class PolarRecorder(RecorderBase):
             self.report('ERROR', f'Polar connection/stream failed: {exc!r}')
 
     def _file(self, name, header):
-        fd = open(self.folder / f'polar_{name}.csv', 'w', newline='', encoding='utf-8')
+        fd = open(session_file(self.folder, f'polar_{name}.csv'), 'w', newline='', encoding='utf-8')
         writer = csv.writer(fd)
         writer.writerow(header)
         self.files[name], self.writers[name] = fd, writer

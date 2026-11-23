@@ -10,6 +10,7 @@ from dataclasses import dataclass
 from pathlib import Path
 import numpy as np
 import pandas as pd
+from output_names import find_session_file
 
 @dataclass
 class Stream:
@@ -38,7 +39,7 @@ def find_streams(folder):
     if not folder.is_dir(): raise FileNotFoundError(folder)
     streams=[]
     for p in sorted(folder.glob('*.csv')):
-        if p.name in ('markers.csv','sync_events.csv') or p.name.endswith('_offsets.csv'):
+        if p.name.endswith(('markers.csv','sync_events.csv','_offsets.csv')):
             continue
         try:
             cols=list(pd.read_csv(p,nrows=0).columns)
@@ -203,7 +204,7 @@ def metrics(s):
 
 
 def load_markers(folder):
-    p=Path(folder)/'markers.csv'
+    p=find_session_file(folder, 'markers.csv')
     if not p.exists(): return {}
     df=pd.read_csv(p)
     if not {'lsl_time','marker'}.issubset(df):return {}
@@ -294,38 +295,62 @@ def analyze(folder, names, channels=None, rates=None, events=None):
       'Without device sequence numbers or hardware counters, true sensor sample loss can be underestimated.']},selected
 
 
-def save_report(report,streams,out):
-    out=Path(out); out.mkdir(parents=True,exist_ok=True)
-    (out/'report.json').write_text(json.dumps(report,indent=2,ensure_ascii=False,allow_nan=False),encoding='utf-8')
-    for key in ('streams','alignment','coverage_pairs','event_offsets'):
-        pd.DataFrame(report[key]).to_csv(out/(key+'.csv'),index=False)
+def save_report(report, streams, out, detailed=False):
+    """Persist one authoritative QA JSON by default; detailed exports are opt-in.
+
+    The JSON already holds the stream, alignment, coverage, and offset tables.
+    Never modify or discard the raw source recordings during analysis.
+    """
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=False)
+    (out / ('report.json' if not report.get('session_path') else (Path(report['session_path']).parent.name.removeprefix('Participant_') + '__' + Path(report['session_path']).name + '__report.json'))).write_text(
+        json.dumps(report, indent=2, ensure_ascii=False, allow_nan=False), encoding='utf-8')
+    if not detailed:
+        return out
+    for key in ('streams', 'alignment', 'coverage_pairs', 'event_offsets'):
+        pd.DataFrame(report[key]).to_csv(out / (key + '.csv'), index=False)
     import matplotlib
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
-    fig,ax=plt.subplots(figsize=(11,max(3,0.8*len(streams)+1)))
+    fig, ax = plt.subplots(figsize=(11, max(3, 0.8 * len(streams) + 1)))
     if streams:
-        origin=min((s.times[0] for s in streams if len(s.times)),default=0)
-        for i,s in enumerate(streams):
-            if not len(s.times):continue
-            ax.barh(i,(s.times[-1]-s.times[0]),left=s.times[0]-origin,height=.45)
-        ax.set_yticks(range(len(streams)),[s.name for s in streams]);ax.invert_yaxis()
-    ax.set_xlabel('LSL seconds relative to earliest selected stream');ax.set_title('Recorded time coverage (not latency)')
-    fig.tight_layout();fig.savefig(out/'coverage.png',dpi=150);plt.close(fig)
-    fig,axs=plt.subplots(max(1,len(streams)),1,figsize=(11,max(3,2.4*len(streams))),squeeze=False)
-    for i,s in enumerate(streams):
-        ax=axs[i,0];t=s.times
-        if len(t)>1:
-            d=np.diff(t); x=t[1:]-t[0]
-            step=max(1,len(d)//3000)
-            ax.plot(x[::step],d[::step]*1000,lw=.65)
-        ax.set_title(s.name);ax.set_ylabel('Interval (ms)');ax.set_xlabel('Time since first sample (s)')
-    fig.tight_layout();fig.savefig(out/'intervals.png',dpi=150);plt.close(fig)
-    with open(out/'summary.txt','w',encoding='utf-8') as f:
-        f.write('Intelligent Multimodal Microsurgery Studio (IMMSS) synchronization QA\n\n')
-        f.write('Start and end: coverage relative to session markers, not timing error.\n')
-        f.write('Device-to-device offset requires matching physical events.\n\n')
-        for m in report['streams']:
-            f.write(f"{m['stream']}: {m.get('duration_s')} s, {m.get('points')} timestamp points, gaps {m.get('large_gap_count','n/a')}, jitter MAD {m.get('interval_jitter_mad_ms','n/a')} ms\n")
-            for w in m['warnings']:f.write('   CAUTION: '+w+'\n')
-        f.write('\n'+ '\n'.join(report['limitations'])+'\n')
+        origin = min((s.times[0] for s in streams if len(s.times)), default=0)
+        for i, stream in enumerate(streams):
+            if len(stream.times):
+                ax.barh(i, stream.times[-1] - stream.times[0],
+                        left=stream.times[0] - origin, height=.45)
+        ax.set_yticks(range(len(streams)), [stream.name for stream in streams])
+        ax.invert_yaxis()
+    ax.set_xlabel('LSL seconds relative to earliest selected stream')
+    ax.set_title('Recorded time coverage (not latency)')
+    fig.tight_layout()
+    fig.savefig(out / 'coverage.png', dpi=150)
+    plt.close(fig)
+    fig, axes = plt.subplots(max(1, len(streams)), 1,
+                            figsize=(11, max(3, 2.4 * len(streams))), squeeze=False)
+    for i, stream in enumerate(streams):
+        ax = axes[i, 0]
+        if len(stream.times) > 1:
+            differences = np.diff(stream.times)
+            elapsed = stream.times[1:] - stream.times[0]
+            step = max(1, len(differences) // 3000)
+            ax.plot(elapsed[::step], differences[::step] * 1000, lw=.65)
+        ax.set_title(stream.name)
+        ax.set_ylabel('Interval (ms)')
+        ax.set_xlabel('Time since first sample (s)')
+    fig.tight_layout()
+    fig.savefig(out / 'intervals.png', dpi=150)
+    plt.close(fig)
+    with (out / 'summary.txt').open('w', encoding='utf-8') as fd:
+        fd.write('Intelligent Multimodal Microsurgery Studio (IMMSS) synchronization QA\n\n')
+        fd.write('Start and end: coverage relative to session markers, not timing error.\n')
+        fd.write('Device-to-device offset requires matching physical events.\n\n')
+        for metric in report['streams']:
+            fd.write(f"{metric['stream']}: {metric.get('duration_s')} s, "
+                     f"{metric.get('points')} timestamp points, "
+                     f"gaps {metric.get('large_gap_count', 'n/a')}, "
+                     f"jitter MAD {metric.get('interval_jitter_mad_ms', 'n/a')} ms\n")
+            for warning in metric['warnings']:
+                fd.write('   CAUTION: ' + warning + '\n')
+        fd.write('\n' + '\n'.join(report['limitations']) + '\n')
     return out

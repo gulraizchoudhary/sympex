@@ -3,6 +3,7 @@ from __future__ import annotations
 import queue
 import threading
 from datetime import datetime
+import uuid
 from pathlib import Path
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
@@ -139,7 +140,7 @@ class PostExperimentTab(tk.Frame):
         except ValueError as exc:messagebox.showerror('Invalid settings',str(exc));return
         channels={n:[col for col,var in self.channel_vars.get(n,{}).items() if var.get()] for n in names}
         folder=self.folder.get();events=self.events.get().strip() or None
-        out=Path(folder)/'analysis_reports'/datetime.now().strftime('%Y%m%d_%H%M%S_%f')
+        out=Path(folder)/'analysis_reports'/datetime.now().strftime('%Y%m%d_%H%M%S_%f')+'_'+uuid.uuid4().hex[:8]
         self.busy=True;self.run_btn.configure(state='disabled');self.status.set('Running QA…')
         def worker():
             try:

@@ -1,3 +1,4 @@
+from output_names import session_file
 """Independent video capture + MP4 writer for a user-selected camera.
 
 Video timestamps are host LSL-clock acquisition estimates, not hardware exposure time.
@@ -74,14 +75,14 @@ class CameraRecorder(RecorderBase):
             if fps <= 0:
                 fps = 25.0
             name = f'camera_{self.slot}'
-            video_path = folder / f'{name}.mp4'
+            video_path = session_file(folder, f'{name}.mp4')
             writer = cv2.VideoWriter(str(video_path), cv2.VideoWriter_fourcc(*'mp4v'), fps, (w,h))
             if not writer.isOpened():
                 raise RuntimeError(f'Could not create MP4 writer: {video_path}')
-            frames_csv = open(folder / f'{name}_frames.csv', 'w', newline='', encoding='utf-8')
+            frames_csv = open(session_file(folder, f'{name}_frames.csv'), 'w', newline='', encoding='utf-8')
             csv_writer = csv.writer(frames_csv)
             csv_writer.writerow(['frame_index','lsl_capture_time_estimate','monotonic_capture_time','width','height'])
-            (folder / f'{name}_metadata.json').write_text(json.dumps({
+            (session_file(folder, f'{name}_metadata.json')).write_text(json.dumps({
                 'device_index':self.device_index,'backend':backend,'width':w,'height':h,
                 'writer_fps':fps,'timestamp_semantics':'host-side timestamp after cap.read, not exposure timestamp',
                 'video':video_path.name, 'requested_settings':self.camera_settings},indent=2),encoding='utf-8')
