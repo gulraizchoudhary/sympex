@@ -192,12 +192,8 @@ class App:
         self.max_blocks_combo.bind('<<ComboboxSelected>>', self._on_max_changed)
         self.label(studybar, 'Block', 10, MUTED).pack(side='left', padx=(12, 4))
         self.label(studybar, '', 10, WHITE, True, textvariable=self.block_status).pack(side='left')
-        self.start_block_btn = self.action(studybar, 'Start Block', self.start_block)
-        self.start_block_btn.pack(side='left', padx=(12, 0))
-        self.end_block_btn = self.action(studybar, 'End Block', self.end_block)
-        self.end_block_btn.pack(side='left', padx=(5, 0))
-        self.next_block_btn = self.action(studybar, 'Next Block  (Ctrl+Shift+B)', self.advance_block)
-        self.next_block_btn.pack(side='left', padx=(5, 0))
+        self.block_action_btn = self.action(studybar, 'Start Block B01  (Ctrl+Shift+B)', self.block_action)
+        self.block_action_btn.pack(side='left', padx=(12, 0))
         setup.columnconfigure(1,weight=1)
         self.preview_btn=self.action(setup,'▶  PREVIEW',self.preview,accent=False)
         self.preview_btn.grid(row=1,column=3,padx=(0,7))
@@ -1064,9 +1060,18 @@ class App:
         running = active and self.session.block_running
         ended = active and self.session.block_ended
         maximum = self.session.study['max_blocks'] if active and self.session.study else 0
-        self.start_block_btn.configure(state='normal' if active and not running and not ended else 'disabled')
-        self.end_block_btn.configure(state='normal' if running else 'disabled')
-        self.next_block_btn.configure(state='normal' if ended and self.session.current_block < maximum else 'disabled')
+        if not active:
+            label, enabled = 'Start Block (record first)', False
+        elif running:
+            label, enabled = f'End Block B{self.session.current_block:02d}', True
+        elif ended and self.session.current_block >= maximum:
+            label, enabled = 'All Blocks Completed', False
+        elif ended:
+            label, enabled = f'Start Next Block B{self.session.current_block + 1:02d}', True
+        else:
+            label, enabled = f'Start Block B{self.session.current_block:02d}', True
+        self.block_action_btn.configure(text=label + ('  (Ctrl+Shift+B)' if enabled else ''),
+                                        state='normal' if enabled else 'disabled')
         if state is None and not active:
             try:
                 state = load_block_state(self.folder.get(), self.study_centre.get(),
@@ -1090,8 +1095,9 @@ class App:
             self._sync_blocks()
 
     def _block_shortcut(self, _event=None):
+        # Same state-aware action as the GUI button; never bypass its limits.
         if self.session.active:
-            self.advance_block()
+            self.block_action()
         return 'break'
 
     def _update_active_block(self):
@@ -1099,35 +1105,33 @@ class App:
         self.block_status.set(f'B{self.session.current_block:02d} / B{self.session.study["max_blocks"]:02d}')
         self._refresh_block_controls()
 
-    def start_block(self):
-        try:
-            self.session.start_block()
-            self._update_active_block()
-            self.session_status.set(f'Recording · Block B{self.session.current_block:02d} started')
-        except (RuntimeError, ValueError) as exc:
-            messagebox.showinfo('Cannot start block', str(exc))
-
-    def end_block(self):
-        if not messagebox.askyesno('End block', f'Finish B{self.session.current_block:02d}?'):
+    def block_action(self):
+        """Single block control: start, end, or advance+start without stopping recording."""
+        if not self.session.active or not self.session.study:
             return
         try:
-            self.session.end_block()
+            block = self.session.current_block
+            maximum = self.session.study['max_blocks']
+            if self.session.block_running:
+                if not messagebox.askyesno('End block', f'Finish B{block:02d}?'):
+                    return
+                self.session.end_block()
+                status = f'Block B{block:02d} finished; recording continues'
+            elif self.session.block_ended:
+                if block >= maximum:
+                    return
+                # Start the next block immediately; no extra idle click needed.
+                self.session.next_block()
+                self.session.start_block()
+                status = f'Recording · Block B{self.session.current_block:02d} started'
+            else:
+                self.session.start_block()
+                status = f'Recording · Block B{block:02d} started'
             self._update_active_block()
-            self.session_status.set(f'Block B{self.session.current_block:02d} finished; recording continues')
+            self.session_status.set(status)
         except (RuntimeError, ValueError) as exc:
-            messagebox.showinfo('Cannot end block', str(exc))
-
-    def advance_block(self):
-        if not self.session.active:
-            return
-        if not messagebox.askyesno('Next block', 'Advance to the next block without stopping the recording?'):
-            return
-        try:
-            self.session.next_block()
             self._update_active_block()
-            self.session_status.set(f'Block B{self.session.current_block:02d} ready; recording continues')
-        except (RuntimeError, ValueError) as exc:
-            messagebox.showinfo('Cannot advance block', str(exc))
+            messagebox.showinfo('Cannot change block', str(exc))
 
     def start(self):
         if self.session.active or self._starting_session:
