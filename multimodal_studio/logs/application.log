@@ -1618,3 +1618,8 @@
 2026-11-24 20:20:59,938 INFO [Microphone] STOPPED: 0 samples saved; queue drops=0; LSL drops=0; LSL errors=0
 2026-11-24 20:21:00,660 INFO [Camera 1] INFO: Camera stopped; 118 frames saved
 2026-11-24 20:21:00,661 INFO [Session] STOPPED: C:\Users\chgul\Desktop\sympex_project\sympex\Participant_Data\SYMPEX_2027\CPH\P001\V01_Training\S20261124T202048_30b79847
+2026-11-24 20:31:54,856 INFO [Application] INFO: Application closing
+2026-11-24 20:35:37,063 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\sympex_project\sympex\multimodal_studio\logs\application.log
+2026-11-24 20:35:37,546 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-24 20:35:37,547 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-24 20:36:11,296 ERROR [Session] ERROR: Session start failed: ValueError('Enable a device or select a network LSL stream.')

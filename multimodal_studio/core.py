@@ -10,7 +10,8 @@ import threading
 from datetime import datetime
 from pathlib import Path
 from pylsl import StreamInfo, StreamOutlet, local_clock
-from output_names import session_file, checked_token, register_study_block, unregister_study_block
+from output_names import session_file, checked_token, unregister_study_block
+from block_management import load_block_state, validate_max_blocks
 
 class EventBus:
     """Centralized, thread-safe event delivery and persistent logging.
@@ -111,6 +112,10 @@ class SessionManager:
         self.session_id = None
         self._session_config = None
         self.study = None
+        self.current_block = 1
+        self.block_running = False
+        self.block_ended = False
+        self.completed_blocks = set()
 
     def start(self, root, participant, selected, readiness_timeout=45, study=None):
         """Start Polar first and require live packets before recording marker.
@@ -122,35 +127,45 @@ class SessionManager:
             return self.folder
         self.session_id = uuid.uuid4().hex
         self.study = None
+        self.current_block = 1
+        self.block_running = False
+        self.block_ended = False
+        self.completed_blocks = set()
         if study is not None:
             centre = checked_token(study['centre'].upper(), 'centre')
             participant_code = checked_token(participant.upper(), 'participant')
             if not participant_code.startswith('P'):
                 participant_code = 'P' + participant_code
             visit_number = int(study['visit'])
-            block_number = int(study['block'])
-            if not (1 <= visit_number <= 99 and 1 <= block_number <= 99):
-                raise ValueError('Visit and block must be between 1 and 99')
+            if not 1 <= visit_number <= 99:
+                raise ValueError('Visit must be between 1 and 99')
             phase = checked_token(study['phase'], 'phase')
-            visit_code, block_code = f'V{visit_number:02d}', f'B{block_number:02d}'
+            maximum = validate_max_blocks(study.get('max_blocks', 1))
+            previous = load_block_state(root, centre, participant_code, visit_number, maximum)
+            if not previous.can_start:
+                raise ValueError('All visit blocks are complete; cannot start another recording')
+            self.current_block = previous.current
+            self.completed_blocks = set(previous.completed)
+            self.block_running = False
+            self.block_ended = False
+            visit_code = f'V{visit_number:02d}'
             root_path = Path(root).expanduser().resolve()
             study_root = root_path if root_path.name == 'SYMPEX_2027' else root_path / 'SYMPEX_2027'
             name = datetime.now().strftime('S%Y%m%dT%H%M%S') + '_' + self.session_id[:8]
             self.folder = study_root / centre / participant_code / f'{visit_code}_{phase}' / name
             self.study = {'study_id':'SYMPEX_2027','centre':centre,'participant':participant_code,
-                          'visit':visit_code,'phase':phase,'block':block_code}
+                          'visit':visit_code,'phase':phase,'max_blocks':maximum,
+                          'recording_scope':'visit','first_block':f'B{self.current_block:02d}'}
             safe_id = participant_code
         else:
             name = datetime.now().strftime('Session_%Y%m%d_%H%M%S_%f') + '_' + self.session_id[:8]
             safe_id = ''.join(c if c.isalnum() or c in '-_' else '_' for c in participant.strip()) or 'Unknown'
             self.folder = Path(root).expanduser().resolve() / f'Participant_{safe_id}' / name
         self.folder.mkdir(parents=True, exist_ok=False)
-        if self.study:
-            register_study_block(self.folder, self.study['block'])
         self.bus.open_session(self.folder)
         self._session_config = {
-            'schema_version': 4,
-            'file_naming': 'centre_participant_visit_block_shortsession__original_filename' if self.study else 'participant__session__original_filename',
+            'schema_version': 5,
+            'file_naming': 'centre_participant_visit_shortsession__original_filename' if self.study else 'participant__session__original_filename',
             'study': self.study,
             'session_id': self.session_id,
             'participant': safe_id,
@@ -217,10 +232,14 @@ class SessionManager:
                        'sha256': digest.hexdigest(), 'status': status,
                        'created_wall_time': self._session_config['started_wall_time']}
             items.append(details)
-        manifest = {'schema_version': 4, 'config': self._session_config,
+        manifest = {'schema_version': 5, 'config': self._session_config,
                     'session_id':self.session_id,'participant':self._session_config['participant'],'study':self.study,
                     'session_folder':self.folder.name,'status':status,
                     'reason':reason,'files':items,
+                    'blocks': {'completed':sorted(self.completed_blocks),
+                               'current':self.current_block if self.study else None,
+                               'active':self.block_running if self.study else False,
+                               'visit_complete':bool(self.study and len(self.completed_blocks) == self.study['max_blocks'])},
                     'finalized_wall_time':datetime.now().astimezone().isoformat()}
         (session_file(self.folder, 'session_manifest.json')).write_text(json.dumps(manifest,indent=2),encoding='utf-8')
 
@@ -233,9 +252,47 @@ class SessionManager:
             self.mark_file.flush()
             self.marker_outlet.push_sample([label], timestamp=ts)
 
+    def start_block(self):
+        with self.lock:
+            if not self.active or not self.study:
+                raise RuntimeError('Start a SYMPEX recording before a block')
+            if self.block_running or self.block_ended:
+                raise ValueError('Current block already started or ended')
+            if self.current_block in self.completed_blocks:
+                raise ValueError('Current block is already completed')
+            if self.current_block > self.study['max_blocks']:
+                raise ValueError('Maximum number of blocks reached')
+            self.marker(f'B{self.current_block:02d}_START')
+            self.block_running = True
+            return self.current_block
+
+    def end_block(self):
+        with self.lock:
+            if not self.active or not self.block_running:
+                raise ValueError('No active block to end')
+            self.marker(f'B{self.current_block:02d}_END')
+            self.block_running = False
+            self.block_ended = True
+            self.completed_blocks.add(self.current_block)
+            return self.current_block
+
+    def next_block(self):
+        with self.lock:
+            if not self.active or not self.study or not self.block_ended:
+                raise ValueError('End the current block before advancing')
+            if self.current_block >= self.study['max_blocks']:
+                raise ValueError('Maximum number of blocks reached')
+            self.current_block += 1
+            self.block_ended = False
+            self.marker(f'B{self.current_block:02d}_READY')
+            return self.current_block
+
     def stop(self):
         if not self.active:
             return
+        if self.study and self.block_running:
+            self.marker(f'B{self.current_block:02d}_INTERRUPTED')
+            self.block_running = False
         self.marker('RECORDING_STOP')
         for name, recorder in list(self.recorders.items()):
             try:

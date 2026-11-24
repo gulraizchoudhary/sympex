@@ -25,9 +25,8 @@ def session_prefix(folder):
         visit = folder.parent.name.split('_', 1)[0]
         # Study + centre and participant are kept in the path; filename carries
         # centre, participant, visit, block, and immutable short session ID.
-        block = _read_block(folder)
-        if all(_TOKEN.fullmatch(x) for x in (centre,participant,visit,block)):
-            return f'{centre}_{participant}_{visit}_{block}_S{folder.name.rsplit("_",1)[1]}__'
+        if all(_TOKEN.fullmatch(x) for x in (centre, participant, visit)):
+            return f'{centre}_{participant}_{visit}_S{folder.name.rsplit("_",1)[1]}__'
     if folder.name.startswith('Session_') and folder.parent.name.startswith('Participant_'):
         participant = folder.parent.name.removeprefix('Participant_')
         return f'{participant}__{folder.name}__'

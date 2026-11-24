@@ -14,6 +14,7 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 from core import EventBus, SessionManager
+from block_management import DEFAULT_MAX, load_block_state
 from devices.audio import AudioRecorder, available_inputs
 from devices.windows_audio import device_manager_sound_names, safe_hardware_match
 from devices.polar import PolarRecorder
@@ -50,6 +51,8 @@ class App:
         self.study_centre = tk.StringVar(value='CPH')
         self.study_visit = tk.StringVar(value='1')
         self.study_block = tk.StringVar(value='1')
+        self.max_blocks = tk.StringVar(value='1')
+        self.block_status = tk.StringVar(value='B01 / B01')
         self.study_phase = tk.StringVar(value='Training')
         self.marker_label = tk.StringVar(value='EVENT')
         self.session_status = tk.StringVar(value='Ready to configure')
@@ -93,6 +96,11 @@ class App:
         self._camera_scanning = False
         self._style()
         self._build()
+        for var in (self.folder, self.participant, self.study_centre, self.study_visit, self.study_phase):
+            var.trace_add('write', self._on_visit_changed)
+        self._sync_blocks()
+        self.root.bind('<Control-Shift-B>', self._block_shortcut)
+        self.root.bind('<Control-Shift-b>', self._block_shortcut)
         self.refresh_audio()
         self.tabs.select(self.dashboard_tab)
         self.root.after(350, self.poll)
@@ -109,7 +117,7 @@ class App:
             'Post-experiment synchronization-quality analysis is available in its own tab.\n\n'
             'Physical synchronization accuracy and AI-based surgical assessment require\n'
             'separate experimental validation.\n\n'
-            'SYMPEX recording files include centre, participant, visit, block and session identifiers.'
+            'SYMPEX filenames include centre, participant, visit and session IDs; blocks use timestamped markers.'
         )
 
     def _style(self):
@@ -151,22 +159,42 @@ class App:
         line=tk.Frame(self.root,bg='#31445f',height=1); line.pack(fill='x')
         setup=tk.Frame(self.root,bg=BG,padx=24,pady=14); setup.pack(fill='x')
         self.label(setup,'Participant',10,MUTED).grid(row=0,column=0,sticky='w')
-        self.field(setup,self.participant,15).grid(row=1,column=0,sticky='ew',padx=(0,16),ipady=9)
+        self.participant_entry = self.field(setup,self.participant,15)
+        self.participant_entry.grid(row=1,column=0,sticky='ew',padx=(0,16),ipady=9)
         self.label(setup,'Data location',10,MUTED).grid(row=0,column=1,sticky='w')
-        self.field(setup,self.folder,35).grid(row=1,column=1,sticky='ew',padx=(0,8),ipady=9)
-        self.action(setup,'Browse…',self.browse).grid(row=1,column=2,padx=(0,14))
+        self.folder_entry = self.field(setup,self.folder,35)
+        self.folder_entry.grid(row=1,column=1,sticky='ew',padx=(0,8),ipady=9)
+        self.browse_btn = self.action(setup,'Browse…',self.browse)
+        self.browse_btn.grid(row=1,column=2,padx=(0,14))
         studybar=tk.Frame(setup,bg=BG)
         studybar.grid(row=2,column=0,columnspan=6,sticky='w',pady=(12,0))
+        self.study_identity_controls = []
         for title, var, opts, width in (
                 ('Centre',self.study_centre,('CPH','KUH'),7),
                 ('Visit',self.study_visit,None,5),
-                ('Phase',self.study_phase,('Training','EndTraining','Retention','Refresher'),14),
-                ('Block',self.study_block,None,5)):
+                ('Phase',self.study_phase,('Training','EndTraining','Retention','Refresher'),14)):
             self.label(studybar,title,10,MUTED).pack(side='left',padx=(12,4))
             if opts:
-                ttk.Combobox(studybar,textvariable=var,values=opts,width=width,state='readonly').pack(side='left')
+                control = ttk.Combobox(studybar,textvariable=var,values=opts,width=width,state='readonly')
+                control.pack(side='left')
+                self.study_identity_controls.append(control)
             else:
-                self.field(studybar,var,width).pack(side='left',ipady=5)
+                control = self.field(studybar,var,width)
+                control.pack(side='left',ipady=5)
+                self.study_identity_controls.append(control)
+        self.label(studybar, 'Max blocks', 10, MUTED).pack(side='left', padx=(12, 4))
+        self.max_blocks_combo = ttk.Combobox(studybar, textvariable=self.max_blocks,
+            values=('1', '2', '3', '4', '5'), width=3, state='readonly')
+        self.max_blocks_combo.pack(side='left')
+        self.max_blocks_combo.bind('<<ComboboxSelected>>', self._on_max_changed)
+        self.label(studybar, 'Block', 10, MUTED).pack(side='left', padx=(12, 4))
+        self.label(studybar, '', 10, WHITE, True, textvariable=self.block_status).pack(side='left')
+        self.start_block_btn = self.action(studybar, 'Start Block', self.start_block)
+        self.start_block_btn.pack(side='left', padx=(12, 0))
+        self.end_block_btn = self.action(studybar, 'End Block', self.end_block)
+        self.end_block_btn.pack(side='left', padx=(5, 0))
+        self.next_block_btn = self.action(studybar, 'Next Block  (Ctrl+Shift+B)', self.advance_block)
+        self.next_block_btn.pack(side='left', padx=(5, 0))
         setup.columnconfigure(1,weight=1)
         self.preview_btn=self.action(setup,'▶  PREVIEW',self.preview,accent=False)
         self.preview_btn.grid(row=1,column=3,padx=(0,7))
@@ -961,6 +989,7 @@ class App:
             self.status_top.configure(text='●  PREVIEW',fg=BLUE)
             self.session_status.set('Preview mode · temporary test capture')
             self._lock(True)
+            self._refresh_block_controls()
             self.tabs.select(self.monitor_tab)
         except Exception as exc:
             self.bus.emit('Preview','ERROR',f'Preview setup failed: {exc!r}')
@@ -990,12 +1019,107 @@ class App:
         self.session_status.set('Preview stopped · ready to record')
         self._lock(False)
 
+    def _on_visit_changed(self, *_args):
+        self._sync_blocks()
+
+    def _sync_blocks(self):
+        if getattr(self, '_starting_session', False) or self.session.active:
+            return
+        try:
+            desired = DEFAULT_MAX.get(self.study_phase.get(), 1)
+            state = load_block_state(self.folder.get(), self.study_centre.get(),
+                self.participant.get(), self.study_visit.get())
+            maximum = state.maximum if state.configured else max(desired, max(state.existing, default=1))
+            state = load_block_state(self.folder.get(), self.study_centre.get(),
+                self.participant.get(), self.study_visit.get(), maximum)
+            self.max_blocks.set(str(maximum))
+            self.study_block.set(str(state.current))
+            self.block_status.set(f'B{state.current:02d} / B{maximum:02d}')
+            self._refresh_block_controls(state)
+        except (ValueError, OSError):
+            self.block_status.set('Invalid visit')
+            self._refresh_block_controls()
+
+    def _refresh_block_controls(self, state=None):
+        active = self.session.active
+        busy = active or self._starting_session or self.preview_active
+        running = active and self.session.block_running
+        ended = active and self.session.block_ended
+        maximum = self.session.study['max_blocks'] if active and self.session.study else 0
+        self.start_block_btn.configure(state='normal' if active and not running and not ended else 'disabled')
+        self.end_block_btn.configure(state='normal' if running else 'disabled')
+        self.next_block_btn.configure(state='normal' if ended and self.session.current_block < maximum else 'disabled')
+        if state is None and not active:
+            try:
+                state = load_block_state(self.folder.get(), self.study_centre.get(),
+                    self.participant.get(), self.study_visit.get(), self.max_blocks.get())
+            except (ValueError, OSError):
+                state = None
+        self.max_blocks_combo.configure(state='disabled' if busy or (state and state.configured) else 'readonly')
+
+    def _on_max_changed(self, _event=None):
+        if self.session.active or self._starting_session:
+            return
+        try:
+            state = load_block_state(self.folder.get(), self.study_centre.get(),
+                self.participant.get(), self.study_visit.get(), self.max_blocks.get())
+            self.study_block.set(str(state.current))
+            self.block_status.set(f'B{state.current:02d} / B{state.maximum:02d}')
+            self._refresh_block_controls(state)
+        except ValueError as exc:
+            messagebox.showerror('Invalid block limit', str(exc))
+            self._sync_blocks()
+
+    def _block_shortcut(self, _event=None):
+        if self.session.active:
+            self.advance_block()
+        return 'break'
+
+    def _update_active_block(self):
+        self.study_block.set(str(self.session.current_block))
+        self.block_status.set(f'B{self.session.current_block:02d} / B{self.session.study["max_blocks"]:02d}')
+        self._refresh_block_controls()
+
+    def start_block(self):
+        try:
+            self.session.start_block()
+            self._update_active_block()
+            self.session_status.set(f'Recording · Block B{self.session.current_block:02d} started')
+        except (RuntimeError, ValueError) as exc:
+            messagebox.showinfo('Cannot start block', str(exc))
+
+    def end_block(self):
+        if not messagebox.askyesno('End block', f'Finish B{self.session.current_block:02d}?'):
+            return
+        try:
+            self.session.end_block()
+            self._update_active_block()
+            self.session_status.set(f'Block B{self.session.current_block:02d} finished; recording continues')
+        except (RuntimeError, ValueError) as exc:
+            messagebox.showinfo('Cannot end block', str(exc))
+
+    def advance_block(self):
+        if not self.session.active:
+            return
+        if not messagebox.askyesno('Next block', 'Advance to the next block without stopping the recording?'):
+            return
+        try:
+            self.session.next_block()
+            self._update_active_block()
+            self.session_status.set(f'Block B{self.session.current_block:02d} ready; recording continues')
+        except (RuntimeError, ValueError) as exc:
+            messagebox.showinfo('Cannot advance block', str(exc))
+
     def start(self):
         if self.session.active or self._starting_session:
             return
         if self.preview_active:
             self.stop_preview()
         try:
+            block_state = load_block_state(self.folder.get(), self.study_centre.get(),
+                self.participant.get(), self.study_visit.get(), self.max_blocks.get())
+            if not block_state.can_start:
+                raise ValueError('All blocks for this visit have been completed')
             selected = self._selected_recorders()
             for slot, p in self.camera_previews.items():
                 if p.thread and p.thread.is_alive():
@@ -1005,11 +1129,13 @@ class App:
                     self.camera_buttons[slot].configure(text='▶ Test preview')
             folder, participant = self.folder.get(), self.participant.get()
             study = {'centre':self.study_centre.get(),'visit':self.study_visit.get(),
-                     'phase':self.study_phase.get(),'block':self.study_block.get()}
+                     'phase':self.study_phase.get(),
+                     'max_blocks':self.max_blocks.get()}
             self._starting_session = True
             self.start_btn.configure(state='disabled')
             self.preview_btn.configure(state='disabled')
             self._lock(True)
+            self._refresh_block_controls()
             self.session_status.set('Connecting selected Polar and checking live streams…' if 'Polar H10' in selected else 'Starting recording…')
             self.status_top.configure(text='●  CONNECTING',fg=YELLOW)
             def worker():
@@ -1037,6 +1163,7 @@ class App:
             self.stop_btn.configure(state='normal')
             self.preview_btn.configure(state='disabled')
             self.marker_btn.configure(state='normal')
+            self._update_active_block()
             self.tabs.select(self.monitor_tab)
         else:
             self._lock(False)
@@ -1044,12 +1171,19 @@ class App:
             self.session_status.set('Session preflight failed — recording not started')
             self.start_btn.configure(state='normal')
             self.preview_btn.configure(state='normal')
+            self._sync_blocks()
             self.bus.emit('Session','ERROR',f'Session start failed: {result!r}')
             messagebox.showerror('Session could not start',str(result))
 
     def _lock(self,locked):
         state='disabled' if locked else 'normal'
         for c in self.device_enable_controls.values():c.configure(state=state)
+        for widget in (self.participant_entry, self.folder_entry, self.browse_btn):
+            widget.configure(state=state)
+        for widget in self.study_identity_controls:
+            widget.configure(state='disabled' if locked else
+                ('readonly' if isinstance(widget, ttk.Combobox) else 'normal'))
+        self._refresh_block_controls()
         for widget in (self.mic_select,self.mic_rate_combo,*self.camera_selects.values()):
             widget.configure(state='disabled' if locked else 'readonly')
         for widgets in self.camera_setting_widgets.values():
@@ -1065,6 +1199,10 @@ class App:
 
     def stop(self):
         if not self.session.active:return
+        if self.session.block_running:
+            if not messagebox.askyesno('Interrupt active block',
+                    'This block is still active. Stop recording and mark it INTERRUPTED (not completed)?'):
+                return
         self.session.stop()
         self.started_at=None
         self.status_top.configure(text='●  IDLE',fg=GREEN)
@@ -1072,6 +1210,7 @@ class App:
         self.marker_btn.configure(state='disabled')
         self._lock(False)
         self.session_status.set('Session saved · ready for next run')
+        self._sync_blocks()
 
     def mark(self):
         if self.session.active:
