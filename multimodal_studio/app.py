@@ -52,6 +52,9 @@ class App:
         self.study_visit = tk.StringVar(value='1')
         self.study_block = tk.StringVar(value='1')
         self.max_blocks = tk.StringVar(value='1')
+        # Phase defaults are suggestions; preserve a user selection for this visit.
+        self._block_limit_identity = None
+        self._block_limit_customized = False
         self.block_status = tk.StringVar(value='B01 / B01')
         self.study_phase = tk.StringVar(value='Training')
         self.marker_label = tk.StringVar(value='EVENT')
@@ -1025,11 +1028,26 @@ class App:
     def _sync_blocks(self):
         if getattr(self, '_starting_session', False) or self.session.active:
             return
+        # Only reset the suggested maximum when switching visits or phases.
+        # This must not undo the user's selection when the UI refreshes.
+        identity = (self.folder.get(), self.study_centre.get(),
+                    self.participant.get(), self.study_visit.get(),
+                    self.study_phase.get())
+        if identity != self._block_limit_identity:
+            self._block_limit_identity = identity
+            self._block_limit_customized = False
         try:
             desired = DEFAULT_MAX.get(self.study_phase.get(), 1)
             state = load_block_state(self.folder.get(), self.study_centre.get(),
                 self.participant.get(), self.study_visit.get())
-            maximum = state.maximum if state.configured else max(desired, max(state.existing, default=1))
+            if state.configured:
+                # The first recording fixes the maximum for the visit.
+                maximum = state.maximum
+                self._block_limit_customized = False
+            elif self._block_limit_customized:
+                maximum = int(self.max_blocks.get())
+            else:
+                maximum = desired
             state = load_block_state(self.folder.get(), self.study_centre.get(),
                 self.participant.get(), self.study_visit.get(), maximum)
             self.max_blocks.set(str(maximum))
@@ -1063,6 +1081,7 @@ class App:
         try:
             state = load_block_state(self.folder.get(), self.study_centre.get(),
                 self.participant.get(), self.study_visit.get(), self.max_blocks.get())
+            self._block_limit_customized = True
             self.study_block.set(str(state.current))
             self.block_status.set(f'B{state.current:02d} / B{state.maximum:02d}')
             self._refresh_block_controls(state)
