@@ -10,7 +10,7 @@ import threading
 from datetime import datetime
 from pathlib import Path
 from pylsl import StreamInfo, StreamOutlet, local_clock
-from output_names import session_file
+from output_names import session_file, checked_token, register_study_block, unregister_study_block
 
 class EventBus:
     """Centralized, thread-safe event delivery and persistent logging.
@@ -110,8 +110,9 @@ class SessionManager:
         self.lock = threading.RLock()
         self.session_id = None
         self._session_config = None
+        self.study = None
 
-    def start(self, root, participant, selected, readiness_timeout=45):
+    def start(self, root, participant, selected, readiness_timeout=45, study=None):
         """Start Polar first and require live packets before recording marker.
 
         Other selected devices remain independent after session start. A missing
@@ -119,15 +120,38 @@ class SessionManager:
         """
         if self.active:
             return self.folder
-        name = datetime.now().strftime('Session_%Y%m%d_%H%M%S_%f') + '_' + uuid.uuid4().hex[:8]
-        safe_id = ''.join(c if c.isalnum() or c in '-_' else '_' for c in participant.strip()) or 'Unknown'
         self.session_id = uuid.uuid4().hex
-        self.folder = Path(root).expanduser().resolve() / f'Participant_{safe_id}' / name
+        self.study = None
+        if study is not None:
+            centre = checked_token(study['centre'].upper(), 'centre')
+            participant_code = checked_token(participant.upper(), 'participant')
+            if not participant_code.startswith('P'):
+                participant_code = 'P' + participant_code
+            visit_number = int(study['visit'])
+            block_number = int(study['block'])
+            if not (1 <= visit_number <= 99 and 1 <= block_number <= 99):
+                raise ValueError('Visit and block must be between 1 and 99')
+            phase = checked_token(study['phase'], 'phase')
+            visit_code, block_code = f'V{visit_number:02d}', f'B{block_number:02d}'
+            root_path = Path(root).expanduser().resolve()
+            study_root = root_path if root_path.name == 'SYMPEX_2027' else root_path / 'SYMPEX_2027'
+            name = datetime.now().strftime('S%Y%m%dT%H%M%S') + '_' + self.session_id[:8]
+            self.folder = study_root / centre / participant_code / f'{visit_code}_{phase}' / name
+            self.study = {'study_id':'SYMPEX_2027','centre':centre,'participant':participant_code,
+                          'visit':visit_code,'phase':phase,'block':block_code}
+            safe_id = participant_code
+        else:
+            name = datetime.now().strftime('Session_%Y%m%d_%H%M%S_%f') + '_' + self.session_id[:8]
+            safe_id = ''.join(c if c.isalnum() or c in '-_' else '_' for c in participant.strip()) or 'Unknown'
+            self.folder = Path(root).expanduser().resolve() / f'Participant_{safe_id}' / name
         self.folder.mkdir(parents=True, exist_ok=False)
+        if self.study:
+            register_study_block(self.folder, self.study['block'])
         self.bus.open_session(self.folder)
         self._session_config = {
-            'schema_version': 3,
-            'file_naming': 'participant__session__original_filename',
+            'schema_version': 4,
+            'file_naming': 'centre_participant_visit_block_shortsession__original_filename' if self.study else 'participant__session__original_filename',
+            'study': self.study,
             'session_id': self.session_id,
             'participant': safe_id,
             'devices': list(selected),
@@ -172,6 +196,7 @@ class SessionManager:
             self.active = False
             self._write_manifest(status='ABORTED', reason=str(exc))
             self.bus.close_session()
+            unregister_study_block(self.folder)
             raise
 
     def _write_manifest(self, status, reason=None):
@@ -186,14 +211,14 @@ class SessionManager:
             with path.open('rb') as infile:
                 for chunk in iter(lambda: infile.read(1024*1024), b''):
                     digest.update(chunk)
-            details = {'session_id': self.session_id, 'participant': self._session_config['participant'],
+            details = {'session_id': self.session_id, 'participant': self._session_config['participant'], 'study': self.study,
                        'session_folder': self.folder.name, 'original_filename': path.name,
                        'file_role': path.suffix.lower().lstrip('.'), 'size_bytes': path.stat().st_size,
                        'sha256': digest.hexdigest(), 'status': status,
                        'created_wall_time': self._session_config['started_wall_time']}
             items.append(details)
-        manifest = {'schema_version': 3, 'config': self._session_config,
-                    'session_id':self.session_id,'participant':self._session_config['participant'],
+        manifest = {'schema_version': 4, 'config': self._session_config,
+                    'session_id':self.session_id,'participant':self._session_config['participant'],'study':self.study,
                     'session_folder':self.folder.name,'status':status,
                     'reason':reason,'files':items,
                     'finalized_wall_time':datetime.now().astimezone().isoformat()}

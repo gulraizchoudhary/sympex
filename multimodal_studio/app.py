@@ -46,7 +46,11 @@ class App:
         self.enabled = {n:tk.BooleanVar(value=False) for n in DEVICES}
         self.status = {n:tk.StringVar(value='Not selected') for n in DEVICES}
         self.folder = tk.StringVar(value=str((BASE.parent/'Participant_Data').resolve()))
-        self.participant = tk.StringVar(value='001')
+        self.participant = tk.StringVar(value='P001')
+        self.study_centre = tk.StringVar(value='CPH')
+        self.study_visit = tk.StringVar(value='1')
+        self.study_block = tk.StringVar(value='1')
+        self.study_phase = tk.StringVar(value='Training')
         self.marker_label = tk.StringVar(value='EVENT')
         self.session_status = tk.StringVar(value='Ready to configure')
         self.time_label = tk.StringVar(value='00:00:00')
@@ -105,7 +109,7 @@ class App:
             'Post-experiment synchronization-quality analysis is available in its own tab.\n\n'
             'Physical synchronization accuracy and AI-based surgical assessment require\n'
             'separate experimental validation.\n\n'
-            'Existing recording filenames and session structures are preserved.'
+            'SYMPEX recording files include centre, participant, visit, block and session identifiers.'
         )
 
     def _style(self):
@@ -151,6 +155,18 @@ class App:
         self.label(setup,'Data location',10,MUTED).grid(row=0,column=1,sticky='w')
         self.field(setup,self.folder,35).grid(row=1,column=1,sticky='ew',padx=(0,8),ipady=9)
         self.action(setup,'Browse…',self.browse).grid(row=1,column=2,padx=(0,14))
+        studybar=tk.Frame(setup,bg=BG)
+        studybar.grid(row=2,column=0,columnspan=6,sticky='w',pady=(12,0))
+        for title, var, opts, width in (
+                ('Centre',self.study_centre,('CPH','KUH'),7),
+                ('Visit',self.study_visit,None,5),
+                ('Phase',self.study_phase,('Training','EndTraining','Retention','Refresher'),14),
+                ('Block',self.study_block,None,5)):
+            self.label(studybar,title,10,MUTED).pack(side='left',padx=(12,4))
+            if opts:
+                ttk.Combobox(studybar,textvariable=var,values=opts,width=width,state='readonly').pack(side='left')
+            else:
+                self.field(studybar,var,width).pack(side='left',ipady=5)
         setup.columnconfigure(1,weight=1)
         self.preview_btn=self.action(setup,'▶  PREVIEW',self.preview,accent=False)
         self.preview_btn.grid(row=1,column=3,padx=(0,7))
@@ -988,6 +1004,8 @@ class App:
                         raise RuntimeError(f'Camera {slot} preview did not release the device')
                     self.camera_buttons[slot].configure(text='▶ Test preview')
             folder, participant = self.folder.get(), self.participant.get()
+            study = {'centre':self.study_centre.get(),'visit':self.study_visit.get(),
+                     'phase':self.study_phase.get(),'block':self.study_block.get()}
             self._starting_session = True
             self.start_btn.configure(state='disabled')
             self.preview_btn.configure(state='disabled')
@@ -996,7 +1014,7 @@ class App:
             self.status_top.configure(text='●  CONNECTING',fg=YELLOW)
             def worker():
                 try:
-                    path = self.session.start(folder, participant, selected)
+                    path = self.session.start(folder, participant, selected, study=study)
                     self._start_results.put((True,path))
                 except Exception as exc:
                     self._start_results.put((False,exc))

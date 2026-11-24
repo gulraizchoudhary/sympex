@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from pathlib import Path
 import numpy as np
 import pandas as pd
-from output_names import find_session_file
+from output_names import find_session_file, session_prefix
 
 @dataclass
 class Stream:
@@ -303,7 +303,7 @@ def save_report(report, streams, out, detailed=False):
     """
     out = Path(out)
     out.mkdir(parents=True, exist_ok=False)
-    (out / ('report.json' if not report.get('session_path') else (Path(report['session_path']).parent.name.removeprefix('Participant_') + '__' + Path(report['session_path']).name + '__report.json'))).write_text(
+    (out / ('report.json' if not report.get('session_path') else (session_prefix(Path(report['session_path'])) + 'report.json' if session_prefix(Path(report['session_path'])) else Path(report['session_path']).name + '__report.json'))).write_text(
         json.dumps(report, indent=2, ensure_ascii=False, allow_nan=False), encoding='utf-8')
     if not detailed:
         return out
