@@ -38,8 +38,8 @@ def find_streams(folder):
     folder=Path(folder)
     if not folder.is_dir(): raise FileNotFoundError(folder)
     streams=[]
-    for p in sorted(folder.glob('*.csv')):
-        if p.name.endswith(('markers.csv','sync_events.csv','_offsets.csv')):
+    for p in sorted(folder.rglob('*.csv')):
+        if p.name.endswith(('markers.csv','events.csv','sync_events.csv','_offsets.csv')):
             continue
         try:
             cols=list(pd.read_csv(p,nrows=0).columns)
@@ -50,7 +50,7 @@ def find_streams(folder):
         elif 'lsl_timestamp' in cols and 'local_receive_clock' in cols: kind='lsl'
         elif _find_timestamp_column(pd.DataFrame(columns=cols)): kind='sample'
         else: continue
-        streams.append({'name':p.stem,'filename':p.name,'kind':kind,'columns':cols})
+        streams.append({'name':p.stem,'filename':p.relative_to(folder).as_posix(),'kind':kind,'columns':cols})
     return streams
 
 

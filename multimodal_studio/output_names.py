@@ -56,19 +56,59 @@ def unregister_study_block(folder):
     _SESSION_BLOCKS.pop(str(Path(folder).resolve()), None)
 
 
+# Classify files by the recorder's stable original basename.  Keep all session
+# files prefixed by centre/participant/visit/session, even inside subfolders.
+def _is_sympex(folder):
+    return bool(_STUDY_SESSION.fullmatch(Path(folder).name) and session_prefix(folder))
+
+
+def _location(folder, basename):
+    folder = Path(folder)
+    basename = str(basename)
+    if not _is_sympex(folder):
+        return folder, basename
+    if basename == 'config.json':
+        return folder, 'metadata.json'
+    if basename == 'markers.csv':
+        return folder, 'events.csv'
+    if basename in ('metadata.json', 'events.csv', 'session_manifest.json'):
+        return folder, basename
+    if basename.startswith('camera_') or basename.endswith('.mp4'):
+        return folder / 'video', basename
+    if basename.startswith('polar_') or basename.startswith('garmin_') or basename.startswith('fitrockr_'):
+        return folder / 'physiology', basename
+    if basename.endswith('.wav') or basename.endswith('_timestamps.csv'):
+        return folder / 'audio', basename
+    if basename.endswith('_lsl.csv') or basename.endswith('_channels.json'):
+        return folder / 'eye_tracker', basename
+    if basename == 'events.log':
+        return folder / 'logs', basename
+    return folder, basename
+
+
 def session_file(folder, basename):
-    return Path(folder) / (session_prefix(folder) + str(basename))
+    parent, name = _location(folder, basename)
+    parent.mkdir(parents=True, exist_ok=True)
+    return parent / (session_prefix(folder) + name)
 
 
 def find_session_file(folder, basename):
+    """Find current modality-organized files and older flat-session exports."""
     folder = Path(folder)
-    expected = session_file(folder, basename)
+    parent, name = _location(folder, basename)
+    expected = parent / (session_prefix(folder) + name)
     if expected.exists():
         return expected
-    old = folder / basename
-    if old.exists():
-        return old
-    matches = list(folder.glob(f'*__{basename}')) if folder.exists() else []
-    if len(matches) == 1:
-        return matches[0]
+    # Legacy flat formats, including pre-rename SYMPEX config and markers.
+    aliases = [basename]
+    if basename == 'markers.csv': aliases += ['events.csv']
+    if basename == 'config.json': aliases += ['metadata.json']
+    for candidate in aliases:
+        for path in [folder / candidate, folder / (session_prefix(folder) + candidate)]:
+            if path.is_file(): return path
+        matches = [p for p in folder.glob(f'*__{candidate}') if p.is_file()]
+        if len(matches) == 1: return matches[0]
+    # Do not silently pick between multiple identical exported streams.
+    matches = [p for p in folder.rglob(f'*__{basename}') if p.is_file()]
+    if len(matches) == 1: return matches[0]
     return expected

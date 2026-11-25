@@ -164,8 +164,9 @@ class SessionManager:
         self.folder.mkdir(parents=True, exist_ok=False)
         self.bus.open_session(self.folder)
         self._session_config = {
-            'schema_version': 5,
+            'schema_version': 6,
             'file_naming': 'centre_participant_visit_shortsession__original_filename' if self.study else 'participant__session__original_filename',
+            'data_layout': 'modality_folders_v1' if self.study else 'flat_legacy',
             'study': self.study,
             'session_id': self.session_id,
             'participant': safe_id,
@@ -218,7 +219,7 @@ class SessionManager:
         if self.folder is None:
             return
         items = []
-        for path in sorted(self.folder.iterdir()):
+        for path in sorted(self.folder.rglob('*')):
             if not path.is_file() or path == session_file(self.folder, 'session_manifest.json'):
                 continue
             # Hash files by streaming chunks (can include multi-GB WAV/MP4).
@@ -227,12 +228,12 @@ class SessionManager:
                 for chunk in iter(lambda: infile.read(1024*1024), b''):
                     digest.update(chunk)
             details = {'session_id': self.session_id, 'participant': self._session_config['participant'], 'study': self.study,
-                       'session_folder': self.folder.name, 'original_filename': path.name,
+                       'session_folder': self.folder.name, 'relative_path': path.relative_to(self.folder).as_posix(), 'original_filename': path.name,
                        'file_role': path.suffix.lower().lstrip('.'), 'size_bytes': path.stat().st_size,
                        'sha256': digest.hexdigest(), 'status': status,
                        'created_wall_time': self._session_config['started_wall_time']}
             items.append(details)
-        manifest = {'schema_version': 5, 'config': self._session_config,
+        manifest = {'schema_version': 6, 'config': self._session_config,
                     'session_id':self.session_id,'participant':self._session_config['participant'],'study':self.study,
                     'session_folder':self.folder.name,'status':status,
                     'reason':reason,'files':items,

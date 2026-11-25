@@ -3,7 +3,7 @@ import csv
 import json
 from dataclasses import dataclass
 from pathlib import Path
-from output_names import checked_token
+from output_names import checked_token, find_session_file
 
 DEFAULT_MAX = {'Training': 1, 'EndTraining': 1, 'Retention': 1, 'Refresher': 2}
 
@@ -47,8 +47,8 @@ class BlockState:
 
 
 def _session_files(folder, suffix):
-    found = list(folder.glob(f'*__{suffix}')) + list(folder.glob(suffix))
-    return found[0] if len(found) == 1 else None
+    candidate = find_session_file(folder, suffix)
+    return candidate if candidate.is_file() else None
 
 
 def load_block_state(root, centre, participant, visit, requested_max=None):
