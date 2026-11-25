@@ -173,7 +173,7 @@ class App:
         studybar.grid(row=2,column=0,columnspan=6,sticky='w',pady=(12,0))
         self.study_identity_controls = []
         for title, var, opts, width in (
-                ('Centre',self.study_centre,('CPH','KUH'),7),
+                ('Centre',self.study_centre,('CPH','KUH','JNS'),7),
                 ('Visit',self.study_visit,None,5),
                 ('Phase',self.study_phase,('Training','EndTraining','Retention','Refresher'),14)):
             self.label(studybar,title,10,MUTED).pack(side='left',padx=(12,4))

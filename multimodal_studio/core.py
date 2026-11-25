@@ -1,5 +1,6 @@
 import csv
 import hashlib
+import socket
 import uuid
 import json
 import logging
@@ -116,6 +117,7 @@ class SessionManager:
         self.block_running = False
         self.block_ended = False
         self.completed_blocks = set()
+        self.metadata_outlet = None
 
     def start(self, root, participant, selected, readiness_timeout=45, study=None):
         """Start Polar first and require live packets before recording marker.
@@ -126,6 +128,7 @@ class SessionManager:
         if self.active:
             return self.folder
         self.session_id = uuid.uuid4().hex
+        self.metadata_outlet = None
         self.study = None
         self.current_block = 1
         self.block_running = False
@@ -163,12 +166,48 @@ class SessionManager:
             self.folder = Path(root).expanduser().resolve() / f'Participant_{safe_id}' / name
         self.folder.mkdir(parents=True, exist_ok=False)
         self.bus.open_session(self.folder)
+        # Portable, visit-scoped organization record. Paths are relative to the
+        # study root so neither the LSL broadcast nor exported metadata leaks
+        # the recording computer's absolute path or Windows username.
+        computer_name = socket.gethostname()
+        data_organization = None
+        if self.study:
+            recording_prefix = f'{centre}_{participant_code}_{visit_code}_S{self.session_id[:8]}__'
+            data_organization = {
+                'schema_version': 1,
+                'computer_name': computer_name,
+                'study_root': 'SYMPEX_2027',
+                'centre': centre,
+                'participant': participant_code,
+                'visit': visit_code,
+                'phase': phase,
+                'session_folder': name,
+                'relative_session_path': '/'.join((centre, participant_code, f'{visit_code}_{phase}', name)),
+                'filename_prefix': recording_prefix,
+                'recording_scope': 'visit',
+                'block_storage': 'timestamped_events_not_separate_recordings',
+                'max_blocks': maximum,
+                'metadata_file': recording_prefix + 'metadata.json',
+                'events_file': recording_prefix + 'events.csv',
+                'manifest_file': recording_prefix + 'session_manifest.json',
+                'modality_folders': {
+                    'physiology': 'physiology/',
+                    'eye_tracker': 'eye_tracker/',
+                    'video': 'video/',
+                    'audio': 'audio/',
+                },
+                'folder_creation': 'lazy_when_enabled_or_data_generated',
+                'enabled_devices': list(selected),
+            }
         self._session_config = {
             'schema_version': 6,
             'file_naming': 'centre_participant_visit_shortsession__original_filename' if self.study else 'participant__session__original_filename',
             'data_layout': 'modality_folders_v1' if self.study else 'flat_legacy',
+            'data_organization': data_organization,
+            'metadata_broadcast': {'protocol': 'LSL', 'stream_name': 'IMS_Session_Metadata', 'type': 'SessionMetadata', 'format': 'JSON', 'scope': 'local_network'} if self.study else None,
             'study': self.study,
             'session_id': self.session_id,
+            'computer_name': computer_name,
             'participant': safe_id,
             'devices': list(selected),
             'settings': {k:v[1] for k,v in selected.items()},
@@ -176,6 +215,8 @@ class SessionManager:
             'file_metadata': 'File identities, hashes and sizes are consolidated in session_manifest.json; no per-file sidecars.',
         }
         (session_file(self.folder, 'config.json')).write_text(json.dumps(self._session_config, indent=2, default=str), encoding='utf-8')
+        if self.study:
+            self._broadcast_session_metadata()
         self.recorders = {}
         try:
             polar = selected.get('Polar H10')
@@ -211,9 +252,34 @@ class SessionManager:
             self.mark_file = self.mark_writer = None
             self.active = False
             self._write_manifest(status='ABORTED', reason=str(exc))
+            self.metadata_outlet = None
             self.bus.close_session()
             unregister_study_block(self.folder)
             raise
+
+    def _broadcast_session_metadata(self):
+        """Advertise study organization over LSL, matching metadata.json.
+
+        The JSON is both in the stream descriptor (available to later LSL
+        discoverers) and emitted as one sample for already-connected listeners.
+        A network/broadcast failure must not discard the local session files.
+        """
+        payload = json.dumps(self._session_config['data_organization'], ensure_ascii=True, sort_keys=True)
+        try:
+            info = StreamInfo('IMS_Session_Metadata', 'SessionMetadata', 1, 0,
+                              'string', f'IMS_SessionMetadata_{self.session_id}')
+            if hasattr(info, 'desc'):
+                descriptor = info.desc()
+                descriptor.append_child_value('recording_system', 'IMMSS')
+                descriptor.append_child_value('session_id', self.session_id)
+                descriptor.append_child_value('computer_name', self._session_config['computer_name'])
+                descriptor.append_child_value('data_organization_json', payload)
+            self.metadata_outlet = StreamOutlet(info)
+            self.metadata_outlet.push_sample([payload], timestamp=local_clock())
+            self.bus.emit('Session Metadata', 'INFO', 'Published data organization via IMS_Session_Metadata (LSL)')
+        except Exception as exc:
+            self.metadata_outlet = None
+            self.bus.emit('Session Metadata', 'WARNING', f'LSL organization broadcast failed: {exc!r}; metadata.json retained')
 
     def _write_manifest(self, status, reason=None):
         if self.folder is None:
@@ -308,4 +374,5 @@ class SessionManager:
             self._write_manifest('COMPLETED')
         except Exception as exc:
             self.bus.emit('Session', 'ERROR', f'Manifest finalization failed: {exc!r}')
+        self.metadata_outlet = None
         self.bus.close_session()
