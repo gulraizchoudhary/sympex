@@ -8,11 +8,13 @@ from logging.handlers import RotatingFileHandler
 import sys
 import traceback
 import threading
+import time
 from datetime import datetime
 from pathlib import Path
 from pylsl import StreamInfo, StreamOutlet, local_clock
 from output_names import session_file, checked_token, unregister_study_block
 from block_management import load_block_state, validate_max_blocks
+from recording_integrity import assess_device, await_live_data, summarize_integrity
 
 class EventBus:
     """Centralized, thread-safe event delivery and persistent logging.
@@ -118,6 +120,8 @@ class SessionManager:
         self.block_ended = False
         self.completed_blocks = set()
         self.metadata_outlet = None
+        self.device_readiness = {}
+        self.device_integrity = {}
 
     def start(self, root, participant, selected, readiness_timeout=45, study=None):
         """Start Polar first and require live packets before recording marker.
@@ -129,6 +133,8 @@ class SessionManager:
             return self.folder
         self.session_id = uuid.uuid4().hex
         self.metadata_outlet = None
+        self.device_readiness = {}
+        self.device_integrity = {}
         self.study = None
         self.current_block = 1
         self.block_running = False
@@ -143,10 +149,10 @@ class SessionManager:
             if not 1 <= visit_number <= 99:
                 raise ValueError('Visit must be between 1 and 99')
             phase = checked_token(study['phase'], 'phase')
-            maximum = validate_max_blocks(study.get('max_blocks', 1))
+            maximum = validate_max_blocks(study.get('max_trials', study.get('max_blocks', 5)))
             previous = load_block_state(root, centre, participant_code, visit_number, maximum)
             if not previous.can_start:
-                raise ValueError('All visit blocks are complete; cannot start another recording')
+                raise ValueError('All visit trials are complete; cannot start another recording')
             self.current_block = previous.current
             self.completed_blocks = set(previous.completed)
             self.block_running = False
@@ -158,7 +164,9 @@ class SessionManager:
             self.folder = study_root / centre / participant_code / f'{visit_code}_{phase}' / name
             self.study = {'study_id':'SYMPEX_2027','centre':centre,'participant':participant_code,
                           'visit':visit_code,'phase':phase,'max_blocks':maximum,
-                          'recording_scope':'visit','first_block':f'B{self.current_block:02d}'}
+                          'recording_scope':'visit','max_trials':maximum,
+                          'training_session':visit_number, 'trial_unit':'one_tympanostomy_procedure',
+                          'first_trial':f'T{self.current_block:02d}'}
             safe_id = participant_code
         else:
             name = datetime.now().strftime('Session_%Y%m%d_%H%M%S_%f') + '_' + self.session_id[:8]
@@ -185,8 +193,9 @@ class SessionManager:
                 'relative_session_path': '/'.join((centre, participant_code, f'{visit_code}_{phase}', name)),
                 'filename_prefix': recording_prefix,
                 'recording_scope': 'visit',
-                'block_storage': 'timestamped_events_not_separate_recordings',
-                'max_blocks': maximum,
+                'trial_storage': 'timestamped_events_not_separate_recordings',
+                'max_trials': maximum,
+                'metadata_levels': ['participant', 'training_session', 'training_trial'],
                 'metadata_file': recording_prefix + 'metadata.json',
                 'events_file': recording_prefix + 'events.csv',
                 'manifest_file': recording_prefix + 'session_manifest.json',
@@ -200,7 +209,7 @@ class SessionManager:
                 'enabled_devices': list(selected),
             }
         self._session_config = {
-            'schema_version': 6,
+            'schema_version': 7,
             'file_naming': 'centre_participant_visit_shortsession__original_filename' if self.study else 'participant__session__original_filename',
             'data_layout': 'modality_folders_v1' if self.study else 'flat_legacy',
             'data_organization': data_organization,
@@ -210,6 +219,9 @@ class SessionManager:
             'computer_name': computer_name,
             'participant': safe_id,
             'devices': list(selected),
+            'participant_metadata': {'participant_id': safe_id, 'centre': self.study['centre'] if self.study else None},
+            'training_session_metadata': {'visit_id': self.study['visit'], 'training_session': self.study['training_session'], 'phase': self.study['phase']} if self.study else None,
+            'training_trials': [],
             'settings': {k:v[1] for k,v in selected.items()},
             'started_wall_time': datetime.now().astimezone().isoformat(),
             'file_metadata': 'File identities, hashes and sizes are consolidated in session_manifest.json; no per-file sidecars.',
@@ -231,10 +243,18 @@ class SessionManager:
                 if dev_name == 'Polar H10':
                     continue
                 self.recorders[dev_name] = recorder
-                try:
-                    recorder.start(self.folder, **settings)
-                except Exception as exc:
-                    recorder.report('ERROR', f'start failed: {exc!r}')
+                recorder.start(self.folder, **settings)
+            # Preflight checks inspect *live acquisition*, not just device selection.
+            # SeeTrue calibration remains entirely in SeeTrue Station.
+            for dev_name, recorder in self.recorders.items():
+                if dev_name == 'Polar H10':
+                    result = assess_device(dev_name, recorder, self.folder, stage='preflight')
+                else:
+                    result = await_live_data(dev_name, recorder, self.folder, timeout=8.0)
+                self.device_readiness[dev_name] = result
+                self.bus.emit(dev_name, 'READY' if result['ready'] else 'ERROR', result['message'])
+                if not result['ready']:
+                    raise RuntimeError(f'{dev_name} preflight failed: {result["message"]}')
             self.mark_file = open(session_file(self.folder, 'markers.csv'), 'w', newline='', encoding='utf-8')
             self.mark_writer = csv.writer(self.mark_file)
             self.mark_writer.writerow(['lsl_time', 'marker', 'session_id'])
@@ -251,6 +271,8 @@ class SessionManager:
                 self.mark_file.close()
             self.mark_file = self.mark_writer = None
             self.active = False
+            self.device_integrity = {name: assess_device(name, rec, self.folder, stage='final')
+                                     for name, rec in self.recorders.items()}
             self._write_manifest(status='ABORTED', reason=str(exc))
             self.metadata_outlet = None
             self.bus.close_session()
@@ -281,6 +303,43 @@ class SessionManager:
             self.metadata_outlet = None
             self.bus.emit('Session Metadata', 'WARNING', f'LSL organization broadcast failed: {exc!r}; metadata.json retained')
 
+    def _trial_records(self):
+        """Summarize trial markers from the existing event log; no extra files."""
+        if not self.study or self.folder is None:
+            return []
+        from output_names import find_session_file
+        event_file = find_session_file(self.folder, 'markers.csv')
+        rows = {}
+        if not event_file.is_file():
+            return []
+        with event_file.open(encoding='utf-8', newline='') as stream:
+            for marker in csv.DictReader(stream):
+                label = marker.get('marker', '')
+                if len(label) < 7 or label[0] not in 'TB' or not label[1:3].isdigit():
+                    continue
+                index = int(label[1:3])
+                if not 1 <= index <= self.study['max_trials']:
+                    continue
+                action = label[4:]
+                if action not in ('START', 'END', 'INTERRUPTED'):
+                    continue
+                record = rows.setdefault(index, {
+                    'trial_id': f'T{index:02d}', 'trial_number': index,
+                    'participant_id': self.study['participant'],
+                    'training_session': self.study['training_session'],
+                    'visit_id': self.study['visit'], 'start_lsl_time': None,
+                    'end_lsl_time': None, 'status': 'incomplete'})
+                if action == 'START':
+                    record['start_lsl_time'] = marker.get('lsl_time')
+                    record['status'] = 'started'
+                elif action == 'END':
+                    record['end_lsl_time'] = marker.get('lsl_time')
+                    record['status'] = 'completed'
+                else:
+                    record['end_lsl_time'] = marker.get('lsl_time')
+                    record['status'] = 'interrupted'
+        return [rows[i] for i in sorted(rows)]
+
     def _write_manifest(self, status, reason=None):
         if self.folder is None:
             return
@@ -299,14 +358,17 @@ class SessionManager:
                        'sha256': digest.hexdigest(), 'status': status,
                        'created_wall_time': self._session_config['started_wall_time']}
             items.append(details)
-        manifest = {'schema_version': 6, 'config': self._session_config,
+        manifest = {'schema_version': 7, 'config': self._session_config,
                     'session_id':self.session_id,'participant':self._session_config['participant'],'study':self.study,
                     'session_folder':self.folder.name,'status':status,
                     'reason':reason,'files':items,
-                    'blocks': {'completed':sorted(self.completed_blocks),
+                    'trial_records': self._trial_records(),
+                    'trials': {'completed':sorted(self.completed_blocks),
                                'current':self.current_block if self.study else None,
                                'active':self.block_running if self.study else False,
-                               'visit_complete':bool(self.study and len(self.completed_blocks) == self.study['max_blocks'])},
+                               'visit_complete':bool(self.study and len(self.completed_blocks) == self.study['max_trials'])},
+                    'device_readiness': self.device_readiness,
+                    'recording_integrity': summarize_integrity(self.device_readiness, self.device_integrity),
                     'finalized_wall_time':datetime.now().astimezone().isoformat()}
         (session_file(self.folder, 'session_manifest.json')).write_text(json.dumps(manifest,indent=2),encoding='utf-8')
 
@@ -322,22 +384,22 @@ class SessionManager:
     def start_block(self):
         with self.lock:
             if not self.active or not self.study:
-                raise RuntimeError('Start a SYMPEX recording before a block')
+                raise RuntimeError('Start a SYMPEX recording before a trial')
             if self.block_running or self.block_ended:
-                raise ValueError('Current block already started or ended')
+                raise ValueError('Current trial already started or ended')
             if self.current_block in self.completed_blocks:
-                raise ValueError('Current block is already completed')
-            if self.current_block > self.study['max_blocks']:
-                raise ValueError('Maximum number of blocks reached')
-            self.marker(f'B{self.current_block:02d}_START')
+                raise ValueError('Current trial is already completed')
+            if self.current_block > self.study['max_trials']:
+                raise ValueError('Maximum number of trials reached')
+            self.marker(f'T{self.current_block:02d}_START')
             self.block_running = True
             return self.current_block
 
     def end_block(self):
         with self.lock:
             if not self.active or not self.block_running:
-                raise ValueError('No active block to end')
-            self.marker(f'B{self.current_block:02d}_END')
+                raise ValueError('No active trial to end')
+            self.marker(f'T{self.current_block:02d}_END')
             self.block_running = False
             self.block_ended = True
             self.completed_blocks.add(self.current_block)
@@ -346,19 +408,19 @@ class SessionManager:
     def next_block(self):
         with self.lock:
             if not self.active or not self.study or not self.block_ended:
-                raise ValueError('End the current block before advancing')
-            if self.current_block >= self.study['max_blocks']:
-                raise ValueError('Maximum number of blocks reached')
+                raise ValueError('End the current trial before advancing')
+            if self.current_block >= self.study['max_trials']:
+                raise ValueError('Maximum number of trials reached')
             self.current_block += 1
             self.block_ended = False
-            self.marker(f'B{self.current_block:02d}_READY')
+            self.marker(f'T{self.current_block:02d}_READY')
             return self.current_block
 
     def stop(self):
         if not self.active:
             return
         if self.study and self.block_running:
-            self.marker(f'B{self.current_block:02d}_INTERRUPTED')
+            self.marker(f'T{self.current_block:02d}_INTERRUPTED')
             self.block_running = False
         self.marker('RECORDING_STOP')
         for name, recorder in list(self.recorders.items()):
@@ -369,9 +431,21 @@ class SessionManager:
         self.active = False
         self.mark_file.close()
         self.mark_file = None
-        self.bus.emit('Session', 'STOPPED', str(self.folder))
+        self.device_integrity = {name: assess_device(name, rec, self.folder, stage='final')
+                                 for name, rec in self.recorders.items()}
+        summary = summarize_integrity(self.device_readiness, self.device_integrity)
+        # A normal user stop is not evidence that every selected channel succeeded.
+        status = 'COMPLETED' if summary['overall'] == 'PASS' else 'PARTIAL'
+        for name, result in self.device_integrity.items():
+            self.bus.emit(name, 'INFO' if result['ok'] else 'WARNING',
+                          f'Integrity: {result["message"]}')
+        self.bus.emit('Session', 'STOPPED', f'{self.folder} | integrity={summary["overall"]}')
         try:
-            self._write_manifest('COMPLETED')
+            if self.study:
+                self._session_config['training_trials'] = self._trial_records()
+                session_file(self.folder, 'config.json').write_text(
+                    json.dumps(self._session_config, indent=2, default=str), encoding='utf-8')
+            self._write_manifest(status)
         except Exception as exc:
             self.bus.emit('Session', 'ERROR', f'Manifest finalization failed: {exc!r}')
         self.metadata_outlet = None

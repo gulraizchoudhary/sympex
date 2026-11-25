@@ -51,11 +51,11 @@ class App:
         self.study_centre = tk.StringVar(value='CPH')
         self.study_visit = tk.StringVar(value='1')
         self.study_block = tk.StringVar(value='1')
-        self.max_blocks = tk.StringVar(value='1')
+        self.max_blocks = tk.StringVar(value='5')
         # Phase defaults are suggestions; preserve a user selection for this visit.
         self._block_limit_identity = None
         self._block_limit_customized = False
-        self.block_status = tk.StringVar(value='B01 / B01')
+        self.block_status = tk.StringVar(value='T01 / T05')
         self.study_phase = tk.StringVar(value='Training')
         self.marker_label = tk.StringVar(value='EVENT')
         self.session_status = tk.StringVar(value='Ready to configure')
@@ -102,8 +102,8 @@ class App:
         for var in (self.folder, self.participant, self.study_centre, self.study_visit, self.study_phase):
             var.trace_add('write', self._on_visit_changed)
         self._sync_blocks()
-        self.root.bind('<Control-Shift-B>', self._block_shortcut)
-        self.root.bind('<Control-Shift-b>', self._block_shortcut)
+        self.root.bind('<Control-Shift-T>', self._block_shortcut)
+        self.root.bind('<Control-Shift-t>', self._block_shortcut)
         self.refresh_audio()
         self.tabs.select(self.dashboard_tab)
         self.root.after(350, self.poll)
@@ -120,7 +120,7 @@ class App:
             'Post-experiment synchronization-quality analysis is available in its own tab.\n\n'
             'Physical synchronization accuracy and AI-based surgical assessment require\n'
             'separate experimental validation.\n\n'
-            'SYMPEX filenames include centre, participant, visit and session IDs; blocks use timestamped markers.'
+            'SYMPEX filenames include centre, participant, visit and session IDs; trials use timestamped markers.'
         )
 
     def _style(self):
@@ -185,14 +185,14 @@ class App:
                 control = self.field(studybar,var,width)
                 control.pack(side='left',ipady=5)
                 self.study_identity_controls.append(control)
-        self.label(studybar, 'Max blocks', 10, MUTED).pack(side='left', padx=(12, 4))
+        self.label(studybar, 'Max trials', 10, MUTED).pack(side='left', padx=(12, 4))
         self.max_blocks_combo = ttk.Combobox(studybar, textvariable=self.max_blocks,
             values=('1', '2', '3', '4', '5'), width=3, state='readonly')
         self.max_blocks_combo.pack(side='left')
         self.max_blocks_combo.bind('<<ComboboxSelected>>', self._on_max_changed)
-        self.label(studybar, 'Block', 10, MUTED).pack(side='left', padx=(12, 4))
+        self.label(studybar, 'Trial', 10, MUTED).pack(side='left', padx=(12, 4))
         self.label(studybar, '', 10, WHITE, True, textvariable=self.block_status).pack(side='left')
-        self.block_action_btn = self.action(studybar, 'Start Block B01  (Ctrl+Shift+B)', self.block_action)
+        self.block_action_btn = self.action(studybar, 'Start Trial T01  (Ctrl+Shift+T)', self.block_action)
         self.block_action_btn.pack(side='left', padx=(12, 0))
         setup.columnconfigure(1,weight=1)
         self.preview_btn=self.action(setup,'▶  PREVIEW',self.preview,accent=False)
@@ -1048,7 +1048,7 @@ class App:
                 self.participant.get(), self.study_visit.get(), maximum)
             self.max_blocks.set(str(maximum))
             self.study_block.set(str(state.current))
-            self.block_status.set(f'B{state.current:02d} / B{maximum:02d}')
+            self.block_status.set(f'T{state.current:02d} / T{maximum:02d}')
             self._refresh_block_controls(state)
         except (ValueError, OSError):
             self.block_status.set('Invalid visit')
@@ -1059,17 +1059,17 @@ class App:
         busy = active or self._starting_session or self.preview_active
         running = active and self.session.block_running
         ended = active and self.session.block_ended
-        maximum = self.session.study['max_blocks'] if active and self.session.study else 0
+        maximum = self.session.study['max_trials'] if active and self.session.study else 0
         if not active:
-            label, enabled = 'Start Block (record first)', False
+            label, enabled = 'Start Trial (record first)', False
         elif running:
-            label, enabled = f'End Block B{self.session.current_block:02d}', True
+            label, enabled = f'End Trial T{self.session.current_block:02d}', True
         elif ended and self.session.current_block >= maximum:
-            label, enabled = 'All Blocks Completed', False
+            label, enabled = 'All Trials Completed', False
         elif ended:
-            label, enabled = f'Start Next Block B{self.session.current_block + 1:02d}', True
+            label, enabled = f'Start Next Trial T{self.session.current_block + 1:02d}', True
         else:
-            label, enabled = f'Start Block B{self.session.current_block:02d}', True
+            label, enabled = f'Start Trial T{self.session.current_block:02d}', True
         self.block_action_btn.configure(text=label + ('  (Ctrl+Shift+B)' if enabled else ''),
                                         state='normal' if enabled else 'disabled')
         if state is None and not active:
@@ -1088,10 +1088,10 @@ class App:
                 self.participant.get(), self.study_visit.get(), self.max_blocks.get())
             self._block_limit_customized = True
             self.study_block.set(str(state.current))
-            self.block_status.set(f'B{state.current:02d} / B{state.maximum:02d}')
+            self.block_status.set(f'T{state.current:02d} / T{state.maximum:02d}')
             self._refresh_block_controls(state)
         except ValueError as exc:
-            messagebox.showerror('Invalid block limit', str(exc))
+            messagebox.showerror('Invalid trial limit', str(exc))
             self._sync_blocks()
 
     def _block_shortcut(self, _event=None):
@@ -1102,7 +1102,7 @@ class App:
 
     def _update_active_block(self):
         self.study_block.set(str(self.session.current_block))
-        self.block_status.set(f'B{self.session.current_block:02d} / B{self.session.study["max_blocks"]:02d}')
+        self.block_status.set(f'T{self.session.current_block:02d} / T{self.session.study["max_trials"]:02d}')
         self._refresh_block_controls()
 
     def block_action(self):
@@ -1111,27 +1111,27 @@ class App:
             return
         try:
             block = self.session.current_block
-            maximum = self.session.study['max_blocks']
+            maximum = self.session.study['max_trials']
             if self.session.block_running:
-                if not messagebox.askyesno('End block', f'Finish B{block:02d}?'):
+                if not messagebox.askyesno('End trial', f'Finish T{block:02d}?'):
                     return
                 self.session.end_block()
-                status = f'Block B{block:02d} finished; recording continues'
+                status = f'Trial T{block:02d} finished; recording continues'
             elif self.session.block_ended:
                 if block >= maximum:
                     return
                 # Start the next block immediately; no extra idle click needed.
                 self.session.next_block()
                 self.session.start_block()
-                status = f'Recording · Block B{self.session.current_block:02d} started'
+                status = f'Recording · Trial T{self.session.current_block:02d} started'
             else:
                 self.session.start_block()
-                status = f'Recording · Block B{block:02d} started'
+                status = f'Recording · Trial T{block:02d} started'
             self._update_active_block()
             self.session_status.set(status)
         except (RuntimeError, ValueError) as exc:
             self._update_active_block()
-            messagebox.showinfo('Cannot change block', str(exc))
+            messagebox.showinfo('Cannot change trial', str(exc))
 
     def start(self):
         if self.session.active or self._starting_session:
@@ -1142,7 +1142,7 @@ class App:
             block_state = load_block_state(self.folder.get(), self.study_centre.get(),
                 self.participant.get(), self.study_visit.get(), self.max_blocks.get())
             if not block_state.can_start:
-                raise ValueError('All blocks for this visit have been completed')
+                raise ValueError('All trials for this visit have been completed')
             selected = self._selected_recorders()
             for slot, p in self.camera_previews.items():
                 if p.thread and p.thread.is_alive():
@@ -1153,7 +1153,7 @@ class App:
             folder, participant = self.folder.get(), self.participant.get()
             study = {'centre':self.study_centre.get(),'visit':self.study_visit.get(),
                      'phase':self.study_phase.get(),
-                     'max_blocks':self.max_blocks.get()}
+                     'max_trials':self.max_blocks.get()}
             self._starting_session = True
             self.start_btn.configure(state='disabled')
             self.preview_btn.configure(state='disabled')
@@ -1223,16 +1223,24 @@ class App:
     def stop(self):
         if not self.session.active:return
         if self.session.block_running:
-            if not messagebox.askyesno('Interrupt active block',
-                    'This block is still active. Stop recording and mark it INTERRUPTED (not completed)?'):
+            if not messagebox.askyesno('Interrupt active trial',
+                    'This trial is still active. Stop recording and mark it INTERRUPTED (not completed)?'):
                 return
         self.session.stop()
+        integrity = getattr(self.session, 'device_integrity', {})
+        issues = [name for name, result in integrity.items() if not result.get('ok', False)]
         self.started_at=None
         self.status_top.configure(text='●  IDLE',fg=GREEN)
         self.start_btn.configure(state='normal');self.stop_btn.configure(state='disabled');self.preview_btn.configure(state='normal')
         self.marker_btn.configure(state='disabled')
         self._lock(False)
-        self.session_status.set('Session saved · ready for next run')
+        if issues:
+            self.session_status.set('Recording saved with integrity warnings: ' + ', '.join(issues))
+            messagebox.showwarning('Recording integrity warning',
+                'The session was saved, but these devices need review: ' + ', '.join(issues) +
+                '\nSee session_manifest.json for per-device status and metrics.')
+        else:
+            self.session_status.set('Session saved · recording integrity checks passed')
         self._sync_blocks()
 
     def mark(self):

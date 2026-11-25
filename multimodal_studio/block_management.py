@@ -5,13 +5,13 @@ from dataclasses import dataclass
 from pathlib import Path
 from output_names import checked_token, find_session_file
 
-DEFAULT_MAX = {'Training': 1, 'EndTraining': 1, 'Retention': 1, 'Refresher': 2}
+DEFAULT_MAX = {'Training': 5, 'EndTraining': 5, 'Retention': 5, 'Refresher': 5}
 
 
 def validate_max_blocks(value):
     n = int(value)
     if not 1 <= n <= 5:
-        raise ValueError('Maximum blocks must be between 1 and 5')
+        raise ValueError('Maximum trials must be between 1 and 5')
     return n
 
 
@@ -67,7 +67,7 @@ def load_block_state(root, centre, participant, visit, requested_max=None):
                 try:
                     data = json.loads(config_path.read_text(encoding='utf-8'))
                     study = data.get('study') or {}
-                    stored_max = study.get('max_blocks')
+                    stored_max = study.get('max_trials', study.get('max_blocks'))
                     if stored_max is not None:
                         limits.add(validate_max_blocks(stored_max))
                     marker_path = _session_files(session_dir, 'markers.csv')
@@ -76,18 +76,18 @@ def load_block_state(root, centre, participant, visit, requested_max=None):
                         with marker_path.open(newline='', encoding='utf-8') as stream:
                             for row in csv.DictReader(stream):
                                 event = row.get('marker', '')
-                                if event.startswith('B') and len(event) >= 7 and event[1:3].isdigit():
+                                if event[:1] in ('T', 'B') and len(event) >= 7 and event[1:3].isdigit():
                                     number = int(event[1:3])
                                     if not 1 <= number <= 5:
                                         continue
-                                    if event in (f'B{number:02d}_START', f'B{number:02d}_END', f'B{number:02d}_INTERRUPTED'):
+                                    if event in (f'{event[0]}{number:02d}_START', f'{event[0]}{number:02d}_END', f'{event[0]}{number:02d}_INTERRUPTED'):
                                         has_block_markers = True
                                         existing.add(number)
                                         if event.endswith('_END'):
                                             completed.add(number)
                     # Legacy IMMSS recorded a separate session per block.
-                    if not has_block_markers and study.get('block'):
-                        number = int(str(study['block']).removeprefix('B'))
+                    if not has_block_markers and (study.get('trial') or study.get('block')):
+                        number = int(str(study.get('trial') or study.get('block')).removeprefix('B').removeprefix('T'))
                         if 1 <= number <= 5:
                             existing.add(number)
                             manifest_path = _session_files(session_dir, 'session_manifest.json')
@@ -98,15 +98,15 @@ def load_block_state(root, centre, participant, visit, requested_max=None):
                 except (OSError, ValueError, TypeError, KeyError, csv.Error):
                     continue
     if len(limits) > 1:
-        raise ValueError('Conflicting maximum block counts in the saved visit')
+        raise ValueError('Conflicting maximum trial counts in the saved visit')
     saved_max = next(iter(limits)) if limits else None
     if requested_max is not None:
         requested_max = validate_max_blocks(requested_max)
         if saved_max is not None and requested_max != saved_max:
-            raise ValueError(f'Visit maximum already fixed at {saved_max}; cannot change to {requested_max}')
+            raise ValueError(f'Visit maximum trials already fixed at {saved_max}; cannot change to {requested_max}')
     maximum = saved_max or requested_max or 1
     if existing and max(existing) > maximum:
-        raise ValueError('Existing block exceeds visit maximum')
+        raise ValueError('Existing trial exceeds visit maximum')
     # Always select first incomplete block; interrupted attempts are retried.
     current = next((n for n in range(1, maximum + 1) if n not in completed), maximum)
     return BlockState(current, maximum, frozenset(completed), frozenset(existing), saved_max is not None)

@@ -19,6 +19,7 @@ class SeeTrueRecorder(RecorderBase):
         self.last_seen = None
         self.channels = []
         self.samples = 0
+        self.stream_interruptions = 0
         self.selected_indices = []
         self.preview_timed = deque(maxlen=1000)
         self.preview = deque(maxlen=800)
@@ -68,6 +69,7 @@ class SeeTrueRecorder(RecorderBase):
         self.active = True
         self.last_sample = self.last_seen = None
         self.samples = 0
+        self.stream_interruptions = 0
         self.worker = threading.Thread(target=self._run, args=(Path(folder), uid, channel_indices, timeout_seconds), daemon=False)
         self.worker.start()
 
@@ -115,6 +117,7 @@ class SeeTrueRecorder(RecorderBase):
                             self.failed = False
                             self.report('RECOVERED', 'Network LSL samples resumed')
                     elif self.last_seen is not None and time.monotonic() - self.last_seen > timeout_seconds and not self.failed:
+                        self.stream_interruptions += 1
                         self.report('DROPPED', f'No LSL samples for {timeout_seconds} seconds; waiting for recovery')
         except Exception as exc:
             self.report('ERROR', f'LSL acquisition: {exc!r}')
