@@ -108,12 +108,8 @@ class SessionManager:
         self.folder = None
         self.mark_file = None
         self.mark_writer = None
-        self.marker_source_id = f'IMS_ExperimentMarkers_{uuid.uuid4().hex}'
-        marker_info = StreamInfo('IMS_Experiment_Markers', 'Markers', 1, 0, 'string', self.marker_source_id)
-        if hasattr(marker_info, 'desc'):
-            marker_info.desc().append_child_value('recording_system', 'Intelligent Multimodal Microsurgery Studio (IMMSS)')
-            marker_info.desc().append_child('channels').append_child('channel').append_child_value('label', 'EventMarker')
-        self.marker_outlet = StreamOutlet(marker_info)
+        self.marker_source_id = None
+        self.marker_outlet = None  # Created on Start and destroyed on Stop.
         self.lock = threading.RLock()
         self.session_id = None
         self._session_config = None
@@ -136,8 +132,8 @@ class SessionManager:
             return self.folder
         if 'Polar H10' in selected and 'Polar Verity Sense' in selected:
             raise ValueError('Polar H10 and Verity Sense are mutually exclusive')
+        self._release_session_outlets()
         self.session_id = uuid.uuid4().hex
-        self.metadata_outlet = None
         self.device_readiness = {}
         self.device_integrity = {}
         self.study = None
@@ -285,6 +281,7 @@ class SessionManager:
             self.mark_file = open(session_file(self.folder, 'markers.csv'), 'w', newline='', encoding='utf-8')
             self.mark_writer = csv.writer(self.mark_file)
             self.mark_writer.writerow(['lsl_time', 'marker', 'session_id'])
+            self._open_marker_outlet()
             self.active = True
             self.marker('RECORDING_START')
             self.bus.emit('Session', 'RECORDING', f'{self.session_id} | {self.folder}')
@@ -301,10 +298,31 @@ class SessionManager:
             self.device_integrity = {name: assess_device(name, rec, self.folder, stage='final')
                                      for name, rec in self.recorders.items()}
             self._write_manifest(status='ABORTED', reason=str(exc))
-            self.metadata_outlet = None
+            self._release_session_outlets()
             self.bus.close_session()
             unregister_study_block(self.folder)
             raise
+
+    def _open_marker_outlet(self):
+        """Advertise a fresh marker stream only while the session is recording."""
+        self.marker_source_id = f'IMS_ExperimentMarkers_{self.session_id}'
+        info = StreamInfo('IMS_Experiment_Markers', 'Markers', 1, 0,
+                          'string', self.marker_source_id)
+        if hasattr(info, 'desc'):
+            desc = info.desc()
+            desc.append_child_value('recording_system', 'IMMSS')
+            desc.append_child_value('session_id', self.session_id)
+            desc.append_child('channels').append_child('channel').append_child_value('label', 'EventMarker')
+        self.marker_outlet = StreamOutlet(info)
+
+    def _release_session_outlets(self):
+        """Drop native LSL outlet ownership when this recording finishes.
+
+        pylsl normally destroys its native outlet when the last Python reference
+        is released. Do not retain session marker/metadata outlets between visits.
+        """
+        self.marker_outlet = None
+        self.metadata_outlet = None
 
     def _broadcast_session_metadata(self):
         """Advertise study organization over LSL, matching metadata.json.
@@ -433,7 +451,12 @@ class SessionManager:
             ts = local_clock()
             self.mark_writer.writerow([f'{ts:.9f}', label, self.session_id])
             self.mark_file.flush()
-            self.marker_outlet.push_sample([label], timestamp=ts)
+            if self.marker_outlet is not None:
+                try:
+                    self.marker_outlet.push_sample([label], timestamp=ts)
+                except Exception as exc:
+                    # Persist the event locally even if external LSL consumers fail.
+                    self.bus.emit('Session', 'WARNING', f'LSL marker publish failed: {exc!r}')
 
     def start_block(self):
         with self.lock:
@@ -502,5 +525,5 @@ class SessionManager:
             self._write_manifest(status)
         except Exception as exc:
             self.bus.emit('Session', 'ERROR', f'Manifest finalization failed: {exc!r}')
-        self.metadata_outlet = None
+        self._release_session_outlets()
         self.bus.close_session()

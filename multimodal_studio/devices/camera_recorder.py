@@ -63,6 +63,7 @@ class CameraRecorder(RecorderBase):
         self.failed = False
         self.frames_written = self.frames_captured = self.frames_dropped = 0
         self.lsl_publish_errors = 0
+        self.lsl_outlet = None  # Never reuse a previous recording outlet.
         self.stop_event.clear()
         self.ready.clear()
         self.frame_queue = queue.Queue(maxsize=self.MAX_PENDING_FRAMES)
@@ -286,4 +287,5 @@ class CameraRecorder(RecorderBase):
         self.active = bool((self.thread and self.thread.is_alive()) or
                            (self.writer_thread and self.writer_thread.is_alive()))
         if not self.active:
+            self.lsl_outlet = None  # Writer normally released it in its finally block.
             self.report('INFO', f'Camera {self.slot} stopped: {self.frames_written} JPEG frames; {self.frames_dropped} queue drops')

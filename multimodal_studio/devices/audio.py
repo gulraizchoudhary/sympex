@@ -1,10 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Updated on Wed Nov 25 09:35:00 2026
-
-@author: Gulraiz
-"""
-
+# Author: Gulraiz
 from output_names import session_file
 import csv
 from collections import deque
@@ -62,8 +56,13 @@ class AudioRecorder(RecorderBase):
         self.lsl_queue = None
         self.lsl_thread = None
         self.lsl_drops = 0
+        self.lsl_shutdown = threading.Event()
 
     def start(self, folder, device, sample_rate, channels=1):
+        # Never reuse this recorder while a previous native push_chunk remains
+        # blocked: that could leak old audio into the following session.
+        if self.lsl_thread is not None and self.lsl_thread.is_alive():
+            raise RuntimeError('Previous audio LSL publisher is still shutting down')
         # A 384 kHz Ultramic input must use a compatible endpoint. Windows
         # DirectSound commonly rejects it; the user verified WASAPI Exclusive.
         device_info = sd.query_devices(device, 'input')
@@ -120,6 +119,7 @@ class AudioRecorder(RecorderBase):
             self.audio_outlet = None
             self.report('WARNING', f'Audio LSL initialization unavailable; WAV continues: {exc!r}')
         self.lsl_drops = 0
+        self.lsl_shutdown.clear()
         self.lsl_queue = queue.Queue(maxsize=32) if self.audio_outlet is not None else None
         self.lsl_thread = None
         if self.lsl_queue is not None:
@@ -213,9 +213,12 @@ class AudioRecorder(RecorderBase):
             self.active = False
 
     def _lsl_worker(self):
-        while True:
-            item = self.lsl_queue.get()
-            if item is None:
+        while not self.lsl_shutdown.is_set():
+            try:
+                item = self.lsl_queue.get(timeout=0.2)
+            except queue.Empty:
+                continue
+            if item is None or self.lsl_shutdown.is_set():
                 break
             samples, frames, first_ts = item
             if self.audio_outlet is None:
@@ -262,16 +265,30 @@ class AudioRecorder(RecorderBase):
             if self.worker.is_alive():
                 self.report('ERROR', 'Audio writer did not finish within timeout')
         self.active = False
-        if self.lsl_queue is not None and self.lsl_thread is not None:
+        # Shut down LSL publishing promptly; queued old audio is not broadcast
+        # after Stop. The WAV writer has its own separate queue and is unaffected.
+        self.lsl_shutdown.set()
+        if self.lsl_queue is not None:
+            while True:
+                try:
+                    self.lsl_queue.get_nowait()
+                except queue.Empty:
+                    break
             try:
-                self.lsl_queue.put(None, timeout=1)
+                self.lsl_queue.put_nowait(None)
             except queue.Full:
-                self.report('WARNING', 'LSL publisher backlog on stop; final broadcast chunks may be lost')
+                pass
+        if self.lsl_thread is not None:
             self.lsl_thread.join(timeout=3)
             if self.lsl_thread.is_alive():
-                self.report('WARNING', 'LSL publisher still draining; local WAV finalized')
+                # A blocked native LSL push cannot safely be forcibly killed.
+                # Flag the recording instead of reporting successful cleanup.
+                self.report('ERROR', 'LSL publisher did not stop within 3 seconds')
             else:
-                self.audio_outlet = None
-        else:
-            self.audio_outlet = None
+                self.lsl_thread = None
+        # Worker keeps its reference to the outlet only while inside push_chunk.
+        # Null this owning reference; the native outlet closes once all pushes end.
+        self.audio_outlet = None
+        if self.lsl_thread is None:
+            self.lsl_queue = None
         self.report('STOPPED', f'{self.count} samples saved; queue drops={self.lost_blocks}; LSL drops={self.lsl_drops}; LSL errors={self.lsl_publish_errors}')
