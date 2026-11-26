@@ -5,9 +5,6 @@ Updated on Wed Nov 25 09:35:00 2026
 @author: Gulraiz
 """
 
-"""Offline synchronization QA for Multimodal Studio session files.
-No claim of physical inter-device synchronization without common-event anchors.
-"""
 from __future__ import annotations
 import csv
 import json

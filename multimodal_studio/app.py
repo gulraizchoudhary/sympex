@@ -5,7 +5,6 @@ Updated on Wed Nov 25 09:35:00 2026
 @author: Gulraiz
 """
 
-"""Interactive, independent-device experiment recorder (Tkinter, Python 3.10+)."""
 import queue
 import json
 import tempfile
