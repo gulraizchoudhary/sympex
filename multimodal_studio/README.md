@@ -1,251 +1,529 @@
-# Intelligent Multimodal Microsurgery Studio (IMMSS) — Microsurgical Multimodal Research Platform
+# Intelligent Multimodal Microsurgery Studio (IMMSS)
 
-Intelligent Multimodal Microsurgery Studio (IMMSS) is a modular Tkinter implementation consistent with the previous Polar H10 + microphone application. Python 3.10+ recommended. Works with Windows USB audio devices, the `polar-python` BLE library and LSL broadcasters.
+**Multimodal acquisition, trial annotation, synchronized LSL streaming, and recording-quality review for the SYMPEX tympanostomy study**
 
-## Install
+**Code author:** Gulraiz  
+**Documentation revision:** 26 November 2026  
+**Basis:** Original `multimodal_studio.zip` and the successive IMMSS code-update packages supplied in this conversation, through the camera JPEG/LSL and LSL stop-cleanup updates. This describes the combined *source-level implementation*, not a certified deployed release. Check the installed version if local edits differ.
+
+> **What IMMSS is:** A Python/Tkinter research acquisition application integrating up to three cameras, microphones, external LSL streams (including SeeTrue Station output), and an optional Polar physiological sensor. It organizes coded longitudinal visits, records timestamped procedure/trial events, offers live monitoring, and generates integrity/QA information. It is **not** a surgical scoring system, an eye-tracker calibration program, or an XDF recorder.
+
+## Contents
+
+1. [Capabilities and limits](#1-capabilities-and-limits)
+2. [Install and run](#2-install-and-run)
+3. [Interface and operational workflow](#3-interface-and-operational-workflow)
+4. [SYMPEX identities, visits, and trials](#4-sympex-identities-visits-and-trials)
+5. [Devices and acquisition](#5-devices-and-acquisition)
+6. [LSL streams and shutdown](#6-lsl-streams-and-shutdown)
+7. [Directory structure, filenames, and files](#7-directory-structure-filenames-and-files)
+8. [Metadata and integrity](#8-metadata-and-integrity)
+9. [Preview, monitoring, and offline analysis](#9-preview-monitoring-and-offline-analysis)
+10. [Performance and storage](#10-performance-and-storage)
+11. [Tests and hardware validation](#11-tests-and-hardware-validation)
+12. [Troubleshooting](#12-troubleshooting)
+13. [Architecture and development guidelines](#13-architecture-and-development-guidelines)
+14. [Study governance and known gaps](#14-study-governance-and-known-gaps)
+
+## 1. Capabilities and limits
+
+| Area | Implemented source behavior | Important limitation |
+|---|---|---|
+| Longitudinal session identity | SYMPEX study, centre, coded participant, visit, phase, session UUID, computer hostname | A recorded session is not a complete participant registry or scheduling system |
+| Centres | `CPH`, `KUH`, `JNS` in the GUI | Centre availability does not imply institutional study approval |
+| Training unit | Five *trials* by default; configurable 1–5 before the visit starts | One trial denotes one tympanostomy attempt; no automatic success/error scoring |
+| Events | Continuous session recording with `T01_START`, `T01_END`, etc., in a common LSL/event timeline | Event accuracy depends on the experimenter marking boundaries consistently |
+| Video | Up to three selected cameras; JPEG frames, index CSV, camera metadata | 30 fps is requested, not guaranteed; JPEG sequences can create very many files |
+| Audio | PortAudio microphone/Ultramic, WAV capture, timing companion, LSL publication | Audio ADC timestamps are estimates; driver and hardware timing must be tested |
+| Eye tracking / LSL inputs | Select external streams/channels for CSV acquisition | SeeTrue calibration happens in SeeTrue Station, not IMMSS |
+| Physiology | Exclusive choice: none (default), H10, or Verity Sense | Different physiological measures are not interchangeable |
+| LSL outputs | Session metadata, experiment markers, camera frame indices, selected audio/Polar data | No native XDF output or managed LabRecorder pairing in this source |
+| Recording integrity | Device readiness checks and post-stop integrity status | Software checks do not prove physical accuracy or perfectly synchronized exposure |
+| Offline QA | Stream discovery, timing/coverage/jitter/drift diagnostics and a compact report | Quantitative inter-device alignment needs physical events/anchors |
+
+## 2. Install and run
+
+### Requirements
+
+- Python **3.10+** recommended; desktop environment with Tkinter.
+- For acquisition, install dependencies in `requirements.txt`:
+
+```text
+numpy>=1.24
+sounddevice>=0.4.6
+soundfile>=0.12
+pylsl>=1.16
+bleak>=0.21
+polar-python
+matplotlib>=3.7
+opencv-python>=4.8
+Pillow>=10.0
+pandas>=2.0
+```
+
+- Appropriate camera, audio, Bluetooth, and network/LSL drivers; device-specific permissions.
+- SeeTrue Station configured separately when eye-tracking LSL is required.
+- Enough local disk space for continuous multimodal recordings.
+
+### Commands
+
+From the project directory containing `app.py`:
 
 ```bash
 python -m pip install -r requirements.txt
 python app.py
 ```
 
-Start with **no devices selected**. Select only those used in the experiment. Refresh audio endpoints and choose laptop microphone and/or the Ultramic; scan Polar before enabling it; scan/select the SeeTrue LSL stream on the dedicated tab. Each selected device attempts to start independently. Session data are written to `../Participant_Data` by default, configurable in the UI.
-
-## Modules
-
-- `core.py`: timestamps, markers, session lifecycle, event logs.
-- `devices/audio.py`: independent WAV + block timestamp acquisition for ordinary microphones and Ultramic 384K PRO.
-- `devices/polar.py`: Polar BLE HR/RR with optional ECG and accelerometer, CSV and LSL outlets. Follows original project's HR → ECG → ACC startup sequence. Samples' device clock is not yet calibrated to LSL.
-- `devices/seetrue.py`: LSL discovery, reception and loss detection; preserves broadcast channel order.
-- `devices/camera_recorder.py`: independent camera MP4 recording and per-frame LSL host timestamps.
-- `app.py`: redesigned dark dashboard with a device-selection sidebar, context-sensitive settings, session overview, dedicated SeeTrue discovery, camera selection and preview panels, session timer and live activity/errors.
-
-## Updated interface walkthrough
-
-1. Enter participant ID and select the recording folder in the top bar.
-2. Check only the required devices in the left sidebar; select a device name to show its settings.
-3. Set audio input / sample rate, scan Polar if applicable, and discover SeeTrue LSL streams in the separate tab.
-4. Press **START SESSION**. The Activity tab shows individual device startup and failure messages.
-5. Use the marker field below the workspace to add synchronized events; **STOP** saves the session without requiring all devices to be healthy.
-
-The dashboard does not claim a camera preview exists until camera capture modules are implemented.
-
-## Important limitations
-
-1. Each selected camera saves MP4 video and a frame timestamp CSV. Automatic reconnect is not implemented.
-2. A failed device will not stop the session or other recorders. Audio streams that stop are flagged, but **not auto-restarted**; SeeTrue's `StreamInlet` has recovery enabled but repeated disconnects may still require intervention; Polar reconnection is manual in this version.
-3. Audio timing CSV values are *estimates* in the LSL local clock, based on PortAudio ADC time. This is not validated microsecond or frame/sample accuracy. A USB sound card can have an independent clock and drift. Test timing with a shared physical signal.
-4. Ultramic support assumes the driver exposes 384 kHz mono PCM through PortAudio; the selected Windows host API might not support it. Try WASAPI/exclusive-capable drivers/configuration if needed. Check input format before experiments.
-5. The audio write queue is bounded; disk stalls or overflow may lose data. Events are logged, but dropped samples are not reconstructed, so alignment after dropout needs QC. WAV file growth is ~2.76 GB/hour at 384 kHz mono 16-bit. Rotate files or use RF64 for lengthy sessions.
-6. SeeTrue fields depend entirely on what the transmitting software publishes; this receiver cannot add missing pupil, gaze, or confidence channels. Check LSL channel labels and manufacturer stream configuration.
-7. Device selection locks while a session is active. Unselected devices are never started. Enabled camera slots are included in recordings.
-8. The original application's more extensive plots and interval markers are not yet ported; the app has a shared event marker button and event/quality logs.
-
-**Test each driver and stream with a short session before research recording.**
-
-## Selected-device Live Monitoring
-
-Open the **Live monitoring** tab. Only enabled devices are displayed. Each audio
-recorder shows a downsampled signal preview and RMS level; Polar H10 displays ECG
-(or HR/ACC fallback), and SeeTrue plots its first two numeric LSL channels.
-The monitoring display only uses actual samples collected during recording and
-is not an independent pre-recording preview. The SeeTrue channel order is
-source-defined: inspect the SeeTrue LSL tab to confirm which channels represent
-gaze coordinates. Selected camera video is displayed in the Cameras tab.
-
-Monitoring is intentionally decimated to reduce UI load; the WAV/CSV recording
-paths are independent of the display. Error and dropped statuses remain visible
-on individual panels and in the event log. These changes have been syntax-checked,
-but were not tested on connected hardware.
-
-## Preview mode and five-second monitors
-
-Select sensors, scan and configure their inputs, then click **PREVIEW**. The enabled sensor modules run in temporary test acquisition, with continuously scrolling five-second charts under **Live monitoring**. Press **STOP PREVIEW** to finish the test and delete its temporary WAV/CSV files. Preview does **not** create a participant session. Start Session automatically stops preview first; there is a short interruption while devices are restarted. Recording uses the same displays while saving into the participant session folder. The charts use acquired data, not simulated signals. Camera Test preview is also available from the Cameras tab; experiment Preview does not retain camera video.
-
-**Caution:** Preview currently uses the normal recorder implementations and writes temporary files before discarding them. This can cause temporary disk usage (especially 384 kHz audio). LSL channel graphs are generic unless channel mapping is verified. Device clocks and sample loss require hardware validation before scientific analysis.
-
-### Audio monitor axes and diagnostics
-The 5-second rolling **horizontal** time axis now runs from 0 to 5 seconds, oldest to newest. The **vertical** audio amplitude axis is fixed at −1 to +1 for normalized 16-bit PCM. The monitor reports peak and RMS amplitude and flags missing samples or extremely low signal. A nearly flat waveform with samples received may indicate muted input, incorrect Windows microphone selection, low gain, or a quiet acoustic environment. Device recording and original WAV signal are not amplified or changed by the display.
-
-
-### 5-second monitor correction
-Audio display samples are now downsampled by **sample rate**, targeting approximately 300 points per second, instead of taking 160 samples per PortAudio callback. That avoids a short preview buffer when callbacks are small. On Preview/Record startup, the graph begins filling at **0 seconds**, reaches **5 seconds**, and then continuously scrolls a five-second window with the newest data at 5 seconds. The x-axis always spans 0–5 seconds. Peak 0.0000 and RMS 0.0000 with captured audio samples means **digital silence**, not an x-axis error; check device routing, microphone permissions, gain, and the resulting WAV file.
-
-## Audited 5-second live monitor (2026-10-23)
-
-- The horizontal scale is **5 → 0 seconds ago** (newest sample at x=0, oldest at x=5).
-- Window positions come from audio sample timestamps, not the number of points kept in memory. A partial history is not stretched to fill five seconds. After five seconds of uninterrupted acquisition, samples can cover the complete window.
-- Audio preview data are normalized to [-1,1] for display. The actual WAV data remain 16-bit PCM. The preview is decimated, and should not be used for quantitative ultrasound-frequency analysis.
-- The microphone remains silent if selected device returns all-zero audio; timeline fixes do not fix muted hardware. Diagnose Peak/RMS and the actual WAV separately.
-- Device acquisition uses background threads. Camera video is captured using OpenCV and saved independently per camera.
-
-Run deterministic software-only checks (no device attached):
-
-    python -m unittest discover -s tests -v
-
-The audio callback unit tests use mocked PortAudio/LSL and synthetic waveforms; they are not evidence that any physical microphone, BLE Polar H10 or SeeTrue stream operates on your computer. The full Tk GUI is not launched by the tests. Test microphone selection, SeeTrue channel mapping, Polar streaming, writer resilience, USB scheduling, and timing accuracy with real hardware before study acquisition.
-
-
-## LSL selective channel recording
-
-In **SeeTrue · LSL**, press **Discover LSL streams**, select the broadcaster,
-and use the scrollable **Channels to RECORD** checklist to choose channels.
-**Select all** and **Clear selection** are available. At least one channel is required.
-Selections are locked during Preview and Record.
-
-Only the checked channels are written to `seetrue_lsl.csv`. The two
-timestamp columns are always included. CSV headers include the original
-1-based LSL channel index. `seetrue_channels.json` contains the exact
-zero-based and one-based index/label-to-CSV-column mapping.
-`config.json` also contains the chosen zero-based channel indices.
-The live plot uses the first two selected numeric channels; the full raw
-LSL sample remains temporarily available to the recorder for monitoring.
-If broadcaster channel order changes after discovery, rediscover and
-verify mappings before starting the experiment.
-
-## Persistent event/error logging (updated)
-
-All recorder events emitted through `EventBus` are visible in **Activity & errors**.
-They are also written persistently to `logs/application.log`, including **Preview**, device discovery,
-startup validation errors, warnings/cautions, dropped devices and shutdown messages. When a formal
-experiment is running, these events are additionally saved to the session's `events.log`.
-Python unhandled exceptions in the main thread and background threads are also reported through
-the event bus (and retain standard traceback output on stderr). Standard output from arbitrary
-third-party libraries is not intercepted. Application warnings should always use
-`bus.emit(device_name, 'WARNING', message)` rather than `print(...)`.
-
-The Polar H10 recorder now initializes its `future` before validation so a failed
-Preview start does not cause an additional `AttributeError` during stop. The stop
-path also skips BLE disconnect when connection was never attempted.
-
-Run automated tests with `python -m unittest discover -s tests -v`.
-
-## Camera selection and live preview
-
-Install `opencv-python` and `Pillow` from requirements. In **3 camera previews**, press **Scan available cameras**, select a camera index from each slot's dropdown, and press **Test preview**. Up to three *different* devices can be previewed at once; duplicate devices are refused while already in use. The live preview runs on a separate thread, and camera errors are sent to the central application log. **Video is not recorded or saved by this release.** On Windows camera indices are probed with DirectShow, on other platforms the default OpenCV backend. Devices that are already occupied by another application may not appear. Camera selection cannot be rescanned during an experiment session.
-
-## Camera recording (new)
-
-1. In **Cameras**, click **Scan available cameras**, select the desired camera for slot 1/2/3, and use **Test preview** to verify the live picture.
-2. Enable the corresponding **Camera 1/2/3** device checkbox in the sidebar (only enabled slots record).
-3. Click **Start Session**. The application first releases standalone test-preview handles, then opens the same chosen indices for independent MP4 recording. The Cameras tab continues displaying recording frames.
-4. Click **STOP** to finalize video files. Each enabled camera creates `camera_N.mp4`, `camera_N_frames.csv` and `camera_N_metadata.json` inside the experiment session.
-5. Preview mode does not preserve camera video. The camera-specific **Test preview** buttons are for camera verification only.
-
-**Timing caveats:** `lsl_capture_time_estimate` comes from the computer's LSL clock just after `VideoCapture.read()` and is *not* a hardware exposure timestamp. Frame CSV entries correspond to frames passed to the encoder; OpenCV's fixed-fps MP4 container may not preserve variable real acquisition intervals. For scientific synchronization and playback, use frame timestamps in the CSV and validate latency against a visible synchronized event. Video fps is based on the reported camera fps when credible, otherwise 25 fps. The program does not support hardware trigger sync, camera reconnection, or guaranteed capture throughput.
-
-**Troubleshooting:** Two enabled slots cannot use the same camera index. If one camera fails, its error goes to `logs/application.log` and session `events.log`; other sensors continue. If the camera cannot be opened, its video may be absent or incomplete. Verify playback and CSV row counts before experimental use.
-
-## Unified microphone selector (2026-10 update)
-The former Microphone and Ultramic controls have been combined into one optional Microphone device. The input dropdown lists PortAudio's Windows endpoint names with their host API and device index (WASAPI entries are prioritized). The same input selection is used for Preview and Record. Selecting an endpoint whose reported name contains `Ultramic` sets 384000 Hz by default; other inputs use their reported default rate when present in the dropdown. Recording validates the sample rate before starting. Windows Device Manager driver names are not guaranteed to be identical to PortAudio audio endpoint names; check the backend and index if several copies of a device appear. The recording file is `microphone.wav` for any selected audio endpoint.
-
-### Windows Device Manager hardware names (updated)
-The Microphone configuration panel now shows the names returned by Windows `Win32_SoundDevice` (the Sound, video and game controllers hardware list) next to the recording endpoint selector. It also includes a button to show the full list. An exact, unambiguous text match is prefixed to the corresponding audio endpoint entry. **A driver/hardware name is not itself a PortAudio capture endpoint**: if Windows reports a generic endpoint such as `Microphone (USB Audio Device)`, the application cannot safely establish which branded hardware name corresponds to that endpoint using names alone. In that case the hardware name remains visible separately, but the endpoint is not renamed based on a guess. For full physical-device-to-endpoint mapping on all hardware, Windows Core Audio endpoint device-container/association metadata is needed. Recording always uses the actual verified PortAudio device index.
-
-## Post-experiment analysis (integrated)
-
-Use the **Post-experiment analysis** tab in `app.py` after stopping an experiment.
-Browse to a `Participant_*/Session_*` folder, click **Scan**, select timestamped
-streams and optional channels, then tune warning thresholds and click **Analyze**.
-The tab displays a sortable warning table and interactive matplotlib charts (pan,
-zoom, save) for coverage, sample-interval regularity, and matched-event offsets.
-Reports are saved under `SESSION/analysis_reports/TIMESTAMP/` (JSON, CSV, PNG,
-summary.txt); source data is read-only.
-
-**Important:** start/stop differences are coverage, not physical sensor latency;
-clock drift vs nominal rate is not inter-device drift. For true relative offset/drift,
-provide an optional CSV containing `stream,event,time_lsl` with repeated physical
-synchronization events detected in two or more streams. Use exact discovered
-stream names (CSV filename stems). Warnings are heuristic; gap counts from chunked
-or event-based sources may not correspond to lost physical samples. Camera MP4
-fixed-FPS timing can disagree with capture timestamps.
-
-The tab blocks analysis while the current session is active to avoid reading
-partially written recording files. It runs analysis in a worker thread.
-Dependencies include pandas for offline analysis.
-
-### Expanded interactive Post-Experiment Analysis plots
-
-After **Analyze selected streams**, use the graph dropdown to switch among nine views:
-Coverage, Inter-sample intervals, Jitter distribution, Large gaps timeline,
-Nominal-rate drift, Reception lag, Pairwise overlap, Camera timing, and
-Event offsets. Use the Matplotlib toolbar to zoom, pan and save figures.
-
-**Interpretation:** Jitter residuals are referenced to nominal sample cadence
-(or median cadence if unknown). Extreme residuals are clipped **only in the
-histogram presentation**, not in saved data/metrics. Gap points are cadence
-anomalies and do not prove actual lost packets. Nominal-rate drift is a
-sample-index/timebase check, not calibrated inter-device drift. Reception lag
-requires timestamp clock-domain consistency. Event offsets require matched
-physical anchors. Camera timing compares the video writer's nominal duration
-to the frame timestamp span and is not a camera exposure offset measurement.
-
-## Polar preflight and session file identity (2026-10-28)
-
-If Polar H10 is selected, **Start Session** now connects it first and waits for
-actual HR packets, and ECG/ACC packets when those options are checked, before
-starting the other acquisition modules and writing `RECORDING_START`.
-The wait runs on a worker thread; the user interface remains responsive.
-If live samples do not arrive within 45 seconds, session start is aborted
-and logged. Unselected Polar is never required. A BLE dropout *after* a
-successful session start is still logged without stopping other devices.
-
-Every completed session now has a random `session_id` in `config.json`, the
-`markers.csv` session_id column, and `session_manifest.json`. Each generated
-file also has a matching `<original name>.session.json` sidecar carrying the
-session_id, participant, session folder, byte size, SHA-256 checksum and name.
-The original media/CSV filenames have deliberately been preserved for
-compatibility with the existing Post-Experiment Analysis tab. **Keep the sidecar
-with its original file** when transferring files between folders; WAV and MP4
-formats are not renamed or re-encoded. Hashing large media on finalization
-can require extra disk activity and time.
-
-The readiness preflight does not guarantee sample-level alignment. The Polar
-CSV may contain setup samples before the formal start marker, and the
-optional streams must still be checked for gaps and delayed startup.
-
-
-## Multiple network LSL streams (IMS update)
-
-The **Network LSL streams** tab discovers all currently visible LSL outlets on the local host and compatible network. It is **not necessary** to combine every device into a single LSL stream. Each physical sensor may publish several streams (e.g., ECG, ACC, markers). Streams with identical names are displayed separately using the LSL **UID**, source ID and host name. A name alone must not be used to identify an outlet.
-
-1. Start the publishers on the sensor computers, and confirm LSL discovery is allowed by firewall/network configuration.
-2. Open **Network LSL streams**, then click **Discover network streams**.
-3. Click a row and choose **Enable stream**. Repeat for as many outlets as desired.
-4. Select only the channel checkboxes needed for that outlet.
-5. Click **PREVIEW** to test, or **START SESSION** to record each selected outlet separately.
-6. Files `network_lsl_XX_lsl.csv` and `network_lsl_XX_channels.json` are created for each chosen outlet, alongside session manifest metadata.
-
-The existing dedicated SeeTrue tab is retained for compatibility. **Do not select the same LSL UID in SeeTrue and Network LSL simultaneously.** LSL `RECORDING_START` markers are published separately through `ExperimentMarkers`, which is a single marker stream shared by IMS (not a container for all sensor samples). Outlets may have different channel counts, rates, and native clocks. The CSV preserves original source timestamps and local receive clock; physical synchronization still requires appropriate timestamp-correction/validation.
-
-Stream indices in `network_lsl_XX` reflect the current discovery order, which may change across scans or sessions; use the `uid` and `source_id` recorded in `_channels.json` and the session manifest to identify an outlet unambiguously. Sample silence/no data is reported to the event log, and other outlets continue independently.
-
-**Limitations:** LSL multicast may not cross all network segments/VLANs; antivirus/firewalls and Wi-Fi isolation can prevent discovery. This version supports per-stream CSV capture and channel selection, but does not yet display individual plots for each network outlet in Live Monitoring. Data from newly started worker threads may begin after the session start marker; the post-experiment analyzer should still check start coverage.
-
-
-## Unified Network LSL Manager (October 2026)
-
-The separate SeeTrue acquisition tab and sidebar checkbox were removed. SeeTrue and all other external LSL sources are selected through **Network LSL streams**. Discover outlets, enable multiple outlets, and choose channels independently for each. Each selected stream has its own CSV and channel metadata JSON. Old SeeTrue CSV files remain readable; the legacy `devices.seetrue.SeeTrueRecorder` class is retained as an implementation detail for compatibility.
-
-IMS-created outlet names identify their content: `IMS_PolarH10_HR`, `IMS_PolarH10_RR`, `IMS_PolarH10_ECG`, `IMS_PolarH10_ACC`, and `IMS_Experiment_Markers`. They include distinct source IDs for each application instance or Polar recorder instance. Incoming LSL outlets keep the name assigned by the external publisher, which IMS cannot rename; use type, hostname, source ID, UID, and channel labels to identify them.
-
-**Avoid accidental duplicate recordings:** Polar H10 data published by IMS can also be discovered through the Network LSL Manager. Select either the local Polar recording, the discovered LSL copy, or both intentionally, as they are separate saved files. The local Polar HR/ECG/ACC timestamps should not be assumed hardware synchronized merely because they are LSL-broadcast. No new raw audio/video LSL publisher is created by this update; microphone audio and camera video continue to be saved in their native file formats.
-
-
-## All-device LSL broadcast
-
-IMS broadcasts separate descriptive outlets while selected devices are acquiring:
-
-- `IMS_Microphone_Audio` or `IMS_Ultramic384K_Audio`: full-rate float32 normalized PCM samples in chunks. Timestamp passed to LSL is the estimated time of the last sample of each chunk; earlier times are interpolated by LSL. Host/device clock calibration is required for high-precision alignment. At 384 kHz, expect substantial network traffic; receiver/network performance must be tested. WAV recording remains the authoritative raw PCM16 artifact.
-- `IMS_Camera1_Frames`, `IMS_Camera2_Frames`, `IMS_Camera3_Frames`: one sample per saved frame, fields `FrameNumber`, `Width`, `Height`, `MonotonicCaptureTime`; the LSL timestamp is the host-side frame-retrieval estimate (NOT actual exposure time). MP4 contains video pixels, not LSL.
-- `IMS_PolarH10_HR`, `_RR`, `_ECG`, `_ACC`: existing separate physiological LSL outlets, active when Polar is selected and ready.
-- `IMS_Experiment_Markers`: event markers, available while IMS is running.
-
-**Discoverability**: only active/started devices have their data outlets. Use Preview or Record, then discover again in the Network LSL Manager or another LSL client. Do not enable an IMS-broadcast outlet as a network input in the same session unless you intentionally want a duplicate copy. Stream source IDs are unique per outlet, and channel/type metadata describes its data. External LSL broadcasters are not renamed by IMS.
-
-### Camera configuration (IMS)
-Click **Camera 1**, **Camera 2**, or **Camera 3** in the left device list to jump directly to the Cameras tab. There is no separate camera Settings page. For each slot, choose a detected camera, test the preview, then set dimensions, nominal FPS, autofocus or manual focus, automatic or manual exposure, brightness and gain. Click **Apply settings & restart preview** to test the changes; the same requested settings are passed to the camera recorder when you start a session. Camera controls are unavailable during an active session to protect recording consistency. Camera properties are best-effort: Windows DirectShow/MSMF drivers often ignore or clamp requested values. Check Activity & errors for unsupported settings and check the saved camera metadata for actual resolution and video FPS. Brightness/gain/exposure numbers are *driver-specific*, not standardized photographic units. External lighting cannot be controlled through OpenCV unless that lighting device exposes a supported control. Exposure auto/manual semantics differ by backend.
-
-## Device-oriented GUI (latest update)
-
-See `GUI_REDESIGN.md`. Eight primary tabs separate experiment readiness from settings and live monitoring while preserving recorder functionality and existing data formats.
+For automated software tests:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+On Windows, use the actual Python interpreter/virtual environment configured for the recording machine. Some audio devices, especially 384 kHz Ultramic configurations, require an appropriate WASAPI input and exclusive mode. Avoid changing the acquisition computer's drivers immediately before a research visit.
+
+### Project layout (principal modules)
+
+```text
+multimodal_studio/
+├── app.py                     # Tkinter GUI and experiment interaction
+├── core.py                    # Session lifecycle, metadata, markers, manifest
+├── block_management.py        # Trial counts, limits, visit resume logic
+├── output_names.py            # File names, modality paths, legacy discovery
+├── recording_integrity.py     # Live readiness and post-recording integrity
+├── monitoring.py              # Rolling signal displays
+├── post_analysis.py           # Offline QA GUI
+├── analysis_core.py           # Stream/timing analysis and report generation
+├── camera_diagnostics.py
+├── devices/
+│   ├── audio.py               # Microphone/WAV and audio LSL
+│   ├── polar.py               # Polar H10
+│   ├── polar_verity.py        # Polar Verity Sense
+│   ├── seetrue.py              # Generic network LSL receiver
+│   ├── camera_recorder.py     # Numbered JPEGs + frame-index LSL
+│   ├── camera_controls.py     # Camera property requests and defaults
+│   ├── camera_preview.py
+│   ├── cameras.py
+│   └── windows_audio.py
+├── benchmarks/
+│   ├── benchmark_camera_frames.py
+│   └── README_CAMERA_FRAMES.md
+├── tests/
+└── requirements.txt
+```
+
+## 3. Interface and operational workflow
+
+The main GUI tabs are **Experiment dashboard**, **Polar Sensor**, **Microphone**, **Cameras**, **Network LSL**, **Live monitoring**, **Post-experiment analysis**, and **Logs & diagnostics**.
+
+### Before each participant visit
+
+1. Verify approvals, consent, coded participant identity, and local recording destination.
+2. Set **Centre** (`CPH`, `KUH`, `JNS`), **Participant**, **Visit** (`V01` etc.), and **Phase** (`Training`, `EndTraining`, `Retention`, `Refresher`).
+3. Review **Max trials**. It defaults to **5** for current defined phases and may be changed to 1–5 before the visit's first recording. A saved visit fixes its allowed maximum.
+4. Choose the devices required by this visit; **No Physiological Sensor** is the startup default.
+5. For cameras, scan, assign distinct camera indices to enabled slots, set/test exposure and field of view, and verify output frame dimensions and frame rate.
+6. For microphone/Ultramic, refresh real audio endpoints, select the intended input, verify supported sample rate, and inspect signal levels.
+7. For H10 or Verity Sense, scan and select the physical BLE device; do **not** select both. For external SeeTrue/LSL, discover the correct source and select channels.
+8. Verify SeeTrue calibration/validation **in SeeTrue Station**; confirm the relevant stream appears and contains samples in IMMSS.
+9. Run a short Preview/Test and check each selected device's readiness, storage, and appropriate signal/data quality.
+10. Start the formal session once. Click the smart trial button to mark `T01_START`; later end trial 1, and repeat for the configured number of trials. The acquisition continues between trials.
+11. Stop the session. Inspect completion status, manifest, camera/frame indices, and a sample of each recorded file before the participant leaves.
+
+### Controls and semantics
+
+| Control | Effect |
+|---|---|
+| **PREVIEW / STOP PREVIEW** | Temporary pre-session monitoring; preview acquisition is not a formal participant session |
+| **START SESSION** | Creates a unique recording segment, initializes selected devices, waits for live readiness, begins formal recording |
+| **Smart trial button** | Toggles Start Trial → End Trial → Start Next Trial, without restarting devices |
+| **STOP** | Closes or interrupts an active trial, stops recorders, finalizes status/files, and releases owned LSL outlets |
+| **Manual marker** | Adds an arbitrary timestamped event to the session's event file and marker LSL stream |
+| **Post-experiment analysis** | Reviews already captured sessions; should not access active acquisition handles |
+
+**Shortcut:** `Ctrl+Shift+T` is actually bound to the trial action in `app.py`. One GUI label still contains `Ctrl+Shift+B` from the older block interface; treat that label as stale until corrected.
+
+**Trial boundaries:** Trial `T01` has `T01_START` and `T01_END` markers. A Stop during an active trial creates `T01_INTERRUPTED`. The next attempt should use the visit-recovery rules and a new recording segment; never overwrite prior data. Trial-start/trial-end markers are experimenter annotations, not automatically recognized surgical actions.
+
+## 4. SYMPEX identities, visits, and trials
+
+The study-specific data model is:
+
+**Study → Centre → Coded participant → Visit/training session → Recording segment → Trial markers.**
+
+- **Participant**: coded student identity, for example `P001`; do not put names or contact information into acquisition folders.
+- **Training session / visit**: `V01`–`V99`, with phases `Training`, `EndTraining`, `Retention`, `Refresher`. Visit number is not inherently calendar week number.
+- **Recording session**: a unique UUID and timestamped folder; normally one continuous acquisition per visit, but a technical failure may require an additional segment.
+- **Trial**: a single tympanostomy attempt, numbered `T01`–`T05` under the current limit, identified by markers rather than separate video/audio/physiology recordings.
+
+The manager inspects existing visit metadata and markers when reopening a visit. It attempts to resume from the earliest unfinished trial; completed trial markers are not intentionally repeated. It also refuses to silently change the allowed trial count after a visit has a saved configuration. A partially completed technical recording does **not** imply the biological trial was successful.
+
+A `B01` marker may appear in **legacy** recordings; older block concepts should not automatically be interpreted as individual procedures without checking their original protocol.
+
+## 5. Devices and acquisition
+
+### 5.1 Cameras (slots 1–3)
+
+- Default requested output: **640 × 480**, **30 fps**. Actual sensor delivery is backend/driver dependent; the application records measured rate/metadata and may resize captured frames to output dimensions.
+- Main recorder: `devices/camera_recorder.py`; property handling: `devices/camera_controls.py`.
+- Each enabled camera saves a **numbered JPEG sequence**, not MP4:
+
+```text
+video/
+├── <PREFIX>camera_1_frames/
+│   ├── 00000000.jpg
+│   ├── 00000001.jpg
+│   └── ...
+├── <PREFIX>camera_1_frames.csv
+└── <PREFIX>camera_1_metadata.json
+```
+
+- JPEG quality default: **85**. A dedicated capture thread sends frames to a **bounded 32-frame writer queue**. Slow disk writes may drop frames; those drops are recorded rather than disguised as a stable 30 fps acquisition.
+- A frame number is assigned only after **successful JPEG write**; the same zero-based index appears in the index CSV and `IMS_CameraN_Frames` LSL notification.
+- Camera frame LSL channel order: `FrameNumber`, `Width`, `Height`, `MonotonicCaptureTime` (4 `double64` channels). The LSL sample timestamp is the host estimate after `cap.read()`.
+- **Frames themselves are not transmitted over LSL.** The stream carries frame number, dimensions, and timing information.
+- Timestamp values do **not** establish the instant of physical sensor exposure.
+- Camera metadata also stores device index, backend, original dimensions, requested settings, estimated actual capture fps, captured/saved/dropped frame counts, LSL publish failures, total JPEG bytes, and an ordered-content SHA-256 digest.
+
+### 5.2 Microphones and Ultramic
+
+- Uses `sounddevice`/PortAudio plus `soundfile`; supports standard microphones and compatible Ultramic input configurations.
+- Records **WAV** plus timing information, while separately publishing chunked audio over LSL, without blocking the real-time audio callback.
+- The selected endpoint, host API, rate, and channel count matter. Ultramic 384 kHz setups may require the appropriate **WASAPI exclusive** endpoint; Windows driver behavior must be tested.
+- Acquisition queue overflow, writer failures, callback errors, and LSL queue drops are reported.
+- Audio timestamps based on PortAudio ADC timing are **estimates** in the LSL clock domain; they are not direct measurements of microphone membrane excitation.
+- On Stop, pending queued LSL chunks are discarded as part of broadcast shutdown rather than being sent after recording ends.
+
+### 5.3 Polar Sensor — one exclusive choice
+
+| Choice | Acquisition |
+|---|---|
+| **None (default)** | No Polar BLE connection; other devices operate normally |
+| **Polar H10** | HR/RR, optional ECG and accelerometer; existing recorder `devices/polar.py` |
+| **Polar Verity Sense** | Optical HR/PPG and optional accelerometer according to enabled settings and actual device/firmware support; recorder `devices/polar_verity.py` |
+
+- Only **one** Polar sensor is permitted in the same recording; the session manager also enforces exclusivity independently of the GUI.
+- BLE discovery/connection and live-data readiness are sensor-specific. When selected, Polar availability is checked before formal acquisition starts.
+- H10 and Verity use **different physiological modalities**: ECG-derived beat-to-beat intervals and optical pulse measures should not be assumed interchangeable for HRV analysis.
+- The software does not restore a previously selected physiological sensor at startup.
+- Record a participant's sensor type across visits; any change should be documented for later analysis.
+- **Implementation caution:** the current Verity `_file()` method writes `polar_verity_*.csv` directly to the passed session folder, unlike the H10 recorder's `session_file()` routing. Verify that files land in `physiology/` before relying on uniform modality placement; this deserves a code fix/test.
+
+### 5.4 SeeTrue and network LSL
+
+- SeeTrue Station is responsible for eye-tracker calibration and validation. IMMSS is an **LSL receiver/recorder**, not a calibration controller.
+- In **Network LSL**, discover available sources, choose the intended source and select channels; channel order and labels are determined by the broadcaster.
+- Writes selected samples to a CSV and an accompanying channel-index/label mapping JSON. Preserve source UID and mapping for reproducibility.
+- Supports more than just SeeTrue; other discoverable streams may be captured as generic network LSL sources.
+- Network loss/interruption counters and sample counts are part of recording-integrity checks.
+- Receiving samples does not prove that gaze was calibrated or suitable for scientific analyses.
+
+## 6. LSL streams and shutdown
+
+### IMMSS-owned LSL stream families
+
+| Stream | Role | Scope |
+|---|---|---|
+| `IMS_Experiment_Markers` | Event/trial markers (`RECORDING_START`, `T01_START`, etc.) | Recording session only |
+| `IMS_Session_Metadata` | One JSON sample plus descriptor describing the session's data organization | SYMPEX recording session only |
+| `IMS_Camera1_Frames`, `IMS_Camera2_Frames`, `IMS_Camera3_Frames` | Saved JPEG frame indices and timing | Selected cameras during session |
+| `IMS_Microphone_Audio` or `IMS_Ultramic384K_Audio` | Audio samples/chunks | Selected audio input during session |
+| Polar H10 streams | Enabled HR/ECG/ACC etc., with model-specific names | H10-selected session |
+| `IMS_PolarVerity_*` | Enabled Verity HR/PPG/ACC streams | Verity-selected session |
+| SeeTrue/external input streams | **Not created by IMMSS**; IMMSS subscribes to them | Controlled by external broadcaster |
+
+The LSL stream source IDs for session markers and camera frame outlets are newly generated per recording. `IMS_Session_Metadata` publishes the **data-organization JSON**, not a continuously updated copy of all final session metadata/trial results.
+
+**When Stop is pressed:** the marker and metadata outlet references are released, camera outlets are released on writer completion, audio publication is shut down, and the selected Polar recorder is stopped. An LSL resolver may cache departed streams briefly. External SeeTrue Station streams are independent; IMMSS cannot stop their broadcasters.
+
+**Important:** LSL provides clock/timestamp tools; it does not by itself validate physical alignment of camera exposure, USB audio ADC and Bluetooth/optical sensors. Initial visual alignment in IMMSS Reviewer has been reported, with quantitative physical-event validation to be documented separately.
+
+**XDF / LabRecorder:** This source does **not** automatically create `.xdf` files or control LabRecorder. SeeTrue + LabRecorder path presetting, automatic pairing, XDF monitoring, and path logging were discussed as prospective functionality, **not implemented** in the inspected code. External LabRecorder may capture available LSL streams if separately configured.
+
+## 7. Directory structure, filenames, and files
+
+### 7.1 SYMPEX visit/session organization
+
+The recording-root path is user-selectable. If it does not already end in `SYMPEX_2027`, the study subfolder is added automatically.
+
+```text
+<DATA_ROOT>/
+└── SYMPEX_2027/
+    └── JNS/                         # also CPH or KUH
+        └── P001/
+            └── V01_Training/
+                └── S20270210T093000_a1b2c3d4/
+                    ├── JNS_P001_V01_Sa1b2c3d4__metadata.json
+                    ├── JNS_P001_V01_Sa1b2c3d4__events.csv
+                    ├── JNS_P001_V01_Sa1b2c3d4__session_manifest.json
+                    ├── video/       # created if camera output is produced
+                    │   ├── JNS_P001_V01_Sa1b2c3d4__camera_1_frames/
+                    │   │   ├── 00000000.jpg
+                    │   │   └── ...
+                    │   ├── JNS_P001_V01_Sa1b2c3d4__camera_1_frames.csv
+                    │   └── JNS_P001_V01_Sa1b2c3d4__camera_1_metadata.json
+                    ├── audio/       # microphone WAV and time index if enabled
+                    ├── eye_tracker/ # selected external LSL CSV and channel mapping
+                    └── physiology/  # Polar recordings if supported by recorder
+```
+
+This is an **illustrative** session with one camera; output varies with selected devices. Empty modality folders are not intentionally created. Files inside modality folders still carry the session prefix, except individually numbered images inside their uniquely named frame directories.
+
+**Filename prefix** (SYMPEX): `<CENTRE>_<PARTICIPANT>_<VISIT>_S<SHORT_SESSION_ID>__`.
+
+Example: `JNS_P001_V01_Sa1b2c3d4__events.csv`.
+
+For non-SYMPEX/legacy sessions the source retains a different participant/session-based flat layout and compatibility lookup. Do not assume every historical dataset has the same directory hierarchy.
+
+### 7.2 Main files and ownership
+
+| File/folder | Why it exists |
+|---|---|
+| `metadata.json` | Study/visit/session identity, computer, selected devices/settings, file-layout information, trial summaries written on finalization |
+| `events.csv` | Timestamped recording markers, trial starts/ends/interruption and manual annotations |
+| `session_manifest.json` | File inventory, relative paths, sizes/hashes, per-device readiness/integrity, completion/partial/abort status |
+| `video/*camera_N_frames/` | Actual saved numbered JPEG images |
+| `video/*camera_N_frames.csv` | One timestamp/index row per successfully saved image |
+| `video/*camera_N_metadata.json` | Per-camera format and acquisition-performance summary (purposeful camera-specific metadata) |
+| `audio/` | Microphone WAV and its timestamp companion |
+| `eye_tracker/` | Captured network/SeeTrue LSL CSV and selected-channel mapping |
+| `physiology/` | Sensor-specific HR/ECG/PPG/ACC CSV when enabled and routed correctly |
+| `logs/application.log` | Rotating application-level diagnostics (outside session) |
+
+The recording source internally requests a file named `config.json` but `output_names.py` maps that to **`metadata.json`** for SYMPEX. Similarly, its internal `markers.csv` request maps to **`events.csv`**. This distinction matters when reading or extending the code.
+
+The manifest intentionally does **not** hash each JPEG file a second time at session end: each camera frame directory is summarized in one entry, using count, bytes and the camera writer's ordered-frame digest. Regular session files are individually hashed.
+
+### 7.3 Data minimization and durability
+
+- Files are session-unique to prevent accidental overwrites when visits are repeated or interrupted.
+- Do **not** manually merge two sessions into one folder or rename only one member of a paired recording/index collection.
+- Copy the **entire session directory**, including `metadata.json`, `events.csv`, `session_manifest.json`, JPEG folders, and timing companions.
+- Treat `COMPLETED` as a *software-recording integrity* outcome, not proof of correct surgical execution or scientifically validated synchronization.
+
+## 8. Metadata and integrity
+
+### 8.1 Session metadata (schema v7 in inspected source)
+
+Key groups include:
+
+```json
+{
+  "schema_version": 7,
+  "session_id": "<full UUID>",
+  "computer_name": "ACQUISITION-PC-02",
+  "participant": "P001",
+  "study": {
+    "study_id": "SYMPEX_2027",
+    "centre": "JNS",
+    "participant": "P001",
+    "visit": "V01",
+    "phase": "Training",
+    "recording_scope": "visit",
+    "max_trials": 5,
+    "training_session": 1,
+    "trial_unit": "one_tympanostomy_procedure"
+  },
+  "participant_metadata": {"participant_id": "P001", "centre": "JNS"},
+  "training_session_metadata": {"visit_id": "V01", "training_session": 1, "phase": "Training"},
+  "training_trials": [
+    {"trial_id": "T01", "trial_number": 1,
+     "start_lsl_time": "1234.100000000", "end_lsl_time": "1280.200000000",
+     "status": "completed"}
+  ],
+  "physiological_sensor": {
+    "model": null,
+    "device_identifier": null,
+    "requested_channels": [],
+    "selection_policy": "H10_or_Verity_exclusive"
+  },
+  "data_organization": {"study_root": "SYMPEX_2027", "centre": "JNS", "visit": "V01"},
+  "devices": [],
+  "settings": {},
+  "started_wall_time": "2027-02-10T09:30:00+02:00"
+}
+```
+
+**Example only:** IDs, timestamps and subsets are illustrative. The actual `data_organization` object also includes relative session path, filename prefix, folder map, trial-storage rule, requested devices and computer name. When no sensor is selected, the current code stores `physiological_sensor.model: null` (not necessarily the literal string `"none"`).
+
+The PI's study metadata levels are **participant → training session → training trial**. At present, the program automatically knows IDs and boundaries, **not** baseline stereovision, handedness, simulator cartridge conditions, operative quality/error ratings, or SURG-TLX scores. Those require separate approved collection and linkage.
+
+### 8.2 Event record
+
+Each event record contains an LSL-local-clock timestamp, marker label, and recording-session ID. Example event progression:
+
+```text
+RECORDING_START
+T01_START
+T01_END
+T02_READY
+T02_START
+T02_END
+...
+RECORDING_STOP
+```
+
+The application may also save arbitrary typed event markers. Stop during a trial marks it `Tnn_INTERRUPTED` before the recording stop marker.
+
+### 8.3 Integrity and session status
+
+The session manager checks enabled recorders before formal acquisition and assesses them after stopping:
+
+| Result | Meaning |
+|---|---|
+| `COMPLETED` | No acquisition problems detected by implemented software integrity checks |
+| `PARTIAL` | Files saved but at least one selected device/stream showed a recognized issue |
+| `ABORTED` | Startup/preflight failed; no formal recording start event committed |
+
+Typical checks: live camera frames; saved JPEG count and index; requested versus estimated actual fps; camera writer-queue drops; microphone callbacks and saved audio, queue and publishing losses; external LSL sample count and interruptions; Polar readiness/errors. Device-level reports live under `device_readiness` and `recording_integrity` in the manifest. The integrity logic cannot confirm XDF files, native exposure times, physiological artifact rejection, or that SeeTrue Station calibration succeeded.
+
+The manifest includes relative file paths and SHA-256 digests where appropriate. Do not treat it as a substitute for backups, independent restore checks, or institutional data protection requirements.
+
+## 9. Preview, monitoring, and offline analysis
+
+### Preview and monitoring
+
+- **PREVIEW** opens temporary acquisition on selected channels to show live data; its temporary data should be removed when Preview ends. Preview is **not** a research session.
+- The live-monitor panel presents rolling, decimated data such as microphone amplitude/RMS, Polar signals, and selected numeric external LSL channels. It is a diagnostic display, **not** full-rate scientific data processing.
+- The Camera tab includes test preview and camera controls. A camera slot must be enabled for formal recording.
+- All important status/error messages go to **Logs & diagnostics** and a rotating application log.
+
+### Offline QA
+
+1. Open **Post-experiment analysis**.
+2. Browse to a completed session or use the most recent session.
+3. Scan available CSV/frame streams; select appropriate streams and channels.
+4. Optionally provide a CSV of **physical event anchors** for external timing comparison.
+5. Review stream overlap, timing intervals, missing or nonpositive intervals, jitter, gaps and event offset/drift warnings.
+6. Export the report; default behavior favors a compact JSON report over multiple redundant exports.
+
+QA thresholds are configurable in the UI. They are warning thresholds, not proof of scientific acceptance; the study should define its own timing criteria from real hardware tests. The application can discover older flat exports as well as newer modality-based sessions.
+
+**IMMSS Reviewer:** Visual synchronization checks in a reviewer have been reported as convincing. A visual check does **not** replace a documented quantitative common-event validation. If using an external reviewer application, confirm its version and import capability separately from this acquisition code.
+
+## 10. Performance and storage
+
+### Camera throughput
+
+At the requested 30 fps:
+
+| Duration | Files per camera | Three cameras |
+|---|---:|---:|
+| 1 minute | 1,800 JPEGs | 5,400 JPEGs |
+| 10 minutes | 18,000 JPEGs | 54,000 JPEGs |
+| 1 hour | 108,000 JPEGs | 324,000 JPEGs |
+
+A prior **synthetic** JPEG writing benchmark reached approximately 495–518 aggregate frames/s for three 640×480 camera workloads, above the nominal 90 aggregate fps requirement. That benchmark did **not** include real USB camera capture, multiple simultaneous full-rate audio and BLE sensors, network interruptions, or long-session reliability; refer to `benchmarks/README_CAMERA_FRAMES.md` and reproduce the test locally.
+
+High-detail synthetic JPEGs extrapolated to **tens of GiB per camera-hour**. Real storage varies widely with image content, quality and filesystem. A very large number of small files can slow backup, antivirus scans and directory enumeration. Test sustained capture and copy/restore operations on the intended recording PC; keep free storage headroom.
+
+### Timing
+
+- Camera timestamp: host time after frame retrieval, **not exposure**.
+- Audio timestamps: estimated ADC mapping, not verified end-to-end physical sound onset.
+- Polar streams: BLE/device timing needs separate validation against the LSL host clock.
+- Network streams: incoming timestamps and channel meanings depend on external publishers.
+- **Offset** = systematic timing difference; **jitter** = variation around an expected timing relationship; **drift** = gradual timing difference across a recording.
+
+## 11. Tests and hardware validation
+
+### Software tests
+
+```bash
+python -m unittest discover -s tests -v
+python benchmarks/benchmark_camera_frames.py --help
+```
+
+The project includes tests for session identity/naming, trial controls, modality storage, Polar selection, camera frame numbering and manifest compaction, device readiness, and LSL outlet lifecycle. Historical test counts reported across earlier updates were release-specific; a count in a past message does **not** certify the present merged installation.
+
+### Required deployment checks (document before collecting participants)
+
+- [ ] All enabled cameras simultaneously hold an acceptable measured capture fps for a full expected visit.
+- [ ] Each JPEG filename, index CSV row and published LSL frame number agree.
+- [ ] Camera exposure/lighting and field of view are repeatable between centres and visits.
+- [ ] Microphone WAV decodes; no unexpected silence/overrun; high-rate Ultramic endpoint works.
+- [ ] Network LSL has the correct SeeTrue stream UID, channels and live sample rate.
+- [ ] SeeTrue Station calibration/validation is completed and documented separately.
+- [ ] Selected Polar device connects and publishes actual required channels; **no sensor** mode leaves Polar inactive.
+- [ ] IMMSS-owned marker/metadata/camera/audio/Polar streams disappear after Stop and fresh streams appear after the next Start; external SeeTrue streams persist independently.
+- [ ] Deliberately disconnect a camera, microphone, LSL source and Polar in test runs; verify manifest becomes partial/aborted as appropriate.
+- [ ] Validate synchronization with a shared *physical* event across relevant recording modalities, measuring offset, jitter and drift.
+- [ ] Test visit interruption, restart and trial recovery without overwriting existing files.
+- [ ] Open and restore a copied session (not just the original directory) and verify the manifest/checksums.
+- [ ] Test a complete 5-trial pilot in both expected short- and long-duration operating conditions.
+
+## 12. Troubleshooting
+
+| Symptom | Checks and actions |
+|---|---|
+| `from __future__ imports must occur at beginning` | Confirm the file was **replaced**, not appended; look for duplicate future imports or a second copied module in the file. Header comments/docstring are allowed before a future import. |
+| No camera / camera busy | Rescan, check Windows camera privacy settings/USB device access, ensure no other application owns camera index, and select distinct indices across slots. |
+| Requested 30 fps not achieved | Verify measured fps in camera metadata; check driver format, USB bus sharing, lighting/exposure, CPU load and storage write queue. |
+| Large number of images | Expected for JPEG sequence mode. Use frame directory summaries and deliberate archival; do not delete frame-index CSV. |
+| Frame numbers do not match LSL | Check LSL publication-error count, CSV and saved JPEG count; only successful JPEG writes are assigned/sent an index. |
+| Microphone looks flat | Confirm correct host API and input, permissions, gain, live peak/RMS, and the saved WAV. |
+| Ultramic 384 kHz fails | Select a supported WASAPI input and verify PortAudio settings; do not assume any driver/endpoint supports 384 kHz. |
+| Polar does not connect | Check device power/placement, BLE adapter, prior phone pairing, correct model selected, and live packet readiness errors. |
+| Verity data appears at session root | Current Verity writer may bypass modality routing; treat as a known layout inconsistency to fix, not missing data. |
+| SeeTrue stream missing | Start SeeTrue Station LSL broadcast; check network/firewall, stream selection/UID and discover again. IMMSS cannot calibrate the tracker. |
+| LSL stream remains visible after Stop | Refresh discovery and allow caches to expire; ensure no device worker is still active. Check logs for shutdown timeout; distinguish external SeeTrue publishers from IMMSS outlets. |
+| Session status `PARTIAL` | Read per-device `recording_integrity` and `device_readiness`; preserve all data and document the affected trial/channel. |
+| Session metadata or trial markers seem missing | Check the session-prefixed **`metadata.json` / `events.csv`** names rather than internal aliases `config.json` / `markers.csv`. |
+| No `.xdf` file | Expected: native LabRecorder control/XDF saving is not implemented in this source. Use separately configured LabRecorder if an XDF is required. |
+| Trial shortcut label says B | The current `app.py` binds **Ctrl+Shift+T**; old B label is a UI string inconsistency. |
+
+## 13. Architecture and development guidelines
+
+### Acquisition design
+
+- **Do not regress the working H10 recorder** while developing Verity support. Both remain separate recorder classes behind one exclusive GUI selection.
+- Keep the LSL publisher lifecycles **session-scoped**; release outlets on normal Stop, startup abort and exceptions. Never allow stale buffered audio or video events to leak into the next session.
+- Keep camera capture nonblocking relative to disk encoding/writing; preserve explicitly measured dropped-frame counts and the 1:1 relationship of *saved JPEG ↔ index CSV ↔ published frame number*.
+- Reuse `output_names.session_file()` for SYMPEX file routing. Avoid opening relative session files by constructing ad hoc paths in individual recorders.
+- Keep trial boundaries in event markers and trial metadata; never create a whole duplicate set of modality recordings for each trial.
+- Write only essential outputs, but retain per-device integrity and timing records needed for reproducibility.
+- Make recovery explicit: preserve earlier segments, use a new immutable recording-session ID, and record interruptions.
+- Maintain backward read compatibility for legacy flat sessions and `Bnn` event files; do not silently reinterpret their scientific semantics.
+- Preserve identifiable data separation: research metadata should be coded; never broadcast names, contact details or unnecessary absolute filesystem paths over LSL.
+- When adding author metadata, use **Gulraiz**.
+
+### Suggested regression coverage for future changes
+
+1. Mutual exclusion and startup default `none` for Polar.
+2. Camera 640×480/30-fps requested settings, saved JPEG indices, LSL frame labels, queue-drop detection.
+3. Trial max 1–5, single-button state transitions, interruption/resume and no overwriting.
+4. Modality folder routing, manifest relative paths and stream mapping.
+5. LSL outlet release on normal Stop, unexpected exceptions and failed startup.
+6. Selected device readiness and appropriately conservative final integrity status.
+7. Reopening and analyzing legacy files after a storage or marker format change.
+
+## 14. Study governance and known gaps
+
+IMMSS is engineered for research acquisition; study compliance still requires a finalized and approved protocol and local deployment validation. The supplied *SYMPEX Study 1: Tympanostomy 2027* working draft requests standardized simulator settings, five procedures per training visit, questionnaires, prior-experience documentation, expert ratings, and longitudinal retention/refresher assessments. It also leaves some allocation/visit/intervention decisions to investigators. The application does **not** replace these study procedures.
+
+**Not implemented or not verified in the inspected application:**
+
+- Formal SURG-TLX entry/scoring; complete baseline stereovision/fine motor questionnaire workflow; independent blinded expert video rating.
+- Automatic determination of successful tube insertion, procedural errors, or trial outcomes beyond timing/completed/interrupted markers.
+- SeeTrue calibration or an automated eye-tracker calibration-acceptance decision; SeeTrue Station owns calibration.
+- Automatic LabRecorder process control, XDF file creation, pre-set XDF paths, verified SeeTrue–LabRecorder pairing or control-channel acknowledgement.
+- Quantitative certification of LSL/physical-device synchronization solely from visual review.
+- Guarantees of real camera 30-fps delivery, full USB/CPU/disk scheduling, or uninterrupted multi-hour capture.
+- Verified automatic Polar reconnection/stream recovery after every physical BLE failure.
+
+**Known source-level inconsistencies to address:**
+
+1. `app.py` has a stale `Ctrl+Shift+B` label while actual trial key bindings are `Ctrl+Shift+T`.
+2. `devices/polar_verity.py` writes Verity CSVs directly to its session folder instead of consistently using `output_names.session_file()`.
+3. Some older documentation/comments refer to MP4 cameras or blocks; current output is JPEG frames and `Tnn` trial markers.
+4. The cumulative build is assembled from sequential updates; re-run all tests and a complete acquisition pilot on the installed deployment source before considering it a frozen release.
+
+### Maintainer guidance
+
+Keep this README together with the actual deployed code revision. Every change to schema version, filename behavior, modality folder mapping, LSL stream definition or integrity criteria must update the corresponding README section and regression tests. Store a copy of the deployed software version and approved study protocol version alongside the participant's session metadata.
+
+---
+
+**Author:** Gulraiz  
+**Project:** Intelligent Multimodal Microsurgery Studio (IMMSS) / SYMPEX Study 1  
+**Document status:** Source-grounded technical README; hardware validation and investigator protocol approvals remain separate.
