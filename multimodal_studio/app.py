@@ -24,6 +24,7 @@ from block_management import DEFAULT_MAX, load_block_state
 from devices.audio import AudioRecorder, available_inputs
 from devices.windows_audio import device_manager_sound_names, safe_hardware_match
 from devices.polar import PolarRecorder
+from devices.polar_verity import PolarVerityRecorder
 from devices.seetrue import NetworkLSLRecorder
 from devices.camera_recorder import CameraRecorder
 from devices.camera_preview import CameraPreview, discover_cameras
@@ -32,9 +33,9 @@ from devices.camera_controls import normalize_settings
 BASE = Path(__file__).resolve().parent
 BG, PANEL, CARD, WHITE = '#101827', '#172337', '#20304a', '#ecf3ff'
 MUTED, BLUE, GREEN, YELLOW, RED = '#aabbd2', '#55a6ff', '#51d4a2', '#ffc66d', '#ff7585'
-DEVICES = ['Microphone', 'Polar H10', 'Camera 1', 'Camera 2', 'Camera 3']
-ICONS = {'Microphone':'MIC', 'Polar H10':'HEART', 'Camera 1':'CAM 1', 'Camera 2':'CAM 2', 'Camera 3':'CAM 3'}
-DESCRIPTIONS = {'Microphone':'Choose any Windows audio input', 'Polar H10':'Heart rate, ECG, motion', 'Camera 1':'Camera preview + MP4 recording', 'Camera 2':'Camera preview + MP4 recording', 'Camera 3':'Camera preview + MP4 recording'}
+DEVICES = ['Microphone', 'Polar H10', 'Polar Verity Sense', 'Camera 1', 'Camera 2', 'Camera 3']
+ICONS = {'Microphone':'MIC', 'Polar H10':'HEART', 'Polar Verity Sense':'HEART', 'Camera 1':'CAM 1', 'Camera 2':'CAM 2', 'Camera 3':'CAM 3'}
+DESCRIPTIONS = {'Microphone':'Choose any Windows audio input', 'Polar H10':'Heart rate, ECG, motion', 'Polar Verity Sense':'Optical HR, PPG, motion', 'Camera 1':'Camera preview + MP4 recording', 'Camera 2':'Camera preview + MP4 recording', 'Camera 3':'Camera preview + MP4 recording'}
 
 class App:
     def __init__(self, root):
@@ -49,9 +50,13 @@ class App:
         self.session = SessionManager(self.bus)
         self.recorders = {'Microphone':AudioRecorder('Microphone',self.bus),
                           'Polar H10':PolarRecorder(self.bus),
+                          'Polar Verity Sense':PolarVerityRecorder(self.bus),
                           **{f'Camera {i}':CameraRecorder(i,self.bus) for i in range(1,4)}}
         self.enabled = {n:tk.BooleanVar(value=False) for n in DEVICES}
         self.status = {n:tk.StringVar(value='Not selected') for n in DEVICES}
+        self._switching_polar = False
+        self.enabled['Polar H10'].trace_add('write', lambda *_: self._exclusive_polar('Polar H10'))
+        self.enabled['Polar Verity Sense'].trace_add('write', lambda *_: self._exclusive_polar('Polar Verity Sense'))
         self.folder = tk.StringVar(value=str((BASE.parent/'Participant_Data').resolve()))
         self.participant = tk.StringVar(value='P001')
         self.study_centre = tk.StringVar(value='CPH')
@@ -75,6 +80,10 @@ class App:
         self.windows_hardware_info = tk.StringVar(value='Windows sound hardware: not scanned')
         self.ecg, self.acc = tk.BooleanVar(value=True), tk.BooleanVar(value=True)
         self.polar_detail = tk.StringVar(value='No Polar H10 selected')
+        self.verity_detail = tk.StringVar(value='No Polar Verity Sense selected')
+        self.verity_device = None
+        self.verity_ppg = tk.BooleanVar(value=True)
+        self.verity_acc = tk.BooleanVar(value=True)
         self.device_choices, self.ble_device = [], None
         self.windows_sound_names = []
         self.audio_name_lookup = {}
@@ -226,6 +235,7 @@ class App:
         # Dedicated configuration tabs; existing recorder classes and settings are reused.
         self.dashboard_tab=tk.Frame(self.tabs,bg=PANEL,padx=18,pady=14)
         self.polar_tab=tk.Frame(self.tabs,bg=PANEL,padx=22,pady=18)
+        self.verity_tab=tk.Frame(self.tabs,bg=PANEL,padx=22,pady=18)
         self.microphone_tab=tk.Frame(self.tabs,bg=PANEL,padx=22,pady=18)
         self.monitor_tab=tk.Frame(self.tabs,bg=PANEL,padx=12,pady=12)
         self.network_tab=tk.Frame(self.tabs,bg=PANEL,padx=18,pady=14)
@@ -233,16 +243,17 @@ class App:
         self.activity_tab=tk.Frame(self.tabs,bg=PANEL,padx=16,pady=16)
         self.analysis_tab=tk.Frame(self.tabs,bg=PANEL,padx=8,pady=8)
         for name,frame in [('Experiment dashboard',self.dashboard_tab),
-                           ('Polar H10',self.polar_tab),('Microphone',self.microphone_tab),
+                           ('Polar H10',self.polar_tab),('Polar Verity Sense',self.verity_tab),('Microphone',self.microphone_tab),
                            ('Cameras',self.camera_tab),('Network LSL',self.network_tab),
                            ('Live monitoring',self.monitor_tab),
                            ('Post-experiment analysis',self.analysis_tab),
                            ('Logs & diagnostics',self.activity_tab)]:
             self.tabs.add(frame,text='  '+name+'  ')
-        self.settings={'Microphone': self.microphone_tab, 'Polar H10': self.polar_tab}
+        self.settings={'Microphone': self.microphone_tab, 'Polar H10': self.polar_tab, 'Polar Verity Sense': self.verity_tab}
         self._build_dashboard()
         self._build_device_enable(self.microphone_tab,'Microphone')
         self._build_device_enable(self.polar_tab,'Polar H10')
+        self._build_device_enable(self.verity_tab,'Polar Verity Sense')
         self._build_monitor()
         self._build_configs()
         self._build_network_lsl()
@@ -298,6 +309,13 @@ class App:
         self.label(f,'Not scanned',10,MUTED,textvariable=self.polar_detail,wraplength=650).pack(anchor='w',pady=(0,15))
         tk.Checkbutton(f,text='Record ECG (~130 Hz)',variable=self.ecg,bg=PANEL,fg=WHITE,activebackground=PANEL,selectcolor=BG).pack(anchor='w')
         tk.Checkbutton(f,text='Record accelerometer (~25 Hz)',variable=self.acc,bg=PANEL,fg=WHITE,activebackground=PANEL,selectcolor=BG).pack(anchor='w')
+        v=self.settings['Polar Verity Sense']
+        self.label(v,'Polar Verity Sense (alternative to H10)',11,WHITE,True).pack(anchor='w')
+        self.label(v,'Only one Polar sensor is enabled per session. Optical PPG is not ECG.',10,MUTED).pack(anchor='w',pady=(3,12))
+        self.action(v,'Scan for Verity Sense',self.scan_verity,accent=True).pack(anchor='w',pady=(0,12))
+        self.label(v,'Not scanned',10,MUTED,textvariable=self.verity_detail,wraplength=650).pack(anchor='w',pady=(0,15))
+        tk.Checkbutton(v,text='Record optical PPG (55 Hz, four channels)',variable=self.verity_ppg,bg=PANEL,fg=WHITE,activebackground=PANEL,selectcolor=BG).pack(anchor='w')
+        tk.Checkbutton(v,text='Record accelerometer (52 Hz)',variable=self.verity_acc,bg=PANEL,fg=WHITE,activebackground=PANEL,selectcolor=BG).pack(anchor='w')
 
     def _build_cameras(self):
         self.label(self.camera_tab,'CAMERA SETUP & LIVE PREVIEW',17,WHITE,True).pack(anchor='w')
@@ -535,7 +553,7 @@ class App:
             ax.set_facecolor('#0b1423')
             ax.tick_params(colors=MUTED,labelsize=8)
             for spine in ax.spines.values():spine.set_color('#50627d')
-            label='Amplitude' if name in ('Microphone',) else ('BPM / ECG / ACC' if name=='Polar H10' else 'LSL channel value')
+            label='Amplitude' if name in ('Microphone',) else ('BPM / ECG / ACC' if name=='Polar H10' else 'BPM / PPG / ACC' if name=='Polar Verity Sense' else 'LSL channel value')
             ax.set_ylabel(label,color=MUTED,fontsize=8)
             fig.tight_layout(pad=1.5)
             canvas=FigureCanvasTkAgg(fig,master=card)
@@ -582,6 +600,12 @@ class App:
                         ax.plot(xs,ys,color=GREEN,lw=1.2,label='HR')
                 if points:ax.legend(loc='upper right',fontsize=7)
                 info.configure(text=f'HR: {rec.last_hr if rec.last_hr is not None else "—"} BPM · ECG points: {len(rec.ecg_preview)} · ACC points: {len(rec.acc_preview)}')
+            elif name=='Polar Verity Sense':
+                points=[(now-t,y) for t,y in list(rec.ppg_timed) if 0<=now-t<=5]
+                if not points:points=[(now-t,y) for t,y in list(rec.hr_timed) if 0<=now-t<=5]
+                if points:
+                    xs,ys=zip(*points);ax.plot(xs,ys,color=GREEN,lw=.9)
+                info.configure(text=f'HR: {rec.last_hr if rec.last_hr is not None else "—"} BPM · PPG: {rec.sample_counts["ppg"]:,} · ACC: {rec.sample_counts["acc"]:,}')
             canvas.draw_idle()
 
     def _build_activity(self):
@@ -602,7 +626,7 @@ class App:
         self.selected_device=name
         destination=(self.camera_tab if name.startswith('Camera ')
                      else self.microphone_tab if name=='Microphone'
-                     else self.polar_tab)
+                     else self.verity_tab if name=='Polar Verity Sense' else self.polar_tab)
         self.tabs.select(destination)
         if name.startswith('Camera '):
             slot=int(name.rsplit(' ',1)[1])
@@ -810,6 +834,20 @@ class App:
         except Exception as exc:
             self.mic_details.set(f'Could not read device details: {exc!r}')
 
+    def _exclusive_polar(self, selected):
+        if self._switching_polar or not self.enabled[selected].get():return
+        other='Polar Verity Sense' if selected=='Polar H10' else 'Polar H10'
+        self._switching_polar=True
+        try:self.enabled[other].set(False)
+        finally:self._switching_polar=False
+
+    def scan_verity(self):
+        self.verity_detail.set('Scanning Bluetooth…')
+        try:
+            future=self.recorders['Polar Verity Sense'].scan()
+            future.add_done_callback(lambda f:self.bus.events.put(('VERITY_SCAN','DONE',f)))
+        except Exception as exc:self.bus.emit('Polar Verity Sense','ERROR',repr(exc))
+
     def scan_polar(self):
         self.polar_detail.set('Scanning Bluetooth…')
         try:
@@ -931,8 +969,12 @@ class App:
         if self.enabled['Microphone'].get():
             selected['Microphone']=(self.recorders['Microphone'],
                                    self.audio_args(self.mic_select,int(self.mic_rate.get())))
+        if self.enabled['Polar H10'].get() and self.enabled['Polar Verity Sense'].get():
+            raise ValueError('Only one Polar physiological sensor can be used per session')
         if self.enabled['Polar H10'].get():
             selected['Polar H10']=(self.recorders['Polar H10'],{'ble_device':self.ble_device,'ecg':self.ecg.get(),'acc':self.acc.get()})
+        if self.enabled['Polar Verity Sense'].get():
+            selected['Polar Verity Sense']=(self.recorders['Polar Verity Sense'],{'ble_device':self.verity_device,'ppg':self.verity_ppg.get(),'acc':self.verity_acc.get()})
         for i in range(1,4):
             n=f'Camera {i}'
             if self.enabled[n].get():
@@ -1165,7 +1207,7 @@ class App:
             self.preview_btn.configure(state='disabled')
             self._lock(True)
             self._refresh_block_controls()
-            self.session_status.set('Connecting selected Polar and checking live streams…' if 'Polar H10' in selected else 'Starting recording…')
+            self.session_status.set('Connecting selected Polar and checking live streams…' if any(name in selected for name in ('Polar H10','Polar Verity Sense')) else 'Starting recording…')
             self.status_top.configure(text='●  CONNECTING',fg=YELLOW)
             def worker():
                 try:
@@ -1265,6 +1307,14 @@ class App:
         for _ in range(120):
             try:name,status,message=self.bus.events.get_nowait()
             except queue.Empty:break
+            if name=='VERITY_SCAN':
+                try:
+                    self.verity_device=message.result()
+                    self.verity_detail.set(str(self.verity_device) if self.verity_device else 'No Verity Sense found')
+                except Exception as exc:
+                    self.verity_detail.set('BLE scan failed: '+repr(exc))
+                    self.bus.emit('Polar Verity Sense','ERROR',f'BLE scan failed: {exc!r}')
+                continue
             if name=='POLAR_SCAN':
                 try:
                     self.ble_device=message.result()
@@ -1336,8 +1386,9 @@ class App:
         if self.preview_active:self.stop_preview()
         for preview in self.camera_previews.values():
             preview.stop()
-        try:self.recorders['Polar H10'].close()
-        except Exception as exc:self.bus.emit('Polar H10','WARNING',f'BLE loop close: {exc!r}')
+        for name in ('Polar H10','Polar Verity Sense'):
+            try:self.recorders[name].close()
+            except Exception as exc:self.bus.emit(name,'WARNING',f'BLE loop close: {exc!r}')
         self.bus.emit('Application','INFO','Application closing')
         self.bus.close()
         self.root.destroy()

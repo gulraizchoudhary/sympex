@@ -2079,3 +2079,8 @@
 2026-11-26 09:57:24,652 INFO [Microphone] INFO: Integrity: no detected acquisition errors
 2026-11-26 09:57:24,652 INFO [Camera 1] INFO: Integrity: no detected acquisition errors
 2026-11-26 09:57:24,652 INFO [Session] STOPPED: C:\Users\chgul\Desktop\sympex_project\sympex\Participant_Data\SYMPEX_2027\CPH\P001\V01_Training\S20261126T095711_4c6f27db | integrity=PASS
+2026-11-26 10:37:15,421 INFO [Application] INFO: Application closing
+2026-11-26 10:39:05,445 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\sympex_project\sympex\multimodal_studio\logs\application.log
+2026-11-26 10:39:06,165 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-26 10:39:06,167 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-26 10:39:52,955 INFO [Application] INFO: Application closing

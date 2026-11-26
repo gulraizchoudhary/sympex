@@ -5,11 +5,6 @@ Updated on Wed Nov 25 09:35:00 2026
 @author: Gulraiz
 """
 
-"""Live device checks and per-channel integrity summaries (no extra output files).
-
-These checks verify acquisition, not eye-tracker calibration, video exposure
-synchrony, sensor accuracy, or alignment of hardware clocks.
-"""
 import time
 from pathlib import Path
 from output_names import session_file
@@ -68,6 +63,17 @@ def assess_device(name, recorder, folder, stage='preflight'):
         stats['received_channels'] = sorted(k for k,v in recorder.ready_events.items() if v.is_set())
         if 'hr' not in stats['received_channels']:
             problems.append('no Polar HR packets received')
+        if hasattr(recorder, 'sample_counts'):
+            stats['samples_by_channel'] = dict(recorder.sample_counts)
+            required = ['hr']
+            if getattr(recorder, '_want_ppg', False):
+                required.append('ppg')
+            if getattr(recorder, '_want_acc', False):
+                required.append('acc')
+            if stage == 'final':
+                for channel in required:
+                    if not _positive(recorder.sample_counts.get(channel, 0)):
+                        problems.append(f'no Verity {channel.upper()} samples saved')
     # Unknown/custom recorders: only generic active/error status can be checked.
     ok = not problems
     return {'ok':ok,'ready':ok if stage=='preflight' else None,

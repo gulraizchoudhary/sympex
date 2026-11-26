@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Updated on Wed Nov 25 09:35:00 2026
+Updated on Wed Nov 26 09:35:00 2026
 
 @author: Gulraiz
 """
@@ -138,6 +138,8 @@ class SessionManager:
         """
         if self.active:
             return self.folder
+        if 'Polar H10' in selected and 'Polar Verity Sense' in selected:
+            raise ValueError('Polar H10 and Verity Sense are mutually exclusive')
         self.session_id = uuid.uuid4().hex
         self.metadata_outlet = None
         self.device_readiness = {}
@@ -215,8 +217,27 @@ class SessionManager:
                 'folder_creation': 'lazy_when_enabled_or_data_generated',
                 'enabled_devices': list(selected),
             }
+        polar_selection = next((n for n in ('Polar H10', 'Polar Verity Sense') if n in selected), None)
+        polar_options = selected[polar_selection][1] if polar_selection else None
+        polar_ble = polar_options.get('ble_device') if polar_options else None
+        polar_channels = []
+        if polar_selection:
+            polar_channels.append('hr')
+            polar_channels.extend(['ecg'] if polar_selection == 'Polar H10' and polar_options.get('ecg') else [])
+            polar_channels.extend(['ppg'] if polar_selection == 'Polar Verity Sense' and polar_options.get('ppg') else [])
+            if polar_options.get('acc'):
+                polar_channels.append('acc')
+        physiological_sensor = {
+            'model': polar_selection,
+            'device_identifier': str(getattr(polar_ble, 'address', '') or getattr(polar_ble, 'name', '') or polar_ble) if polar_ble else None,
+            'requested_channels': polar_channels,
+            'selection_policy': 'H10_or_Verity_exclusive',
+        }
+        if data_organization is not None:
+            data_organization['physiological_sensor'] = physiological_sensor
         self._session_config = {
             'schema_version': 7,
+            'physiological_sensor': physiological_sensor,
             'file_naming': 'centre_participant_visit_shortsession__original_filename' if self.study else 'participant__session__original_filename',
             'data_layout': 'modality_folders_v1' if self.study else 'flat_legacy',
             'data_organization': data_organization,
@@ -238,23 +259,26 @@ class SessionManager:
             self._broadcast_session_metadata()
         self.recorders = {}
         try:
-            polar = selected.get('Polar H10')
-            if polar:
-                recorder, settings = polar
-                self.bus.emit('Polar H10', 'INFO', 'Preflight: connect and await live HR/ECG/ACC as selected before session marker')
-                self.recorders['Polar H10'] = recorder
+            polar_name = next((name for name in ('Polar H10','Polar Verity Sense') if name in selected), None)
+            if polar_name:
+                recorder, settings = selected[polar_name]
+                self.bus.emit(polar_name, 'INFO', 'Preflight: connect and await live physiological packets')
+                self.recorders[polar_name] = recorder
                 recorder.start(self.folder, **settings)
-                recorder.wait_ready(ecg=settings.get('ecg', True), acc=settings.get('acc', True), timeout=readiness_timeout)
+                if polar_name == 'Polar H10':
+                    recorder.wait_ready(ecg=settings.get('ecg', True), acc=settings.get('acc', True), timeout=readiness_timeout)
+                else:
+                    recorder.wait_ready(ppg=settings.get('ppg', True), acc=settings.get('acc', True), timeout=readiness_timeout)
             # Start the other devices only after Polar readiness has been proven.
             for dev_name, (recorder, settings) in selected.items():
-                if dev_name == 'Polar H10':
+                if dev_name in ('Polar H10','Polar Verity Sense'):
                     continue
                 self.recorders[dev_name] = recorder
                 recorder.start(self.folder, **settings)
             # Preflight checks inspect *live acquisition*, not just device selection.
             # SeeTrue calibration remains entirely in SeeTrue Station.
             for dev_name, recorder in self.recorders.items():
-                if dev_name == 'Polar H10':
+                if dev_name in ('Polar H10','Polar Verity Sense'):
                     result = assess_device(dev_name, recorder, self.folder, stage='preflight')
                 else:
                     result = await_live_data(dev_name, recorder, self.folder, timeout=8.0)
