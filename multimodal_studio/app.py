@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Updated on Wed Nov 25 09:35:00 2026
+Updated on Wed Nov 26 09:35:00 2026
 
 @author: Gulraiz
 """
@@ -54,7 +54,9 @@ class App:
                           **{f'Camera {i}':CameraRecorder(i,self.bus) for i in range(1,4)}}
         self.enabled = {n:tk.BooleanVar(value=False) for n in DEVICES}
         self.status = {n:tk.StringVar(value='Not selected') for n in DEVICES}
+        # Author: Gulraiz — physiological sensor defaults to NONE on each launch.
         self._switching_polar = False
+        self.polar_sensor = tk.StringVar(value='none')
         self.enabled['Polar H10'].trace_add('write', lambda *_: self._exclusive_polar('Polar H10'))
         self.enabled['Polar Verity Sense'].trace_add('write', lambda *_: self._exclusive_polar('Polar Verity Sense'))
         self.folder = tk.StringVar(value=str((BASE.parent/'Participant_Data').resolve()))
@@ -131,7 +133,7 @@ class App:
             'Intelligent Multimodal Microsurgery Studio (IMMSS)\n'
             'Microsurgical Multimodal Research Platform\n\n'
             'Acquisition · Live Monitoring · Temporal Alignment · Quality Assessment\n\n'
-            'Modular support for audio, video, Polar H10 and external network LSL streams.\n'
+            'Modular support for audio, video, optional Polar H10 / Verity Sense and external network LSL streams.\n'
             'Post-experiment synchronization-quality analysis is available in its own tab.\n\n'
             'Physical synchronization accuracy and AI-based surgical assessment require\n'
             'separate experimental validation.\n\n'
@@ -235,7 +237,6 @@ class App:
         # Dedicated configuration tabs; existing recorder classes and settings are reused.
         self.dashboard_tab=tk.Frame(self.tabs,bg=PANEL,padx=18,pady=14)
         self.polar_tab=tk.Frame(self.tabs,bg=PANEL,padx=22,pady=18)
-        self.verity_tab=tk.Frame(self.tabs,bg=PANEL,padx=22,pady=18)
         self.microphone_tab=tk.Frame(self.tabs,bg=PANEL,padx=22,pady=18)
         self.monitor_tab=tk.Frame(self.tabs,bg=PANEL,padx=12,pady=12)
         self.network_tab=tk.Frame(self.tabs,bg=PANEL,padx=18,pady=14)
@@ -243,17 +244,16 @@ class App:
         self.activity_tab=tk.Frame(self.tabs,bg=PANEL,padx=16,pady=16)
         self.analysis_tab=tk.Frame(self.tabs,bg=PANEL,padx=8,pady=8)
         for name,frame in [('Experiment dashboard',self.dashboard_tab),
-                           ('Polar H10',self.polar_tab),('Polar Verity Sense',self.verity_tab),('Microphone',self.microphone_tab),
+                           ('Polar Sensor',self.polar_tab),('Microphone',self.microphone_tab),
                            ('Cameras',self.camera_tab),('Network LSL',self.network_tab),
                            ('Live monitoring',self.monitor_tab),
                            ('Post-experiment analysis',self.analysis_tab),
                            ('Logs & diagnostics',self.activity_tab)]:
             self.tabs.add(frame,text='  '+name+'  ')
-        self.settings={'Microphone': self.microphone_tab, 'Polar H10': self.polar_tab, 'Polar Verity Sense': self.verity_tab}
+        self.settings={'Microphone': self.microphone_tab, 'Polar H10': self.polar_tab, 'Polar Verity Sense': self.polar_tab}
         self._build_dashboard()
         self._build_device_enable(self.microphone_tab,'Microphone')
-        self._build_device_enable(self.polar_tab,'Polar H10')
-        self._build_device_enable(self.verity_tab,'Polar Verity Sense')
+        # One selector replaces the two independent sensor enable checkboxes.
         self._build_monitor()
         self._build_configs()
         self._build_network_lsl()
@@ -302,20 +302,50 @@ class App:
                      'Device Manager lists sound hardware; Windows recording endpoints may have different names. '
                      'Hardware names are shown only when they can be matched without guessing. Select one input endpoint.',
                    9,YELLOW,wraplength=650,justify='left').pack(anchor='w',pady=(12,0))
-        f=self.settings['Polar H10']
-        self.label(f,'Bluetooth Polar H10',11,WHITE,True).pack(anchor='w')
-        self.label(f,'Scan before starting the session. HR/RR are included by default.',10,MUTED).pack(anchor='w',pady=(3,12))
-        self.action(f,'Scan for Polar H10',self.scan_polar,accent=True).pack(anchor='w',pady=(0,12))
-        self.label(f,'Not scanned',10,MUTED,textvariable=self.polar_detail,wraplength=650).pack(anchor='w',pady=(0,15))
-        tk.Checkbutton(f,text='Record ECG (~130 Hz)',variable=self.ecg,bg=PANEL,fg=WHITE,activebackground=PANEL,selectcolor=BG).pack(anchor='w')
-        tk.Checkbutton(f,text='Record accelerometer (~25 Hz)',variable=self.acc,bg=PANEL,fg=WHITE,activebackground=PANEL,selectcolor=BG).pack(anchor='w')
-        v=self.settings['Polar Verity Sense']
-        self.label(v,'Polar Verity Sense (alternative to H10)',11,WHITE,True).pack(anchor='w')
-        self.label(v,'Only one Polar sensor is enabled per session. Optical PPG is not ECG.',10,MUTED).pack(anchor='w',pady=(3,12))
-        self.action(v,'Scan for Verity Sense',self.scan_verity,accent=True).pack(anchor='w',pady=(0,12))
-        self.label(v,'Not scanned',10,MUTED,textvariable=self.verity_detail,wraplength=650).pack(anchor='w',pady=(0,15))
-        tk.Checkbutton(v,text='Record optical PPG (55 Hz, four channels)',variable=self.verity_ppg,bg=PANEL,fg=WHITE,activebackground=PANEL,selectcolor=BG).pack(anchor='w')
-        tk.Checkbutton(v,text='Record accelerometer (52 Hz)',variable=self.verity_acc,bg=PANEL,fg=WHITE,activebackground=PANEL,selectcolor=BG).pack(anchor='w')
+        f=self.polar_tab
+        self.label(f, 'PHYSIOLOGICAL SENSOR', 15, WHITE, True).pack(anchor='w', pady=(0, 5))
+        self.label(f, 'Select one sensor, or leave physiological acquisition disabled. '
+                   'Only the selected sensor is connected and recorded.',
+                   10, MUTED, wraplength=680, justify='left').pack(anchor='w', pady=(0, 16))
+        self.polar_radio_buttons = []
+        for key, text in (
+            ('none', 'No Physiological Sensor (default)'),
+            ('h10', 'Polar H10 — ECG chest strap'),
+            ('verity', 'Polar Verity Sense — optical armband'),
+        ):
+            option = tk.Radiobutton(f, text=text, variable=self.polar_sensor, value=key,
+                                    command=self._on_polar_sensor_changed,
+                                    bg=PANEL, fg=WHITE, selectcolor=BG,
+                                    activebackground=PANEL, activeforeground=WHITE,
+                                    font=('Segoe UI', 11))
+            option.pack(anchor='w', pady=5)
+            self.polar_radio_buttons.append(option)
+        self.polar_none_note = self.label(f, 'No physiological device will be scanned, connected or recorded.',
+                                         10, MUTED)
+        self.polar_none_note.pack(anchor='w', pady=(15, 0))
+        self.polar_h10_options = tk.Frame(f, bg=PANEL)
+        self.label(self.polar_h10_options, 'Polar H10', 11, WHITE, True).pack(anchor='w')
+        self.label(self.polar_h10_options, 'HR/RR are included by default.', 10, MUTED).pack(anchor='w', pady=(3, 10))
+        self.action(self.polar_h10_options, 'Scan for Polar H10', self.scan_polar, accent=True).pack(anchor='w', pady=(0, 10))
+        self.label(self.polar_h10_options, '', 10, MUTED, textvariable=self.polar_detail,
+                   wraplength=650).pack(anchor='w', pady=(0, 12))
+        tk.Checkbutton(self.polar_h10_options, text='Record ECG (~130 Hz)', variable=self.ecg,
+                       bg=PANEL, fg=WHITE, activebackground=PANEL, selectcolor=BG).pack(anchor='w')
+        tk.Checkbutton(self.polar_h10_options, text='Record accelerometer (~25 Hz)', variable=self.acc,
+                       bg=PANEL, fg=WHITE, activebackground=PANEL, selectcolor=BG).pack(anchor='w')
+        self.polar_verity_options = tk.Frame(f, bg=PANEL)
+        self.label(self.polar_verity_options, 'Polar Verity Sense', 11, WHITE, True).pack(anchor='w')
+        self.label(self.polar_verity_options, 'Optical PPG is not ECG.', 10, MUTED).pack(anchor='w', pady=(3, 10))
+        self.action(self.polar_verity_options, 'Scan for Verity Sense', self.scan_verity, accent=True).pack(anchor='w', pady=(0, 10))
+        self.label(self.polar_verity_options, '', 10, MUTED, textvariable=self.verity_detail,
+                   wraplength=650).pack(anchor='w', pady=(0, 12))
+        tk.Checkbutton(self.polar_verity_options, text='Record optical PPG (55 Hz, four channels)',
+                       variable=self.verity_ppg, bg=PANEL, fg=WHITE,
+                       activebackground=PANEL, selectcolor=BG).pack(anchor='w')
+        tk.Checkbutton(self.polar_verity_options, text='Record accelerometer (52 Hz)',
+                       variable=self.verity_acc, bg=PANEL, fg=WHITE,
+                       activebackground=PANEL, selectcolor=BG).pack(anchor='w')
+        self._show_polar_options()
 
     def _build_cameras(self):
         self.label(self.camera_tab,'CAMERA SETUP & LIVE PREVIEW',17,WHITE,True).pack(anchor='w')
@@ -615,7 +645,7 @@ class App:
         self.log_text=tk.Text(self.activity_tab,bg='#0b1423',fg=WHITE,insertbackground=WHITE,
                               font=('Consolas',10),bd=0,wrap='word',padx=12,pady=12,state='normal')
         self.log_text.pack(fill='both',expand=True)
-        self._log('INFO  Interface initialized. Enable sensors in their dedicated tabs.')
+        self._log('INFO  Interface initialized. Polar Sensor defaults to None; select a sensor only if needed.')
 
     def _log(self,text):
         self.log_text.insert('end',f"{datetime.now():%H:%M:%S}   {text}\n")
@@ -626,7 +656,7 @@ class App:
         self.selected_device=name
         destination=(self.camera_tab if name.startswith('Camera ')
                      else self.microphone_tab if name=='Microphone'
-                     else self.verity_tab if name=='Polar Verity Sense' else self.polar_tab)
+                     else self.polar_tab)
         self.tabs.select(destination)
         if name.startswith('Camera '):
             slot=int(name.rsplit(' ',1)[1])
@@ -834,12 +864,50 @@ class App:
         except Exception as exc:
             self.mic_details.set(f'Could not read device details: {exc!r}')
 
+    def _show_polar_options(self):
+        """Show settings for the chosen sensor only (author: Gulraiz)."""
+        for panel in (self.polar_h10_options, self.polar_verity_options):
+            panel.pack_forget()
+        self.polar_none_note.pack_forget()
+        selected = self.polar_sensor.get()
+        if selected == 'h10':
+            self.polar_h10_options.pack(fill='x', anchor='w', pady=(12, 0))
+        elif selected == 'verity':
+            self.polar_verity_options.pack(fill='x', anchor='w', pady=(12, 0))
+        else:
+            self.polar_none_note.pack(anchor='w', pady=(15, 0))
+
+    def _on_polar_sensor_changed(self):
+        """Select exactly one device; never restore sensor choice between sessions."""
+        if self.session.active or self._starting_session or self.preview_active:
+            # The controls are disabled during acquisition; retain a second guard.
+            self.polar_sensor.set('h10' if self.enabled['Polar H10'].get()
+                                  else 'verity' if self.enabled['Polar Verity Sense'].get() else 'none')
+            return
+        choice = self.polar_sensor.get()
+        if choice not in ('none', 'h10', 'verity'):
+            raise ValueError(f'Unsupported physiological sensor selection: {choice}')
+        self._switching_polar = True
+        try:
+            self.enabled['Polar H10'].set(choice == 'h10')
+            self.enabled['Polar Verity Sense'].set(choice == 'verity')
+        finally:
+            self._switching_polar = False
+        for name in ('Polar H10', 'Polar Verity Sense'):
+            self.status[name].set('Selected · configure →' if self.enabled[name].get() else 'Not selected')
+        self._show_polar_options()
+        self._rebuild_monitor()
+        self._update_selection()
+
     def _exclusive_polar(self, selected):
         if self._switching_polar or not self.enabled[selected].get():return
         other='Polar Verity Sense' if selected=='Polar H10' else 'Polar H10'
         self._switching_polar=True
         try:self.enabled[other].set(False)
         finally:self._switching_polar=False
+        if hasattr(self, 'polar_sensor'):
+            self.polar_sensor.set('h10' if self.enabled['Polar H10'].get()
+                                  else 'verity' if self.enabled['Polar Verity Sense'].get() else 'none')
 
     def scan_verity(self):
         self.verity_detail.set('Scanning Bluetooth…')
@@ -1249,6 +1317,7 @@ class App:
     def _lock(self,locked):
         state='disabled' if locked else 'normal'
         for c in self.device_enable_controls.values():c.configure(state=state)
+        for c in self.polar_radio_buttons:c.configure(state=state)
         for widget in (self.participant_entry, self.folder_entry, self.browse_btn):
             widget.configure(state=state)
         for widget in self.study_identity_controls:
