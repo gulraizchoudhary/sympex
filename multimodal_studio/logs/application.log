@@ -2084,3 +2084,362 @@
 2026-11-26 10:39:06,165 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
 2026-11-26 10:39:06,167 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
 2026-11-26 10:39:52,955 INFO [Application] INFO: Application closing
+2026-11-26 10:54:37,974 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\sympex_project\sympex\multimodal_studio\logs\application.log
+2026-11-26 10:54:38,686 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-26 10:54:38,687 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-26 10:55:15,961 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
+2026-11-26 10:55:17,165 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
+2026-11-26 10:55:17,165 INFO [Cameras] INFO: index 0: available via DirectShow
+2026-11-26 10:55:17,645 INFO [Cameras] INFO: index 1 / DirectShow: could not open
+2026-11-26 10:55:17,708 INFO [Cameras] INFO: index 1 / Media Foundation: could not open
+2026-11-26 10:55:17,760 INFO [Cameras] INFO: index 1 / Default: could not open
+2026-11-26 10:55:17,761 INFO [Cameras] INFO: index 2 / DirectShow: could not open
+2026-11-26 10:55:17,807 INFO [Cameras] INFO: index 2 / Media Foundation: could not open
+2026-11-26 10:55:17,881 INFO [Cameras] INFO: index 2 / Default: could not open
+2026-11-26 10:55:17,882 INFO [Cameras] INFO: index 3 / DirectShow: could not open
+2026-11-26 10:55:17,938 INFO [Cameras] INFO: index 3 / Media Foundation: could not open
+2026-11-26 10:55:18,005 INFO [Cameras] INFO: index 3 / Default: could not open
+2026-11-26 10:55:18,007 INFO [Cameras] INFO: index 4 / DirectShow: could not open
+2026-11-26 10:55:18,091 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
+2026-11-26 10:55:18,157 INFO [Cameras] INFO: index 4 / Default: could not open
+2026-11-26 10:55:18,158 INFO [Cameras] INFO: index 5 / DirectShow: could not open
+2026-11-26 10:55:18,219 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
+2026-11-26 10:55:18,283 INFO [Cameras] INFO: index 5 / Default: could not open
+2026-11-26 10:55:18,283 INFO [Cameras] INFO: index 6 / DirectShow: could not open
+2026-11-26 10:55:18,342 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
+2026-11-26 10:55:18,406 INFO [Cameras] INFO: index 6 / Default: could not open
+2026-11-26 10:55:18,407 INFO [Cameras] INFO: index 7 / DirectShow: could not open
+2026-11-26 10:55:18,466 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
+2026-11-26 10:55:18,523 INFO [Cameras] INFO: index 7 / Default: could not open
+2026-11-26 10:55:18,524 INFO [Cameras] INFO: index 8 / DirectShow: could not open
+2026-11-26 10:55:18,575 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
+2026-11-26 10:55:18,629 INFO [Cameras] INFO: index 8 / Default: could not open
+2026-11-26 10:55:18,630 INFO [Cameras] INFO: index 9 / DirectShow: could not open
+2026-11-26 10:55:18,682 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
+2026-11-26 10:55:18,736 INFO [Cameras] INFO: index 9 / Default: could not open
+2026-11-26 10:55:19,015 INFO [Cameras] INFO: Camera scan finished: 1 available
+2026-11-26 10:58:05,989 ERROR [Session] ERROR: Session start failed: ValueError('All trials for this visit have been completed')
+2026-11-26 10:58:20,181 INFO [Session Metadata] INFO: Published data organization via IMS_Session_Metadata (LSL)
+2026-11-26 10:58:20,181 INFO [Microphone] INFO: Opening microphone: Microphone (Realtek HD Audio Mic input) | index=17 | backend=Windows WDM-KS | rate=48000 Hz | channels=1 | WASAPI exclusive=False
+2026-11-26 10:58:20,190 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Microphone_Audio (1 ch, 48000 Hz)
+2026-11-26 10:58:20,378 INFO [Microphone] RECORDING: device=17, rate=48000 Hz, channels=1
+2026-11-26 10:58:23,385 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-26 10:58:23,716 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 1280x720)
+2026-11-26 10:58:23,726 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-26 10:58:23,726 INFO [Camera 1] RECORDING: Video capture started: CPH_P001_V02_Sc2c8315b__camera_1.mp4; 1280x720, writer 25 fps (DirectShow)
+2026-11-26 10:58:23,726 INFO [Microphone] READY: live data confirmed
+2026-11-26 10:58:23,827 INFO [Camera 1] READY: live data confirmed
+2026-11-26 10:58:23,830 INFO [Session] RECORDING: c2c8315b9a9a437d9c850c044a3f3b33 | C:\Users\chgul\Desktop\Test\SYMPEX_2027\CPH\P001\V02_Training\S20261126T105820_c2c8315b
+2026-11-26 10:58:56,087 INFO [Microphone] STOPPED: 1708800 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-26 10:58:56,569 INFO [Camera 1] INFO: Camera stopped; 648 frames saved
+2026-11-26 10:58:56,571 INFO [Microphone] INFO: Integrity: no detected acquisition errors
+2026-11-26 10:58:56,571 INFO [Camera 1] INFO: Integrity: no detected acquisition errors
+2026-11-26 10:58:56,571 INFO [Session] STOPPED: C:\Users\chgul\Desktop\Test\SYMPEX_2027\CPH\P001\V02_Training\S20261126T105820_c2c8315b | integrity=PASS
+2026-11-26 11:12:18,210 INFO [Session Metadata] INFO: Published data organization via IMS_Session_Metadata (LSL)
+2026-11-26 11:12:18,210 INFO [Microphone] INFO: Opening microphone: Microphone (Realtek HD Audio Mic input) | index=17 | backend=Windows WDM-KS | rate=48000 Hz | channels=1 | WASAPI exclusive=False
+2026-11-26 11:12:18,217 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Microphone_Audio (1 ch, 48000 Hz)
+2026-11-26 11:12:18,254 INFO [Microphone] RECORDING: device=17, rate=48000 Hz, channels=1
+2026-11-26 11:12:21,302 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-26 11:12:21,590 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 1280x720)
+2026-11-26 11:12:21,600 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-26 11:12:21,600 INFO [Camera 1] RECORDING: Video capture started: JNS_P002_V01_S7d3c74de__camera_1.mp4; 1280x720, writer 25 fps (DirectShow)
+2026-11-26 11:12:21,600 INFO [Microphone] READY: live data confirmed
+2026-11-26 11:12:21,700 INFO [Camera 1] READY: live data confirmed
+2026-11-26 11:12:21,703 INFO [Session] RECORDING: 7d3c74de01f14b45956f9f87d7b4bc4d | C:\Users\chgul\Desktop\Test\SYMPEX_2027\JNS\P002\V01_Training\S20261126T111218_7d3c74de
+2026-11-26 11:12:44,719 INFO [Microphone] STOPPED: 1267200 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-26 11:12:45,182 INFO [Camera 1] INFO: Camera stopped; 463 frames saved
+2026-11-26 11:12:45,183 INFO [Microphone] INFO: Integrity: no detected acquisition errors
+2026-11-26 11:12:45,183 INFO [Camera 1] INFO: Integrity: no detected acquisition errors
+2026-11-26 11:12:45,183 INFO [Session] STOPPED: C:\Users\chgul\Desktop\Test\SYMPEX_2027\JNS\P002\V01_Training\S20261126T111218_7d3c74de | integrity=PASS
+2026-11-26 11:12:50,263 INFO [Session Metadata] INFO: Published data organization via IMS_Session_Metadata (LSL)
+2026-11-26 11:12:50,264 INFO [Microphone] INFO: Opening microphone: Microphone (Realtek HD Audio Mic input) | index=17 | backend=Windows WDM-KS | rate=48000 Hz | channels=1 | WASAPI exclusive=False
+2026-11-26 11:12:50,272 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Microphone_Audio (1 ch, 48000 Hz)
+2026-11-26 11:12:50,356 INFO [Microphone] RECORDING: device=17, rate=48000 Hz, channels=1
+2026-11-26 11:12:53,187 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-26 11:12:53,473 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 1280x720)
+2026-11-26 11:12:53,479 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-26 11:12:53,480 INFO [Camera 1] RECORDING: Video capture started: KUH_P002_V01_S7ea8b0e6__camera_1.mp4; 1280x720, writer 25 fps (DirectShow)
+2026-11-26 11:12:53,480 INFO [Microphone] READY: live data confirmed
+2026-11-26 11:12:53,581 INFO [Camera 1] READY: live data confirmed
+2026-11-26 11:12:53,587 INFO [Session] RECORDING: 7ea8b0e6cdf8471ea764de89bf89bb8c | C:\Users\chgul\Desktop\Test\SYMPEX_2027\KUH\P002\V01_Training\S20261126T111250_7ea8b0e6
+2026-11-26 11:13:00,985 INFO [Microphone] STOPPED: 506880 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-26 11:13:01,501 INFO [Camera 1] INFO: Camera stopped; 152 frames saved
+2026-11-26 11:13:01,503 INFO [Microphone] INFO: Integrity: no detected acquisition errors
+2026-11-26 11:13:01,503 INFO [Camera 1] INFO: Integrity: no detected acquisition errors
+2026-11-26 11:13:01,503 INFO [Session] STOPPED: C:\Users\chgul\Desktop\Test\SYMPEX_2027\KUH\P002\V01_Training\S20261126T111250_7ea8b0e6 | integrity=PASS
+2026-11-26 13:03:45,814 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-26 13:03:45,815 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-26 13:03:46,624 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-26 13:03:46,625 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-26 13:03:46,977 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-26 13:03:46,978 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-26 13:03:47,386 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-26 13:03:47,388 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-26 13:03:47,840 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-26 13:03:47,841 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-26 13:03:48,210 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-26 13:03:48,212 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-26 13:03:48,600 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-26 13:03:48,601 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-26 13:24:10,507 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
+2026-11-26 13:24:11,751 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
+2026-11-26 13:24:11,756 INFO [Cameras] INFO: index 0: available via DirectShow
+2026-11-26 13:24:13,342 INFO [Cameras] INFO: index 1 / DirectShow: frames OK (default, 640x480)
+2026-11-26 13:24:13,342 INFO [Cameras] INFO: index 1: available via DirectShow
+2026-11-26 13:24:13,842 INFO [Cameras] INFO: index 2 / DirectShow: could not open
+2026-11-26 13:24:13,905 INFO [Cameras] INFO: index 2 / Media Foundation: could not open
+2026-11-26 13:24:13,949 INFO [Cameras] INFO: index 2 / Default: could not open
+2026-11-26 13:24:13,950 INFO [Cameras] INFO: index 3 / DirectShow: could not open
+2026-11-26 13:24:13,997 INFO [Cameras] INFO: index 3 / Media Foundation: could not open
+2026-11-26 13:24:14,057 INFO [Cameras] INFO: index 3 / Default: could not open
+2026-11-26 13:24:14,059 INFO [Cameras] INFO: index 4 / DirectShow: could not open
+2026-11-26 13:24:14,119 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
+2026-11-26 13:24:14,163 INFO [Cameras] INFO: index 4 / Default: could not open
+2026-11-26 13:24:14,164 INFO [Cameras] INFO: index 5 / DirectShow: could not open
+2026-11-26 13:24:14,209 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
+2026-11-26 13:24:14,254 INFO [Cameras] INFO: index 5 / Default: could not open
+2026-11-26 13:24:14,255 INFO [Cameras] INFO: index 6 / DirectShow: could not open
+2026-11-26 13:24:14,296 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
+2026-11-26 13:24:14,365 INFO [Cameras] INFO: index 6 / Default: could not open
+2026-11-26 13:24:14,366 INFO [Cameras] INFO: index 7 / DirectShow: could not open
+2026-11-26 13:24:14,410 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
+2026-11-26 13:24:14,455 INFO [Cameras] INFO: index 7 / Default: could not open
+2026-11-26 13:24:14,456 INFO [Cameras] INFO: index 8 / DirectShow: could not open
+2026-11-26 13:24:14,510 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
+2026-11-26 13:24:14,559 INFO [Cameras] INFO: index 8 / Default: could not open
+2026-11-26 13:24:14,560 INFO [Cameras] INFO: index 9 / DirectShow: could not open
+2026-11-26 13:24:14,602 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
+2026-11-26 13:24:14,647 INFO [Cameras] INFO: index 9 / Default: could not open
+2026-11-26 13:24:14,904 INFO [Cameras] INFO: Camera scan finished: 2 available
+2026-11-26 13:24:30,693 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-26 13:24:31,705 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 1280x720)
+2026-11-26 13:24:31,705 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
+2026-11-26 13:24:48,467 WARNING [Camera 1] WARNING: Preview thread has not exited yet
+2026-11-26 13:24:48,736 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-26 13:25:07,938 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-26 13:25:08,954 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 1280x720)
+2026-11-26 13:25:08,971 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
+2026-11-26 13:26:13,397 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-26 13:26:28,054 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
+2026-11-26 13:26:28,599 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
+2026-11-26 13:26:28,599 INFO [Cameras] INFO: index 0: available via DirectShow
+2026-11-26 13:26:29,684 INFO [Cameras] INFO: index 1 / DirectShow: frames OK (default, 640x480)
+2026-11-26 13:26:29,684 INFO [Cameras] INFO: index 1: available via DirectShow
+2026-11-26 13:26:30,097 INFO [Cameras] INFO: index 2 / DirectShow: could not open
+2026-11-26 13:26:30,150 INFO [Cameras] INFO: index 2 / Media Foundation: could not open
+2026-11-26 13:26:30,222 INFO [Cameras] INFO: index 2 / Default: could not open
+2026-11-26 13:26:30,224 INFO [Cameras] INFO: index 3 / DirectShow: could not open
+2026-11-26 13:26:30,269 INFO [Cameras] INFO: index 3 / Media Foundation: could not open
+2026-11-26 13:26:30,356 INFO [Cameras] INFO: index 3 / Default: could not open
+2026-11-26 13:26:30,357 INFO [Cameras] INFO: index 4 / DirectShow: could not open
+2026-11-26 13:26:30,408 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
+2026-11-26 13:26:30,476 INFO [Cameras] INFO: index 4 / Default: could not open
+2026-11-26 13:26:30,477 INFO [Cameras] INFO: index 5 / DirectShow: could not open
+2026-11-26 13:26:30,546 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
+2026-11-26 13:26:30,621 INFO [Cameras] INFO: index 5 / Default: could not open
+2026-11-26 13:26:30,622 INFO [Cameras] INFO: index 6 / DirectShow: could not open
+2026-11-26 13:26:30,687 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
+2026-11-26 13:26:30,739 INFO [Cameras] INFO: index 6 / Default: could not open
+2026-11-26 13:26:30,740 INFO [Cameras] INFO: index 7 / DirectShow: could not open
+2026-11-26 13:26:30,788 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
+2026-11-26 13:26:30,840 INFO [Cameras] INFO: index 7 / Default: could not open
+2026-11-26 13:26:30,840 INFO [Cameras] INFO: index 8 / DirectShow: could not open
+2026-11-26 13:26:30,905 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
+2026-11-26 13:26:30,983 INFO [Cameras] INFO: index 8 / Default: could not open
+2026-11-26 13:26:30,984 INFO [Cameras] INFO: index 9 / DirectShow: could not open
+2026-11-26 13:26:31,037 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
+2026-11-26 13:26:31,085 INFO [Cameras] INFO: index 9 / Default: could not open
+2026-11-26 13:26:31,094 INFO [Cameras] INFO: Camera scan finished: 2 available
+2026-11-26 13:26:37,384 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 1280x720)
+2026-11-26 13:26:37,384 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
+2026-11-26 13:28:16,153 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-26 13:28:21,056 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 1280x720)
+2026-11-26 13:28:21,056 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
+2026-11-26 13:43:33,504 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-26 13:44:39,877 INFO [Session Metadata] INFO: Published data organization via IMS_Session_Metadata (LSL)
+2026-11-26 13:44:43,612 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 1280x720)
+2026-11-26 13:44:43,651 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-26 13:44:43,651 INFO [Camera 1] RECORDING: Video capture started: KUH_P004_V01_Sfe5abc3a__camera_1.mp4; 1280x720, writer 25 fps (DirectShow)
+2026-11-26 13:44:43,752 INFO [Camera 1] READY: live data confirmed
+2026-11-26 13:44:43,755 INFO [Session] RECORDING: fe5abc3aac31442a9b723aa49f45ba90 | C:\Users\chgul\Desktop\Test\SYMPEX_2027\KUH\P004\V01_Training\S20261126T134439_fe5abc3a
+2026-11-26 13:45:17,564 INFO [Camera 1] INFO: Camera stopped; 336 frames saved
+2026-11-26 13:45:17,565 INFO [Camera 1] INFO: Integrity: no detected acquisition errors
+2026-11-26 13:45:17,565 INFO [Session] STOPPED: C:\Users\chgul\Desktop\Test\SYMPEX_2027\KUH\P004\V01_Training\S20261126T134439_fe5abc3a | integrity=PASS
+2026-11-26 13:45:23,688 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 1280x720)
+2026-11-26 13:45:23,688 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
+2026-11-26 13:45:38,366 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-26 13:45:46,475 INFO [Session Metadata] INFO: Published data organization via IMS_Session_Metadata (LSL)
+2026-11-26 13:45:50,039 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 1280x720)
+2026-11-26 13:45:50,081 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-26 13:45:50,081 INFO [Camera 1] RECORDING: Video capture started: KUH_P004_V01_Se92ee711__camera_1.mp4; 1280x720, writer 25 fps (DirectShow)
+2026-11-26 13:45:50,183 INFO [Camera 1] READY: live data confirmed
+2026-11-26 13:45:50,186 INFO [Session] RECORDING: e92ee71104dd46eeace93896d04f2d16 | C:\Users\chgul\Desktop\Test\SYMPEX_2027\KUH\P004\V01_Training\S20261126T134546_e92ee711
+2026-11-26 13:46:22,798 INFO [Camera 1] INFO: Camera stopped; 324 frames saved
+2026-11-26 13:46:22,800 INFO [Camera 1] INFO: Integrity: no detected acquisition errors
+2026-11-26 13:46:22,800 INFO [Session] STOPPED: C:\Users\chgul\Desktop\Test\SYMPEX_2027\KUH\P004\V01_Training\S20261126T134546_e92ee711 | integrity=PASS
+2026-11-26 13:46:24,594 INFO [Session Metadata] INFO: Published data organization via IMS_Session_Metadata (LSL)
+2026-11-26 13:46:28,096 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 1280x720)
+2026-11-26 13:46:28,141 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-26 13:46:28,141 INFO [Camera 1] RECORDING: Video capture started: KUH_P004_V01_S6427d787__camera_1.mp4; 1280x720, writer 25 fps (DirectShow)
+2026-11-26 13:46:28,242 INFO [Camera 1] READY: live data confirmed
+2026-11-26 13:46:28,246 INFO [Session] RECORDING: 6427d787c88744ceabfe0ff55d8c28db | C:\Users\chgul\Desktop\Test\SYMPEX_2027\KUH\P004\V01_Training\S20261126T134624_6427d787
+2026-11-26 13:47:08,766 INFO [Camera 1] INFO: Camera stopped; 403 frames saved
+2026-11-26 13:47:08,768 INFO [Camera 1] INFO: Integrity: no detected acquisition errors
+2026-11-26 13:47:08,768 INFO [Session] STOPPED: C:\Users\chgul\Desktop\Test\SYMPEX_2027\KUH\P004\V01_Training\S20261126T134624_6427d787 | integrity=PASS
+2026-11-26 13:47:13,837 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
+2026-11-26 13:47:14,496 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
+2026-11-26 13:47:14,496 INFO [Cameras] INFO: index 0: available via DirectShow
+2026-11-26 13:47:15,483 INFO [Cameras] INFO: index 1 / DirectShow: frames OK (default, 640x480)
+2026-11-26 13:47:15,483 INFO [Cameras] INFO: index 1: available via DirectShow
+2026-11-26 13:47:15,937 INFO [Cameras] INFO: index 2 / DirectShow: could not open
+2026-11-26 13:47:15,997 INFO [Cameras] INFO: index 2 / Media Foundation: could not open
+2026-11-26 13:47:16,042 INFO [Cameras] INFO: index 2 / Default: could not open
+2026-11-26 13:47:16,043 INFO [Cameras] INFO: index 3 / DirectShow: could not open
+2026-11-26 13:47:16,084 INFO [Cameras] INFO: index 3 / Media Foundation: could not open
+2026-11-26 13:47:16,161 INFO [Cameras] INFO: index 3 / Default: could not open
+2026-11-26 13:47:16,162 INFO [Cameras] INFO: index 4 / DirectShow: could not open
+2026-11-26 13:47:16,215 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
+2026-11-26 13:47:16,266 INFO [Cameras] INFO: index 4 / Default: could not open
+2026-11-26 13:47:16,267 INFO [Cameras] INFO: index 5 / DirectShow: could not open
+2026-11-26 13:47:16,319 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
+2026-11-26 13:47:16,377 INFO [Cameras] INFO: index 5 / Default: could not open
+2026-11-26 13:47:16,378 INFO [Cameras] INFO: index 6 / DirectShow: could not open
+2026-11-26 13:47:16,427 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
+2026-11-26 13:47:16,482 INFO [Cameras] INFO: index 6 / Default: could not open
+2026-11-26 13:47:16,483 INFO [Cameras] INFO: index 7 / DirectShow: could not open
+2026-11-26 13:47:16,534 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
+2026-11-26 13:47:16,583 INFO [Cameras] INFO: index 7 / Default: could not open
+2026-11-26 13:47:16,584 INFO [Cameras] INFO: index 8 / DirectShow: could not open
+2026-11-26 13:47:16,632 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
+2026-11-26 13:47:16,683 INFO [Cameras] INFO: index 8 / Default: could not open
+2026-11-26 13:47:16,684 INFO [Cameras] INFO: index 9 / DirectShow: could not open
+2026-11-26 13:47:16,732 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
+2026-11-26 13:47:16,788 INFO [Cameras] INFO: index 9 / Default: could not open
+2026-11-26 13:47:16,946 INFO [Cameras] INFO: Camera scan finished: 2 available
+2026-11-26 13:47:23,809 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 1280x720)
+2026-11-26 13:47:23,809 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
+2026-11-26 13:47:25,843 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-26 13:47:26,964 INFO [Session Metadata] INFO: Published data organization via IMS_Session_Metadata (LSL)
+2026-11-26 13:47:30,709 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 1280x720)
+2026-11-26 13:47:30,719 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-26 13:47:30,719 INFO [Camera 1] RECORDING: Video capture started: KUH_P004_V01_S9ca46eb5__camera_1.mp4; 1280x720, writer 25 fps (DirectShow)
+2026-11-26 13:47:30,820 INFO [Camera 1] READY: live data confirmed
+2026-11-26 13:47:30,821 INFO [Session] RECORDING: 9ca46eb5ff1143da9d1809fdde095aaa | C:\Users\chgul\Desktop\Test\SYMPEX_2027\KUH\P004\V01_Training\S20261126T134726_9ca46eb5
+2026-11-26 13:50:04,728 INFO [Camera 1] INFO: Camera stopped; 1536 frames saved
+2026-11-26 13:50:04,731 INFO [Camera 1] INFO: Integrity: no detected acquisition errors
+2026-11-26 13:50:04,731 INFO [Session] STOPPED: C:\Users\chgul\Desktop\Test\SYMPEX_2027\KUH\P004\V01_Training\S20261126T134726_9ca46eb5 | integrity=PASS
+2026-11-26 14:15:04,595 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-26 14:15:04,880 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
+2026-11-26 14:15:04,880 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
+2026-11-26 14:15:22,616 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-26 14:16:07,551 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
+2026-11-26 14:16:08,085 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
+2026-11-26 14:16:08,106 INFO [Cameras] INFO: index 0: available via DirectShow
+2026-11-26 14:16:09,088 INFO [Cameras] INFO: index 1 / DirectShow: frames OK (default, 640x480)
+2026-11-26 14:16:09,089 INFO [Cameras] INFO: index 1: available via DirectShow
+2026-11-26 14:16:09,560 INFO [Cameras] INFO: index 2 / DirectShow: could not open
+2026-11-26 14:16:09,620 INFO [Cameras] INFO: index 2 / Media Foundation: could not open
+2026-11-26 14:16:09,670 INFO [Cameras] INFO: index 2 / Default: could not open
+2026-11-26 14:16:09,671 INFO [Cameras] INFO: index 3 / DirectShow: could not open
+2026-11-26 14:16:09,717 INFO [Cameras] INFO: index 3 / Media Foundation: could not open
+2026-11-26 14:16:09,787 INFO [Cameras] INFO: index 3 / Default: could not open
+2026-11-26 14:16:09,789 INFO [Cameras] INFO: index 4 / DirectShow: could not open
+2026-11-26 14:16:09,839 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
+2026-11-26 14:16:09,883 INFO [Cameras] INFO: index 4 / Default: could not open
+2026-11-26 14:16:09,884 INFO [Cameras] INFO: index 5 / DirectShow: could not open
+2026-11-26 14:16:09,927 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
+2026-11-26 14:16:09,971 INFO [Cameras] INFO: index 5 / Default: could not open
+2026-11-26 14:16:09,972 INFO [Cameras] INFO: index 6 / DirectShow: could not open
+2026-11-26 14:16:10,015 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
+2026-11-26 14:16:10,061 INFO [Cameras] INFO: index 6 / Default: could not open
+2026-11-26 14:16:10,062 INFO [Cameras] INFO: index 7 / DirectShow: could not open
+2026-11-26 14:16:10,142 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
+2026-11-26 14:16:10,192 INFO [Cameras] INFO: index 7 / Default: could not open
+2026-11-26 14:16:10,193 INFO [Cameras] INFO: index 8 / DirectShow: could not open
+2026-11-26 14:16:10,237 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
+2026-11-26 14:16:10,282 INFO [Cameras] INFO: index 8 / Default: could not open
+2026-11-26 14:16:10,283 INFO [Cameras] INFO: index 9 / DirectShow: could not open
+2026-11-26 14:16:10,327 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
+2026-11-26 14:16:10,374 INFO [Cameras] INFO: index 9 / Default: could not open
+2026-11-26 14:16:10,861 INFO [Cameras] INFO: Camera scan finished: 2 available
+2026-11-26 14:16:13,421 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
+2026-11-26 14:16:13,421 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
+2026-11-26 14:16:20,880 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-26 14:16:30,176 INFO [Session Metadata] INFO: Published data organization via IMS_Session_Metadata (LSL)
+2026-11-26 14:16:33,059 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
+2026-11-26 14:16:33,094 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-26 14:16:33,094 INFO [Camera 1] RECORDING: Video capture started: KUH_P004_V01_S70f0eafd__camera_1.mp4; 640x480, writer 30 fps (DirectShow)
+2026-11-26 14:16:33,195 INFO [Camera 1] READY: live data confirmed
+2026-11-26 14:16:33,198 INFO [Session] RECORDING: 70f0eafddf7c47cdbd91fa1599a82160 | C:\Users\chgul\Desktop\Test\SYMPEX_2027\KUH\P004\V01_Training\S20261126T141630_70f0eafd
+2026-11-26 14:16:38,054 INFO [Camera 1] INFO: Camera stopped; 129 frames saved
+2026-11-26 14:16:38,056 INFO [Camera 1] INFO: Integrity: no detected acquisition errors
+2026-11-26 14:16:38,057 INFO [Session] STOPPED: C:\Users\chgul\Desktop\Test\SYMPEX_2027\KUH\P004\V01_Training\S20261126T141630_70f0eafd | integrity=PASS
+2026-11-26 14:17:23,515 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
+2026-11-26 14:17:23,516 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
+2026-11-26 14:17:52,455 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-26 14:17:52,465 INFO [Camera 1] INFO: Camera properties applied to next preview/recording; verify actual values in log
+2026-11-26 14:17:55,677 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
+2026-11-26 14:17:55,678 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
+2026-11-26 14:18:18,723 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-26 14:19:52,236 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
+2026-11-26 14:19:52,236 INFO [Camera 1] PREVIEW: Opened camera 0 via DirectShow
+2026-11-26 14:20:21,379 INFO [Camera 1] INFO: Preview capture stopped
+2026-11-26 14:20:28,550 INFO [Session Metadata] INFO: Published data organization via IMS_Session_Metadata (LSL)
+2026-11-26 14:20:31,615 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
+2026-11-26 14:20:31,652 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-26 14:20:31,653 INFO [Camera 1] RECORDING: Video capture started: KUH_P004_V01_Se20317bc__camera_1.mp4; 640x480, writer 30 fps (DirectShow)
+2026-11-26 14:20:31,753 INFO [Camera 1] READY: live data confirmed
+2026-11-26 14:20:31,756 INFO [Session] RECORDING: e20317bcb0cf4a2f90eaa1e4054baf57 | C:\Users\chgul\Desktop\Test\SYMPEX_2027\KUH\P004\V01_Training\S20261126T142028_e20317bc
+2026-11-26 14:20:46,699 INFO [Camera 1] INFO: Camera stopped; 440 frames saved
+2026-11-26 14:20:46,703 INFO [Camera 1] INFO: Integrity: no detected acquisition errors
+2026-11-26 14:20:46,704 INFO [Session] STOPPED: C:\Users\chgul\Desktop\Test\SYMPEX_2027\KUH\P004\V01_Training\S20261126T142028_e20317bc | integrity=PASS
+2026-11-26 14:20:48,251 INFO [Session Metadata] INFO: Published data organization via IMS_Session_Metadata (LSL)
+2026-11-26 14:20:51,094 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
+2026-11-26 14:20:51,132 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-26 14:20:51,132 INFO [Camera 1] RECORDING: Video capture started: KUH_P004_V01_Scc23a158__camera_1.mp4; 640x480, writer 30 fps (DirectShow)
+2026-11-26 14:20:51,233 INFO [Camera 1] READY: live data confirmed
+2026-11-26 14:20:51,236 INFO [Session] RECORDING: cc23a158d4b542249baf91c1dc602dec | C:\Users\chgul\Desktop\Test\SYMPEX_2027\KUH\P004\V01_Training\S20261126T142048_cc23a158
+2026-11-26 14:21:17,599 INFO [Camera 1] INFO: Camera stopped; 783 frames saved
+2026-11-26 14:21:17,603 INFO [Camera 1] INFO: Integrity: no detected acquisition errors
+2026-11-26 14:21:17,603 INFO [Session] STOPPED: C:\Users\chgul\Desktop\Test\SYMPEX_2027\KUH\P004\V01_Training\S20261126T142048_cc23a158 | integrity=PASS
+2026-11-26 14:21:19,350 INFO [Session Metadata] INFO: Published data organization via IMS_Session_Metadata (LSL)
+2026-11-26 14:21:22,444 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
+2026-11-26 14:21:22,454 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-26 14:21:22,454 INFO [Camera 1] RECORDING: Video capture started: KUH_P004_V01_Sa7ade018__camera_1.mp4; 640x480, writer 30 fps (DirectShow)
+2026-11-26 14:21:22,459 INFO [Camera 1] READY: live data confirmed
+2026-11-26 14:21:22,460 INFO [Session] RECORDING: a7ade0189987485c8ccbad3155d84d0e | C:\Users\chgul\Desktop\Test\SYMPEX_2027\KUH\P004\V01_Training\S20261126T142119_a7ade018
+2026-11-26 14:22:45,986 INFO [Camera 1] INFO: Camera stopped; 2319 frames saved
+2026-11-26 14:22:45,990 INFO [Camera 1] INFO: Integrity: no detected acquisition errors
+2026-11-26 14:22:45,990 INFO [Session] STOPPED: C:\Users\chgul\Desktop\Test\SYMPEX_2027\KUH\P004\V01_Training\S20261126T142119_a7ade018 | integrity=PASS
+2026-11-26 14:22:47,129 INFO [Session Metadata] INFO: Published data organization via IMS_Session_Metadata (LSL)
+2026-11-26 14:22:49,881 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
+2026-11-26 14:22:49,925 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-26 14:22:49,925 INFO [Camera 1] RECORDING: Video capture started: KUH_P004_V01_S78c360a2__camera_1.mp4; 640x480, writer 30 fps (DirectShow)
+2026-11-26 14:22:49,931 INFO [Camera 1] READY: live data confirmed
+2026-11-26 14:22:49,936 INFO [Session] RECORDING: 78c360a21abf4164aebfa371a2859b0e | C:\Users\chgul\Desktop\Test\SYMPEX_2027\KUH\P004\V01_Training\S20261126T142247_78c360a2
+2026-11-26 14:23:02,576 INFO [Camera 1] INFO: Camera stopped; 371 frames saved
+2026-11-26 14:23:02,578 INFO [Camera 1] INFO: Integrity: no detected acquisition errors
+2026-11-26 14:23:02,579 INFO [Session] STOPPED: C:\Users\chgul\Desktop\Test\SYMPEX_2027\KUH\P004\V01_Training\S20261126T142247_78c360a2 | integrity=PASS
+2026-11-26 14:24:04,325 INFO [Session Metadata] INFO: Published data organization via IMS_Session_Metadata (LSL)
+2026-11-26 14:24:07,301 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
+2026-11-26 14:24:07,348 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-26 14:24:07,348 INFO [Camera 1] RECORDING: Video capture started: KUH_P004_V02_S62550542__camera_1.mp4; 640x480, writer 30 fps (DirectShow)
+2026-11-26 14:24:07,450 INFO [Camera 1] READY: live data confirmed
+2026-11-26 14:24:07,453 INFO [Session] RECORDING: 62550542aa254d86ae009acdf9c44afc | C:\Users\chgul\Desktop\Test\SYMPEX_2027\KUH\P004\V02_Training\S20261126T142404_62550542
+2026-11-26 14:24:26,492 INFO [Camera 1] INFO: Camera stopped; 567 frames saved
+2026-11-26 14:24:26,493 INFO [Camera 1] INFO: Integrity: no detected acquisition errors
+2026-11-26 14:24:26,493 INFO [Session] STOPPED: C:\Users\chgul\Desktop\Test\SYMPEX_2027\KUH\P004\V02_Training\S20261126T142404_62550542 | integrity=PASS
+2026-11-26 14:25:36,865 INFO [Session Metadata] INFO: Published data organization via IMS_Session_Metadata (LSL)
+2026-11-26 14:25:39,906 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
+2026-11-26 14:25:39,943 INFO [Camera 1] INFO: LSL video frame metadata: IMS_Camera1_Frames
+2026-11-26 14:25:39,944 INFO [Camera 1] RECORDING: Video capture started: KUH_P004_V02_Sc7fefe38__camera_1.mp4; 640x480, writer 30 fps (DirectShow)
+2026-11-26 14:25:40,044 INFO [Camera 1] READY: live data confirmed
+2026-11-26 14:25:40,051 INFO [Session] RECORDING: c7fefe380a154722ba6a7397500f4072 | C:\Users\chgul\Desktop\Test\SYMPEX_2027\KUH\P004\V02_Training\S20261126T142536_c7fefe38
+2026-11-26 14:26:35,645 INFO [Camera 1] INFO: Camera stopped; 1653 frames saved
+2026-11-26 14:26:35,647 INFO [Camera 1] INFO: Integrity: no detected acquisition errors
+2026-11-26 14:26:35,647 INFO [Session] STOPPED: C:\Users\chgul\Desktop\Test\SYMPEX_2027\KUH\P004\V02_Training\S20261126T142536_c7fefe38 | integrity=PASS
+2026-11-26 20:08:35,815 INFO [Application] INFO: Application closing
+2026-11-26 20:09:16,707 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\sympex_project\sympex\multimodal_studio\logs\application.log
+2026-11-26 20:09:17,466 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-26 20:09:17,468 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-26 20:09:21,948 INFO [Application] INFO: Application closing

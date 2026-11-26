@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-"""
-Updated on Wed Nov 26 09:35:00 2026
-
-@author: Gulraiz
-"""
-
+# Author: Gulraiz
+import re
+import os
 import csv
 import hashlib
 import socket
@@ -375,10 +371,23 @@ class SessionManager:
         if self.folder is None:
             return
         items = []
-        for path in sorted(self.folder.rglob('*')):
-            if not path.is_file() or path == session_file(self.folder, 'session_manifest.json'):
+        # JPEG frames are numerous (up to 108,000/hour/camera). Represent the
+        # directory once; the camera writer computes its ordered content digest.
+        # This keeps the manifest compact and avoids reading every JPEG again.
+        frame_dirs = []
+        regular_files = []
+        # Prune frame directories before walking: a one-hour, three-camera
+        # visit may have 324,000 JPEGs, but the manifest remains small.
+        for current, subdirs, filenames in os.walk(self.folder):
+            base = Path(current)
+            for dirname in list(subdirs):
+                if re.search(r'(?:^|__)camera_\d+_frames$', dirname):
+                    frame_dirs.append(base / dirname)
+                    subdirs.remove(dirname)
+            regular_files.extend(base / name for name in filenames)
+        for path in sorted(regular_files):
+            if path == session_file(self.folder, 'session_manifest.json'):
                 continue
-            # Hash files by streaming chunks (can include multi-GB WAV/MP4).
             digest = hashlib.sha256()
             with path.open('rb') as infile:
                 for chunk in iter(lambda: infile.read(1024*1024), b''):
@@ -389,6 +398,20 @@ class SessionManager:
                        'sha256': digest.hexdigest(), 'status': status,
                        'created_wall_time': self._session_config['started_wall_time']}
             items.append(details)
+        for path in sorted(frame_dirs):
+            meta = path.parent / path.name.replace('_frames', '_metadata.json')
+            stats = {}
+            if meta.is_file():
+                try:
+                    stats = json.loads(meta.read_text(encoding='utf-8'))
+                except (OSError, ValueError):
+                    pass
+            items.append({'session_id': self.session_id, 'participant': self._session_config['participant'],
+                          'relative_path': path.relative_to(self.folder).as_posix(),
+                          'file_role': 'jpeg_frame_sequence', 'file_count': stats.get('frames_written'),
+                          'total_bytes': stats.get('total_jpeg_bytes'),
+                          'ordered_frame_sha256': stats.get('ordered_frame_sha256'),
+                          'status': status})
         manifest = {'schema_version': 7, 'config': self._session_config,
                     'session_id':self.session_id,'participant':self._session_config['participant'],'study':self.study,
                     'session_folder':self.folder.name,'status':status,

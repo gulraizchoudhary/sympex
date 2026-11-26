@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
-"""
-Updated on Wed Nov 25 09:35:00 2026
+# Author: Gulraiz
+"""Live device checks and per-channel integrity summaries (no extra output files).
 
-@author: Gulraiz
+These checks verify acquisition, not eye-tracker calibration, video exposure
+synchrony, sensor accuracy, or alignment of hardware clocks.
 """
-
 import time
 from pathlib import Path
 from output_names import session_file
@@ -29,16 +28,33 @@ def assess_device(name, recorder, folder, stage='preflight'):
 
     if hasattr(recorder, 'frames_written'):
         stats['frames_written'] = recorder.frames_written
+        stats['frames_captured'] = getattr(recorder, 'frames_captured', recorder.frames_written)
+        stats['frames_dropped_writer_queue'] = getattr(recorder, 'frames_dropped', 0)
+        stats['lsl_publish_errors'] = getattr(recorder, 'lsl_publish_errors', 0)
+        stats['actual_capture_fps_estimate'] = getattr(recorder, 'actual_capture_fps', 0.0)
+        stats['capture_duration_seconds'] = getattr(recorder, 'capture_duration_seconds', 0.0)
+        if (stage == 'final' and stats['capture_duration_seconds'] >= 5 and
+                stats['actual_capture_fps_estimate'] < 0.9 * getattr(recorder, 'camera_settings', {}).get('fps', 30)):
+            problems.append('actual camera capture rate below 90% of configured FPS')
         if not _positive(recorder.frames_written):
             problems.append('no camera frames written')
         if getattr(recorder, 'error', None):
             problems.append(f'camera error: {recorder.error}')
-        stats['lsl_publish_errors'] = getattr(recorder, 'lsl_publish_errors', 0)
+        if stats['frames_dropped_writer_queue']:
+            problems.append('camera JPEG writer queue dropped frames')
+        if stats['lsl_publish_errors']:
+            problems.append('camera LSL frame notifications failed')
         if stage == 'final':
-            path = session_file(folder, f'camera_{recorder.slot}.mp4')
-            stats['video_bytes'] = path.stat().st_size if path.exists() else 0
-            if not _positive(stats['video_bytes']):
-                problems.append('video file missing or empty')
+            index = session_file(folder, f'camera_{recorder.slot}_frames.csv')
+            frame_folder = session_file(folder, f'camera_{recorder.slot}_frames')
+            stats['frame_index_exists'] = index.is_file() and index.stat().st_size > 0
+            stats['frame_directory_exists'] = frame_folder.is_dir()
+            stats['jpg_count'] = (sum(1 for _ in frame_folder.glob('*.jpg'))
+                                  if frame_folder.is_dir() else 0)
+            if not stats['frame_index_exists']:
+                problems.append('camera frame timestamp index missing or empty')
+            if stats['jpg_count'] != recorder.frames_written:
+                problems.append('JPEG frame file count differs from saved frame count')
     elif hasattr(recorder, 'total_frames_received'):
         stats['frames_received'] = recorder.total_frames_received
         stats['samples_saved'] = getattr(recorder, 'count', 0)

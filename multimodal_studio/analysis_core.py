@@ -1,10 +1,7 @@
-# -*- coding: utf-8 -*-
+# Author: Gulraiz
+"""Offline synchronization QA for Multimodal Studio session files.
+No claim of physical inter-device synchronization without common-event anchors.
 """
-Updated on Wed Nov 25 09:35:00 2026
-
-@author: Gulraiz
-"""
-
 from __future__ import annotations
 import csv
 import json
@@ -104,7 +101,7 @@ def load_stream(folder, spec, channels=None, nominal_hz=None):
         if meta.exists():
             try:
                 obj=json.loads(meta.read_text(encoding='utf-8'))
-                if nominal_hz is None: nominal_hz=float(obj.get('writer_fps'))
+                if nominal_hz is None: nominal_hz=float(obj.get('requested_fps', obj.get('writer_fps')))
             except (OSError,ValueError,TypeError): warnings.append('Could not read camera metadata.')
     if nominal_hz is None and kind=='sample':
         warnings.append('Sampling rate unspecified. Cadence metrics use observed median interval.')
@@ -166,7 +163,7 @@ def metrics(s):
             gaps=np.maximum(0,dx-1)
             o['missing_frame_indices']=int(gaps.sum())
             # CSV frame_index counts written frames, so zero gaps does not prove camera did not lose frames.
-            o['warnings'].append('Camera frame_index counts saved frames; missed hardware frames can be invisible.')
+            o['warnings'].append('Camera frame_index counts saved JPEGs; undelivered hardware frames may be invisible.')
         if s.kind=='audio':
             b=s.values
             if b is not None and len(b['block_indices'])>1:
@@ -194,15 +191,10 @@ def metrics(s):
             o['receive_minus_lsl_jitter_mad_ms']=_f(1.4826*np.median(np.abs(lag-np.median(lag)))*1e3)
             o['warnings'].append('Reception lag is meaningful only when source and receiver timestamps share a corrected clock domain.')
     if s.kind=='camera' and s.nominal_hz and s.nominal_hz>0 and len(t)>1:
-        # The camera writer may encode one frame per nominal 1/fps interval,
-        # even if the physical acquisition cadence differs substantially.
-        playback_duration=len(t)/s.nominal_hz
-        captured_span=t[-1]-t[0]
-        o['camera_nominal_playback_duration_s']=_f(playback_duration)
-        o['camera_timestamp_span_s']=_f(captured_span)
-        o['camera_playback_minus_capture_s']=_f(playback_duration-captured_span)
-        if captured_span>0 and abs(playback_duration-captured_span)>max(.5,.02*captured_span):
-            o['warnings'].append('Camera MP4 nominal playback duration differs from timestamp span; align using frame timestamp CSV, not MP4 playback time.')
+        # Images carry individual timestamps; nominal rate is a target, not playback timing.
+        o['camera_timestamp_span_s']=_f(t[-1]-t[0])
+        o['camera_observed_rate_hz']=_f((len(t)-1)/(t[-1]-t[0])) if t[-1]>t[0] else None
+        o['warnings'].append('JPEG images have no intrinsic playback rate; align by frame index CSV.')
     if nonpositive:o['warnings'].append('Timestamps have duplicates or run backwards.')
     return o
 

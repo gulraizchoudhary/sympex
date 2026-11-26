@@ -1,10 +1,5 @@
-# -*- coding: utf-8 -*-
-"""
-Updated on Wed Nov 26 09:35:00 2026
-
-@author: Gulraiz
-"""
-
+# Author: Gulraiz
+"""Interactive, independent-device experiment recorder (Tkinter, Python 3.10+)."""
 import queue
 import json
 import tempfile
@@ -392,8 +387,8 @@ class App:
     def _build_camera_properties(self, frame, slot):
         self.label(frame, 'CAMERA PROPERTIES', 10, WHITE, True).pack(anchor='w', padx=10, pady=(4, 3))
         vars_ = {
-            'resolution': tk.StringVar(value='1280x720'),
-            'fps': tk.StringVar(value='25'),
+            'resolution': tk.StringVar(value='640x480'),
+            'fps': tk.StringVar(value='30'),
             'autofocus': tk.BooleanVar(value=True),
             'focus': tk.StringVar(value=''),
             'autoexposure': tk.BooleanVar(value=True),
@@ -430,7 +425,7 @@ class App:
 
     def restore_camera_defaults(self, slot):
         v = self.camera_setting_vars[slot]
-        for key, value in {'resolution':'1280x720', 'fps':'25', 'focus':'', 'exposure':'', 'brightness':'', 'gain':''}.items():
+        for key, value in {'resolution':'640x480', 'fps':'30', 'focus':'', 'exposure':'', 'brightness':'', 'gain':''}.items():
             v[key].set(value)
         for key in ('autofocus','autoexposure','auto_white_balance'):
             v[key].set(True)
