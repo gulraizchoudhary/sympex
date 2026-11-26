@@ -2443,3 +2443,169 @@
 2026-11-26 20:09:17,466 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
 2026-11-26 20:09:17,468 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
 2026-11-26 20:09:21,948 INFO [Application] INFO: Application closing
+2026-11-26 20:33:05,243 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\sympex_project\sympex\multimodal_studio\logs\application.log
+2026-11-26 20:33:05,924 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-26 20:33:05,925 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-26 20:33:24,151 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
+2026-11-26 20:33:25,108 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
+2026-11-26 20:33:25,108 INFO [Cameras] INFO: index 0: available via DirectShow
+2026-11-26 20:33:25,557 INFO [Cameras] INFO: index 1 / DirectShow: could not open
+2026-11-26 20:33:25,610 INFO [Cameras] INFO: index 1 / Media Foundation: could not open
+2026-11-26 20:33:25,656 INFO [Cameras] INFO: index 1 / Default: could not open
+2026-11-26 20:33:25,659 INFO [Cameras] INFO: index 2 / DirectShow: could not open
+2026-11-26 20:33:25,726 INFO [Cameras] INFO: index 2 / Media Foundation: could not open
+2026-11-26 20:33:25,790 INFO [Cameras] INFO: index 2 / Default: could not open
+2026-11-26 20:33:25,791 INFO [Cameras] INFO: index 3 / DirectShow: could not open
+2026-11-26 20:33:25,841 INFO [Cameras] INFO: index 3 / Media Foundation: could not open
+2026-11-26 20:33:25,886 INFO [Cameras] INFO: index 3 / Default: could not open
+2026-11-26 20:33:25,887 INFO [Cameras] INFO: index 4 / DirectShow: could not open
+2026-11-26 20:33:25,938 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
+2026-11-26 20:33:26,004 INFO [Cameras] INFO: index 4 / Default: could not open
+2026-11-26 20:33:26,005 INFO [Cameras] INFO: index 5 / DirectShow: could not open
+2026-11-26 20:33:26,072 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
+2026-11-26 20:33:26,150 INFO [Cameras] INFO: index 5 / Default: could not open
+2026-11-26 20:33:26,150 INFO [Cameras] INFO: index 6 / DirectShow: could not open
+2026-11-26 20:33:26,210 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
+2026-11-26 20:33:26,269 INFO [Cameras] INFO: index 6 / Default: could not open
+2026-11-26 20:33:26,270 INFO [Cameras] INFO: index 7 / DirectShow: could not open
+2026-11-26 20:33:26,330 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
+2026-11-26 20:33:26,373 INFO [Cameras] INFO: index 7 / Default: could not open
+2026-11-26 20:33:26,373 INFO [Cameras] INFO: index 8 / DirectShow: could not open
+2026-11-26 20:33:26,414 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
+2026-11-26 20:33:26,477 INFO [Cameras] INFO: index 8 / Default: could not open
+2026-11-26 20:33:26,478 INFO [Cameras] INFO: index 9 / DirectShow: could not open
+2026-11-26 20:33:26,534 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
+2026-11-26 20:33:26,598 INFO [Cameras] INFO: index 9 / Default: could not open
+2026-11-26 20:33:26,962 INFO [Cameras] INFO: Camera scan finished: 1 available
+2026-11-26 20:34:06,742 INFO [Session Metadata] INFO: Published data organization via IMS_Session_Metadata (LSL)
+2026-11-26 20:34:09,748 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-26 20:34:10,182 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
+2026-11-26 20:34:10,188 INFO [Camera 1] RECORDING: Camera 1: JPEG sequence requested 640x480 at 30 fps
+2026-11-26 20:34:10,289 INFO [Camera 1] READY: live data confirmed
+2026-11-26 20:34:10,293 INFO [Session] RECORDING: b7f93604a8d34d4bbcf5bb1a158b2af2 | C:\Users\chgul\Desktop\sympex_project\sympex\Participant_Data\SYMPEX_2027\CPH\P010\V01_Training\S20261126T203406_b7f93604
+2026-11-26 20:34:30,651 INFO [Camera 1] INFO: Camera 1 stopped: 201 JPEG frames; 0 queue drops
+2026-11-26 20:34:30,652 WARNING [Camera 1] WARNING: Integrity: actual camera capture rate below 90% of configured FPS
+2026-11-26 20:34:30,652 INFO [Session] STOPPED: C:\Users\chgul\Desktop\sympex_project\sympex\Participant_Data\SYMPEX_2027\CPH\P010\V01_Training\S20261126T203406_b7f93604 | integrity=PARTIAL
+2026-11-26 20:34:58,523 INFO [Application] INFO: Application closing
+2026-11-26 20:35:14,931 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\sympex_project\sympex\multimodal_studio\logs\application.log
+2026-11-26 20:35:15,660 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-26 20:35:15,661 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-26 20:35:35,797 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
+2026-11-26 20:35:36,912 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
+2026-11-26 20:35:36,912 INFO [Cameras] INFO: index 0: available via DirectShow
+2026-11-26 20:35:37,495 INFO [Cameras] INFO: index 1 / DirectShow: could not open
+2026-11-26 20:35:37,565 INFO [Cameras] INFO: index 1 / Media Foundation: could not open
+2026-11-26 20:35:37,619 INFO [Cameras] INFO: index 1 / Default: could not open
+2026-11-26 20:35:37,620 INFO [Cameras] INFO: index 2 / DirectShow: could not open
+2026-11-26 20:35:37,705 INFO [Cameras] INFO: index 2 / Media Foundation: could not open
+2026-11-26 20:35:37,761 INFO [Cameras] INFO: index 2 / Default: could not open
+2026-11-26 20:35:37,763 INFO [Cameras] INFO: index 3 / DirectShow: could not open
+2026-11-26 20:35:37,816 INFO [Cameras] INFO: index 3 / Media Foundation: could not open
+2026-11-26 20:35:37,870 INFO [Cameras] INFO: index 3 / Default: could not open
+2026-11-26 20:35:37,871 INFO [Cameras] INFO: index 4 / DirectShow: could not open
+2026-11-26 20:35:37,914 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
+2026-11-26 20:35:37,959 INFO [Cameras] INFO: index 4 / Default: could not open
+2026-11-26 20:35:37,960 INFO [Cameras] INFO: index 5 / DirectShow: could not open
+2026-11-26 20:35:38,004 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
+2026-11-26 20:35:38,051 INFO [Cameras] INFO: index 5 / Default: could not open
+2026-11-26 20:35:38,052 INFO [Cameras] INFO: index 6 / DirectShow: could not open
+2026-11-26 20:35:38,093 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
+2026-11-26 20:35:38,136 INFO [Cameras] INFO: index 6 / Default: could not open
+2026-11-26 20:35:38,137 INFO [Cameras] INFO: index 7 / DirectShow: could not open
+2026-11-26 20:35:38,184 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
+2026-11-26 20:35:38,225 INFO [Cameras] INFO: index 7 / Default: could not open
+2026-11-26 20:35:38,226 INFO [Cameras] INFO: index 8 / DirectShow: could not open
+2026-11-26 20:35:38,267 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
+2026-11-26 20:35:38,312 INFO [Cameras] INFO: index 8 / Default: could not open
+2026-11-26 20:35:38,335 INFO [Cameras] INFO: index 9 / DirectShow: could not open
+2026-11-26 20:35:38,396 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
+2026-11-26 20:35:38,453 INFO [Cameras] INFO: index 9 / Default: could not open
+2026-11-26 20:35:38,698 INFO [Cameras] INFO: Camera scan finished: 1 available
+2026-11-26 20:36:32,136 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\sympex_project\sympex\multimodal_studio\logs\application.log
+2026-11-26 20:36:32,678 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-26 20:36:32,679 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-26 20:36:38,705 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
+2026-11-26 20:36:39,953 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
+2026-11-26 20:36:39,953 INFO [Cameras] INFO: index 0: available via DirectShow
+2026-11-26 20:36:40,445 INFO [Cameras] INFO: index 1 / DirectShow: could not open
+2026-11-26 20:36:40,513 INFO [Cameras] INFO: index 1 / Media Foundation: could not open
+2026-11-26 20:36:40,579 INFO [Cameras] INFO: index 1 / Default: could not open
+2026-11-26 20:36:40,580 INFO [Cameras] INFO: index 2 / DirectShow: could not open
+2026-11-26 20:36:40,641 INFO [Cameras] INFO: index 2 / Media Foundation: could not open
+2026-11-26 20:36:40,709 INFO [Cameras] INFO: index 2 / Default: could not open
+2026-11-26 20:36:40,710 INFO [Cameras] INFO: index 3 / DirectShow: could not open
+2026-11-26 20:36:40,772 INFO [Cameras] INFO: index 3 / Media Foundation: could not open
+2026-11-26 20:36:40,833 INFO [Cameras] INFO: index 3 / Default: could not open
+2026-11-26 20:36:40,834 INFO [Cameras] INFO: index 4 / DirectShow: could not open
+2026-11-26 20:36:40,896 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
+2026-11-26 20:36:40,959 INFO [Cameras] INFO: index 4 / Default: could not open
+2026-11-26 20:36:40,960 INFO [Cameras] INFO: index 5 / DirectShow: could not open
+2026-11-26 20:36:41,019 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
+2026-11-26 20:36:41,077 INFO [Cameras] INFO: index 5 / Default: could not open
+2026-11-26 20:36:41,078 INFO [Cameras] INFO: index 6 / DirectShow: could not open
+2026-11-26 20:36:41,136 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
+2026-11-26 20:36:41,189 INFO [Cameras] INFO: index 6 / Default: could not open
+2026-11-26 20:36:41,190 INFO [Cameras] INFO: index 7 / DirectShow: could not open
+2026-11-26 20:36:41,242 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
+2026-11-26 20:36:41,295 INFO [Cameras] INFO: index 7 / Default: could not open
+2026-11-26 20:36:41,295 INFO [Cameras] INFO: index 8 / DirectShow: could not open
+2026-11-26 20:36:41,350 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
+2026-11-26 20:36:41,408 INFO [Cameras] INFO: index 8 / Default: could not open
+2026-11-26 20:36:41,408 INFO [Cameras] INFO: index 9 / DirectShow: could not open
+2026-11-26 20:36:41,460 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
+2026-11-26 20:36:41,513 INFO [Cameras] INFO: index 9 / Default: could not open
+2026-11-26 20:36:41,753 INFO [Cameras] INFO: Camera scan finished: 1 available
+2026-11-26 20:36:54,810 INFO [Application] INFO: Application closing
+2026-11-26 20:39:15,925 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\sympex_project\sympex\multimodal_studio\logs\application.log
+2026-11-26 20:39:16,387 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-26 20:39:16,388 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-26 20:39:25,263 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
+2026-11-26 20:39:26,293 INFO [Cameras] INFO: index 0 / DirectShow: frames OK (default, 640x480)
+2026-11-26 20:39:26,293 INFO [Cameras] INFO: index 0: available via DirectShow
+2026-11-26 20:39:26,822 INFO [Cameras] INFO: index 1 / DirectShow: could not open
+2026-11-26 20:39:26,881 INFO [Cameras] INFO: index 1 / Media Foundation: could not open
+2026-11-26 20:39:26,938 INFO [Cameras] INFO: index 1 / Default: could not open
+2026-11-26 20:39:26,939 INFO [Cameras] INFO: index 2 / DirectShow: could not open
+2026-11-26 20:39:26,994 INFO [Cameras] INFO: index 2 / Media Foundation: could not open
+2026-11-26 20:39:27,053 INFO [Cameras] INFO: index 2 / Default: could not open
+2026-11-26 20:39:27,054 INFO [Cameras] INFO: index 3 / DirectShow: could not open
+2026-11-26 20:39:27,108 INFO [Cameras] INFO: index 3 / Media Foundation: could not open
+2026-11-26 20:39:27,223 INFO [Cameras] INFO: index 3 / Default: could not open
+2026-11-26 20:39:27,225 INFO [Cameras] INFO: index 4 / DirectShow: could not open
+2026-11-26 20:39:27,338 INFO [Cameras] INFO: index 4 / Media Foundation: could not open
+2026-11-26 20:39:27,465 INFO [Cameras] INFO: index 4 / Default: could not open
+2026-11-26 20:39:27,472 INFO [Cameras] INFO: index 5 / DirectShow: could not open
+2026-11-26 20:39:27,747 INFO [Cameras] INFO: index 5 / Media Foundation: could not open
+2026-11-26 20:39:27,965 INFO [Cameras] INFO: index 5 / Default: could not open
+2026-11-26 20:39:27,968 INFO [Cameras] INFO: index 6 / DirectShow: could not open
+2026-11-26 20:39:28,073 INFO [Cameras] INFO: index 6 / Media Foundation: could not open
+2026-11-26 20:39:28,211 INFO [Cameras] INFO: index 6 / Default: could not open
+2026-11-26 20:39:28,215 INFO [Cameras] INFO: index 7 / DirectShow: could not open
+2026-11-26 20:39:28,318 INFO [Cameras] INFO: index 7 / Media Foundation: could not open
+2026-11-26 20:39:28,416 INFO [Cameras] INFO: index 7 / Default: could not open
+2026-11-26 20:39:28,418 INFO [Cameras] INFO: index 8 / DirectShow: could not open
+2026-11-26 20:39:28,505 INFO [Cameras] INFO: index 8 / Media Foundation: could not open
+2026-11-26 20:39:28,653 INFO [Cameras] INFO: index 8 / Default: could not open
+2026-11-26 20:39:28,657 INFO [Cameras] INFO: index 9 / DirectShow: could not open
+2026-11-26 20:39:28,832 INFO [Cameras] INFO: index 9 / Media Foundation: could not open
+2026-11-26 20:39:28,896 INFO [Cameras] INFO: index 9 / Default: could not open
+2026-11-26 20:39:29,276 INFO [Cameras] INFO: Camera scan finished: 1 available
+2026-11-26 20:45:28,688 INFO [Application] INFO: Application closing
+2026-11-26 20:46:14,216 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\sympex_project\sympex\multimodal_studio\logs\application.log
+2026-11-26 20:46:14,675 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-26 20:46:14,677 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-26 20:46:21,537 INFO [Cameras] INFO: Discovering available cameras (Windows enumeration or bounded probe)
+2026-11-26 20:46:21,541 INFO [Cameras] INFO: Windows camera enumeration unavailable (ModuleNotFoundError); using bounded index probe
+2026-11-26 20:46:23,255 INFO [Cameras] INFO: Camera scan stopped after consecutive unavailable indices (last=2)
+2026-11-26 20:46:23,255 INFO [Cameras] INFO: Camera discovery: 1 usable camera(s)
+2026-11-26 20:46:23,755 INFO [Cameras] INFO: Camera scan finished: 1 available
+2026-11-26 20:46:55,572 INFO [Session Metadata] INFO: Published data organization via IMS_Session_Metadata (LSL)
+2026-11-26 20:46:58,688 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-26 20:46:58,941 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
+2026-11-26 20:46:58,970 INFO [Camera 1] RECORDING: Camera 1: JPEG sequence requested 640x480 at 30 fps
+2026-11-26 20:46:59,079 INFO [Camera 1] READY: live data confirmed
+2026-11-26 20:46:59,121 INFO [Session] RECORDING: 724fc88ca5ea429fba8de1ff5a58693a | C:\Users\chgul\Desktop\sympex_project\sympex\Participant_Data\SYMPEX_2027\CPH\P007\V01_Training\S20261126T204655_724fc88c
+2026-11-26 20:47:12,697 INFO [Camera 1] INFO: Camera 1 stopped: 132 JPEG frames; 0 queue drops
+2026-11-26 20:47:12,704 WARNING [Camera 1] WARNING: Integrity: actual camera capture rate below 90% of configured FPS
+2026-11-26 20:47:12,704 INFO [Session] STOPPED: C:\Users\chgul\Desktop\sympex_project\sympex\Participant_Data\SYMPEX_2027\CPH\P007\V01_Training\S20261126T204655_724fc88c | integrity=PARTIAL
+2026-11-26 20:48:08,275 INFO [Application] INFO: Application closing

@@ -470,7 +470,7 @@ class App:
             self.bus.emit('Cameras','WARNING','Stop all live camera previews before scanning')
             return
         self._camera_scanning=True
-        self.bus.emit('Cameras','INFO','Scanning indices 0–9 using DirectShow, Media Foundation and default backend')
+        self.bus.emit('Cameras','INFO','Discovering available cameras (Windows enumeration or bounded probe)')
         def work():
             try:
                 diagnostics=[]
@@ -480,7 +480,7 @@ class App:
                 result=discover_cameras(10, report=record_diagnostic)
                 if not result:
                     self.bus.emit('Cameras','WARNING',
-                                  'Camera discovery failed on all tested backends. '
+                                  'No accessible camera found during discovery. '
                                   'Review the per-index INFO events above; test using camera_diagnostics.py. '
                                   f'{len(diagnostics)} detailed checks logged.')
             except Exception as exc:

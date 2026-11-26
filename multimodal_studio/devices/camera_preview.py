@@ -1,14 +1,11 @@
-# -*- coding: utf-8 -*-
-"""
-Updated on Wed Nov 25 09:35:00 2026
+"""Windows-aware camera discovery and preview; does not record video.
 
-@author: Gulraiz
+Author: Gulraiz
 """
-
-"""Optional Windows camera discovery and preview. This module does not record video."""
 import sys
 import threading
 import time
+from contextlib import contextmanager
 from devices.camera_controls import normalize_settings, apply_camera_settings
 
 
@@ -58,15 +55,121 @@ def open_camera(index, *, report=None, attempts=30, settings=None):
     return None, None, None
 
 
-def discover_cameras(max_index=10, report=None):
-    """Find working camera indices. Windows Device Manager entries may not be capture inputs."""
-    found = []
-    for index in range(max_index):
-        cap, frame, backend = open_camera(index, report=report)
+_DISCOVERY_LOG_LOCK = threading.RLock()
+
+
+@contextmanager
+def _quiet_opencv_discovery(cv2):
+    """Silence expected missing-index warnings *only* while scanning.
+
+    OpenCV logging is process-global. This context always restores its former
+    level; do not use it around actual preview or recording operations.
+    """
+    with _DISCOVERY_LOG_LOCK:
+        getter = getattr(cv2, 'getLogLevel', None)
+        setter = getattr(cv2, 'setLogLevel', None)
+        old_level = None
+        if callable(getter) and callable(setter):
+            try:
+                old_level = getter()
+                setter(0)  # LOG_LEVEL_SILENT; only for expected discovery failures
+            except Exception:
+                old_level = None
+        try:
+            yield
+        finally:
+            if old_level is not None:
+                try:
+                    setter(old_level)
+                except Exception:
+                    pass
+
+
+def _windows_camera_indices(max_index, report=None):
+    """Enumerate DirectShow capture devices when pygrabber is available.
+
+    Device enumeration is optional. OpenCV's index mapping may differ across
+    DSHOW and MSMF, so even an enumerated candidate must pass a read test.
+    """
+    if sys.platform != 'win32':
+        return None
+    try:
+        from pygrabber.dshow_graph import FilterGraph
+        names = FilterGraph().get_input_devices()
+    except (ImportError, OSError, RuntimeError, AttributeError) as exc:
+        if report:
+            report(f'Windows camera enumeration unavailable ({type(exc).__name__}); using bounded index probe')
+        return None
+    except Exception as exc:
+        if report:
+            report(f'Windows camera enumeration failed ({type(exc).__name__}); using bounded index probe')
+        return None
+    if report:
+        report(f'Windows DirectShow enumeration: {len(names)} capture device(s)')
+    return list(range(min(len(names), max_index)))
+
+
+def _probe_camera(index, cv2, backend, attempts=3):
+    """Short, single-backend discovery probe, always releasing its handle."""
+    cap = None
+    try:
+        cap = cv2.VideoCapture(index, backend)
+        if not cap.isOpened():
+            return None
+        for _ in range(attempts):
+            ok, frame = cap.read()
+            if ok and frame is not None and getattr(frame, 'size', 0):
+                return frame
+            time.sleep(.025)
+    except Exception:
+        pass
+    finally:
         if cap is not None:
-            found.append((index, f'Camera {index} · {frame.shape[1]}×{frame.shape[0]} ({backend})'))
-            if report: report(f'index {index}: available via {backend}')
             cap.release()
+    return None
+
+
+def discover_cameras(max_index=10, report=None):
+    """List only accessible cameras without flooding the OpenCV console.
+
+    Windows: enumerate DirectShow devices if pygrabber is installed; otherwise
+    probe indices with a stop after two consecutive misses. Use one
+    backend per candidate instead of trying DSHOW, MSMF, and CAP_ANY each time.
+    Use camera_diagnostics.py for deliberately exhaustive troubleshooting.
+    """
+    import cv2
+    max_index = max(0, int(max_index))
+    if not max_index:
+        return []
+    indices = _windows_camera_indices(max_index, report=report)
+    enumerated = indices is not None
+    if not enumerated:
+        indices = range(max_index)
+    backends = camera_backends(cv2)
+    backend_name, backend = backends[0]
+    found = []
+    with _quiet_opencv_discovery(cv2):
+        for candidate_name, candidate_backend in ([backends[0]] +
+                ([backends[1]] if sys.platform == 'win32' and len(backends) > 1 else [])):
+            if found:
+                break  # No need to try a second backend when DSHOW works.
+            consecutive_misses = 0
+            for index in indices:
+                frame = _probe_camera(index, cv2, candidate_backend)
+                if frame is None:
+                    if not enumerated:
+                        consecutive_misses += 1
+                        if consecutive_misses >= 2:
+                            if report:
+                                report(f'Camera scan stopped after consecutive unavailable indices (last={index})')
+                            break
+                    elif report:
+                        report(f'Enumerated camera index {index} cannot deliver frames via {candidate_name}')
+                    continue
+                consecutive_misses = 0
+                found.append((index, f'Camera {index} · {frame.shape[1]}×{frame.shape[0]} ({candidate_name})'))
+    if report:
+        report(f'Camera discovery: {len(found)} usable camera(s)')
     return found
 
 
