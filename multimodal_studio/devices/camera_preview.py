@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Updated on Wed Nov 25 09:35:00 2026
+
+@author: Gulraiz
+"""
+
 """Optional Windows camera discovery and preview. This module does not record video."""
 import sys
 import threading

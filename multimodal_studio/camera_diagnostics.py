@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Updated on Wed Nov 25 09:35:00 2026
+
+@author: Gulraiz
+"""
+
 """Run independently of the GUI: python camera_diagnostics.py"""
 import datetime
 import pathlib

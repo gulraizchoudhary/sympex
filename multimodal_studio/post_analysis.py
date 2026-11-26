@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Updated on Wed Nov 25 09:35:00 2026
+
+@author: Gulraiz
+"""
+
 """Embedded offline QA tab. Never touches active acquisition handles."""
 from __future__ import annotations
 import queue

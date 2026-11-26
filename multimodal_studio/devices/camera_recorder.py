@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Updated on Wed Nov 25 09:35:00 2026
+
+@author: Gulraiz
+"""
+
 from output_names import session_file
 """Independent video capture + MP4 writer for a user-selected camera.
 

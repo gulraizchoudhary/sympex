@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Updated on Wed Nov 25 09:35:00 2026
+
+@author: Gulraiz
+"""
+
 """Live device checks and per-channel integrity summaries (no extra output files).
 
 These checks verify acquisition, not eye-tracker calibration, video exposure

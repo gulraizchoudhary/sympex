@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Updated on Wed Nov 25 09:35:00 2026
+
+@author: Gulraiz
+"""
+
 """Pure visualization helpers, independent of Tkinter and hardware."""
 
 def aged_points(samples, now, seconds=5.0):

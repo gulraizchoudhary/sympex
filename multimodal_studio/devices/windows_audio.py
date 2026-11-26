@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Updated on Wed Nov 25 09:35:00 2026
+
+@author: Gulraiz
+"""
+
 """Windows PnP sound hardware names; not interchangeable with PortAudio indices.
 
 Win32_SoundDevice displays names associated with Sound, video and game controllers.

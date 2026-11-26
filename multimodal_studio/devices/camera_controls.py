@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Updated on Wed Nov 25 09:35:00 2026
+
+@author: Gulraiz
+"""
+
 """Safe, best-effort webcam property configuration for IMMSS.
 
 OpenCV properties depend on driver and backend. An unset optional parameter
@@ -5,7 +12,7 @@ means *do not write* to the camera, rather than writing a supposed neutral zero.
 """
 
 DEFAULTS = {
-    'width': 1280, 'height': 720, 'fps': 25.0,
+    'width': 640, 'height': 480, 'fps': 25.0,
     'autofocus': True, 'focus': None,
     'autoexposure': True, 'exposure': None,
     'brightness': None, 'gain': None,
