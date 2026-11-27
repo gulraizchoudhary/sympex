@@ -2712,3 +2712,149 @@
 2026-11-27 11:01:24,221 INFO [Microphone] STOPPED: 12034560 samples saved; queue drops=0; LSL drops=0; LSL errors=0
 2026-11-27 11:01:24,222 INFO [Microphone] INFO: Integrity: no detected acquisition errors
 2026-11-27 11:01:24,222 INFO [Session] STOPPED: C:\Users\chgul\Desktop\sympex_project\sympex\Participant_Data\SYMPEX_2027\JNS\P001\V01_Training\S20261127T110052_db5cb049 | integrity=PASS
+2026-11-27 11:07:22,739 INFO [Audio] INFO: PortAudio device list reinitialized
+2026-11-27 11:07:23,092 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-27 11:07:23,093 INFO [Audio] INFO: 14 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 11:33:38,360 INFO [Application] INFO: Application closing
+2026-11-27 11:42:36,281 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\sympex_project\sympex\multimodal_studio\logs\application.log
+2026-11-27 11:42:36,505 INFO [Audio] INFO: PortAudio device list reinitialized
+2026-11-27 11:42:36,846 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-27 11:42:36,847 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 11:55:12,856 INFO [Application] INFO: Application closing
+2026-11-27 11:55:15,058 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\sympex_project\sympex\multimodal_studio\logs\application.log
+2026-11-27 11:55:15,277 INFO [Audio] INFO: PortAudio device list reinitialized
+2026-11-27 11:55:15,732 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-27 11:55:15,733 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 11:55:51,527 INFO [Application] INFO: Application closing
+2026-11-27 13:13:35,471 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\sympex_project\sympex\multimodal_studio\logs\application.log
+2026-11-27 13:13:35,572 INFO [Audio] INFO: PortAudio device list reinitialized
+2026-11-27 13:13:36,373 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-27 13:13:36,374 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 13:14:21,388 INFO [Application] INFO: Application closing
+2026-11-27 13:14:39,738 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\sympex_project\sympex\multimodal_studio\logs\application.log
+2026-11-27 13:14:39,824 INFO [Audio] INFO: PortAudio device list reinitialized
+2026-11-27 13:14:40,140 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-27 13:14:40,141 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 13:15:00,269 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
+2026-11-27 13:15:00,272 INFO [Cameras] INFO: Windows camera enumeration unavailable (ModuleNotFoundError); using bounded index probe
+2026-11-27 13:15:01,698 INFO [Cameras] INFO: Camera scan stopped after consecutive unavailable indices (last=2)
+2026-11-27 13:15:01,698 INFO [Cameras] INFO: Camera discovery: 1 usable camera(s)
+2026-11-27 13:15:01,846 INFO [Cameras] INFO: Camera scan finished: 1 available
+2026-11-27 13:15:21,552 ERROR [Session] ERROR: Session start failed: ValueError('All trials for this visit have been completed')
+2026-11-27 13:15:26,036 ERROR [Session] ERROR: Session start failed: ValueError('All trials for this visit have been completed')
+2026-11-27 13:15:51,024 INFO [Application] INFO: Application closing
+2026-11-27 13:25:47,696 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\sympex_project\sympex\multimodal_studio\logs\application.log
+2026-11-27 13:25:47,903 INFO [Audio] INFO: PortAudio device list reinitialized
+2026-11-27 13:25:48,230 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-27 13:25:48,231 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 13:26:22,898 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
+2026-11-27 13:26:22,901 INFO [Cameras] INFO: Windows camera enumeration unavailable (ModuleNotFoundError); using bounded index probe
+2026-11-27 13:26:24,328 INFO [Cameras] INFO: Camera scan stopped after consecutive unavailable indices (last=2)
+2026-11-27 13:26:24,328 INFO [Cameras] INFO: Camera discovery: 1 usable camera(s)
+2026-11-27 13:26:24,556 INFO [Cameras] INFO: Camera scan finished: 1 available
+2026-11-27 13:26:34,890 ERROR [Session] ERROR: Session start failed: ValueError('All trials for this visit have been completed')
+2026-11-27 13:26:47,932 INFO [Session Metadata] INFO: Published data organization via IMS_Session_Metadata (LSL)
+2026-11-27 13:26:47,933 INFO [Microphone] INFO: Opening microphone: Microphone Array (2- Intel® Smart Sound Technology for Digital Microphones) | index=9 | backend=Windows WASAPI | rate=48000 Hz | channels=1 | WASAPI exclusive=False
+2026-11-27 13:26:47,933 ERROR [Session] ERROR: Preflight/start aborted (no RECORDING_START marker): PortAudioError('Invalid number of channels', -9998)
+2026-11-27 13:26:47,933 INFO [Microphone] STOPPED: 0 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-27 13:26:48,165 ERROR [Session] ERROR: Session start failed: PortAudioError('Invalid number of channels', -9998)
+2026-11-27 13:27:13,590 INFO [Session Metadata] INFO: Published data organization via IMS_Session_Metadata (LSL)
+2026-11-27 13:27:13,590 INFO [Microphone] INFO: Opening microphone: Microphone Array (2- Intel® Smart Sound Technology for Digital Microphones) | index=9 | backend=Windows WASAPI | rate=48000 Hz | channels=1 | WASAPI exclusive=False
+2026-11-27 13:27:13,591 ERROR [Session] ERROR: Preflight/start aborted (no RECORDING_START marker): PortAudioError('Invalid number of channels', -9998)
+2026-11-27 13:27:13,591 INFO [Microphone] STOPPED: 0 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-27 13:27:13,758 ERROR [Session] ERROR: Session start failed: PortAudioError('Invalid number of channels', -9998)
+2026-11-27 13:28:26,020 INFO [Session Metadata] INFO: Published data organization via IMS_Session_Metadata (LSL)
+2026-11-27 13:28:26,020 INFO [Microphone] INFO: Opening microphone: Microphone Array (2- Intel® Sma | index=1 | backend=MME | rate=44100 Hz | channels=1 | WASAPI exclusive=False
+2026-11-27 13:28:26,024 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Microphone_Audio (1 ch, 44100 Hz)
+2026-11-27 13:28:26,301 INFO [Microphone] RECORDING: device=1, rate=44100 Hz, channels=1
+2026-11-27 13:28:29,059 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-27 13:28:29,267 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 1280x720)
+2026-11-27 13:28:29,268 INFO [Camera 1] RECORDING: Camera 1: JPEG sequence requested 1280x720 at 25 fps
+2026-11-27 13:28:29,268 INFO [Microphone] READY: live data confirmed
+2026-11-27 13:28:29,369 INFO [Camera 1] READY: live data confirmed
+2026-11-27 13:28:29,373 INFO [Session] RECORDING: 4f0c5017fdf9498fa52f967c8e26ab55 | C:\Users\chgul\Desktop\Test\SYMPEX_2027\JNS\P001\V02_Training\S20261127T132826_4f0c5017
+2026-11-27 13:29:03,790 INFO [Microphone] STOPPED: 1649472 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-27 13:29:04,315 INFO [Camera 1] INFO: Camera 1 stopped: 346 JPEG frames; 0 queue drops
+2026-11-27 13:29:04,317 INFO [Microphone] INFO: Integrity: no detected acquisition errors
+2026-11-27 13:29:04,317 WARNING [Camera 1] WARNING: Integrity: actual camera capture rate below 90% of configured FPS
+2026-11-27 13:29:04,317 INFO [Session] STOPPED: C:\Users\chgul\Desktop\Test\SYMPEX_2027\JNS\P001\V02_Training\S20261127T132826_4f0c5017 | integrity=PARTIAL
+2026-11-27 13:29:36,671 INFO [LabRecorder XDF] INFO: No session-ID-labelled XDF found; use Pair completed XDF after LabRecorder stops
+2026-11-27 13:31:17,974 INFO [Application] INFO: Application closing
+2026-11-27 13:31:36,244 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\sympex_project\sympex\multimodal_studio\logs\application.log
+2026-11-27 13:31:36,390 INFO [Audio] INFO: PortAudio device list reinitialized
+2026-11-27 13:31:36,739 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-27 13:31:36,740 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 13:31:49,785 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
+2026-11-27 13:31:49,848 INFO [Cameras] INFO: Windows camera enumeration unavailable (ModuleNotFoundError); using bounded index probe
+2026-11-27 13:31:51,365 INFO [Cameras] INFO: Camera scan stopped after consecutive unavailable indices (last=2)
+2026-11-27 13:31:51,365 INFO [Cameras] INFO: Camera discovery: 1 usable camera(s)
+2026-11-27 13:31:51,862 INFO [Cameras] INFO: Camera scan finished: 1 available
+2026-11-27 13:31:56,055 INFO [Session Metadata] INFO: Published data organization via IMS_Session_Metadata (LSL)
+2026-11-27 13:31:56,055 INFO [Microphone] INFO: Opening microphone: Microphone Array (2- Intel® Sma | index=1 | backend=MME | rate=44100 Hz | channels=1 | WASAPI exclusive=False
+2026-11-27 13:31:56,059 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Microphone_Audio (1 ch, 44100 Hz)
+2026-11-27 13:31:56,331 INFO [Microphone] RECORDING: device=1, rate=44100 Hz, channels=1
+2026-11-27 13:31:58,805 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-27 13:31:59,014 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 1280x720)
+2026-11-27 13:31:59,015 INFO [Camera 1] RECORDING: Camera 1: JPEG sequence requested 1280x720 at 25 fps
+2026-11-27 13:31:59,016 INFO [Microphone] READY: live data confirmed
+2026-11-27 13:31:59,117 INFO [Camera 1] READY: live data confirmed
+2026-11-27 13:31:59,119 INFO [Session] RECORDING: 171c76de005c4edda46e0b738ad8bbcb | C:\Users\chgul\Desktop\sympex_project\sympex\Participant_Data\SYMPEX_2027\CPH\P001\V01_Training\S20261127T133156_171c76de
+2026-11-27 13:32:14,400 INFO [Microphone] STOPPED: 790656 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-27 13:32:14,859 INFO [Camera 1] INFO: Camera 1 stopped: 155 JPEG frames; 0 queue drops
+2026-11-27 13:32:14,861 INFO [Microphone] INFO: Integrity: no detected acquisition errors
+2026-11-27 13:32:14,861 WARNING [Camera 1] WARNING: Integrity: actual camera capture rate below 90% of configured FPS
+2026-11-27 13:32:14,861 INFO [Session] STOPPED: C:\Users\chgul\Desktop\sympex_project\sympex\Participant_Data\SYMPEX_2027\CPH\P001\V01_Training\S20261127T133156_171c76de | integrity=PARTIAL
+2026-11-27 13:32:45,815 INFO [LabRecorder XDF] INFO: No session-ID-labelled XDF found; use Pair completed XDF after LabRecorder stops
+2026-11-27 13:37:25,085 INFO [Application] INFO: Application closing
+2026-11-27 13:37:36,342 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\sympex_project\sympex\multimodal_studio\logs\application.log
+2026-11-27 13:37:36,540 INFO [Audio] INFO: PortAudio device list reinitialized
+2026-11-27 13:37:36,885 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-27 13:37:36,886 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 13:37:54,969 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
+2026-11-27 13:37:54,971 INFO [Cameras] INFO: Windows camera enumeration unavailable (ModuleNotFoundError); using bounded index probe
+2026-11-27 13:37:56,498 INFO [Cameras] INFO: Camera scan stopped after consecutive unavailable indices (last=2)
+2026-11-27 13:37:56,499 INFO [Cameras] INFO: Camera discovery: 1 usable camera(s)
+2026-11-27 13:37:56,994 INFO [Cameras] INFO: Camera scan finished: 1 available
+2026-11-27 13:38:03,343 INFO [Session Metadata] INFO: Published data organization via IMS_Session_Metadata (LSL)
+2026-11-27 13:38:03,343 INFO [Microphone] INFO: Opening microphone: Microphone Array (2- Intel® Sma | index=1 | backend=MME | rate=44100 Hz | channels=1 | WASAPI exclusive=False
+2026-11-27 13:38:03,347 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Microphone_Audio (1 ch, 44100 Hz)
+2026-11-27 13:38:03,619 INFO [Microphone] RECORDING: device=1, rate=44100 Hz, channels=1
+2026-11-27 13:38:06,009 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-27 13:38:06,219 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 1280x720)
+2026-11-27 13:38:06,220 INFO [Camera 1] RECORDING: Camera 1: JPEG sequence requested 1280x720 at 25 fps
+2026-11-27 13:38:06,221 INFO [Microphone] READY: live data confirmed
+2026-11-27 13:38:06,321 INFO [Camera 1] READY: live data confirmed
+2026-11-27 13:38:06,325 INFO [Session] RECORDING: 1ca17231f32d46aabc37b29c0dbab3e3 | C:\Users\chgul\Desktop\sympex_project\sympex\Participant_Data\SYMPEX_2027\JNS\P001\V01_Training\S20261127T133803_1ca17231
+2026-11-27 13:38:17,172 INFO [Microphone] STOPPED: 594128 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-27 13:38:17,666 INFO [Camera 1] INFO: Camera 1 stopped: 111 JPEG frames; 0 queue drops
+2026-11-27 13:38:17,668 INFO [Microphone] INFO: Integrity: no detected acquisition errors
+2026-11-27 13:38:17,668 WARNING [Camera 1] WARNING: Integrity: actual camera capture rate below 90% of configured FPS
+2026-11-27 13:38:17,668 INFO [Session] STOPPED: C:\Users\chgul\Desktop\sympex_project\sympex\Participant_Data\SYMPEX_2027\JNS\P001\V01_Training\S20261127T133803_1ca17231 | integrity=PARTIAL
+2026-11-27 13:38:48,753 INFO [LabRecorder XDF] INFO: No session-ID-labelled XDF found; use Pair completed XDF after LabRecorder stops
+2026-11-27 13:38:51,385 INFO [Application] INFO: Application closing
+2026-11-27 13:39:18,874 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\sympex_project\sympex\multimodal_studio\logs\application.log
+2026-11-27 13:39:18,994 INFO [Audio] INFO: PortAudio device list reinitialized
+2026-11-27 13:39:19,327 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-27 13:39:19,328 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 13:39:34,795 INFO [Cameras] INFO: Scanning indices 0–9 using DirectShow, Media Foundation and default backend
+2026-11-27 13:39:34,829 INFO [Cameras] INFO: Windows camera enumeration unavailable (ModuleNotFoundError); using bounded index probe
+2026-11-27 13:39:36,228 INFO [Cameras] INFO: Camera scan stopped after consecutive unavailable indices (last=2)
+2026-11-27 13:39:36,228 INFO [Cameras] INFO: Camera discovery: 1 usable camera(s)
+2026-11-27 13:39:36,536 INFO [Cameras] INFO: Camera scan finished: 1 available
+2026-11-27 13:39:56,557 ERROR [Session] ERROR: Session start failed: ValueError('All trials for this visit have been completed')
+2026-11-27 13:40:06,296 INFO [Session Metadata] INFO: Published data organization via IMS_Session_Metadata (LSL)
+2026-11-27 13:40:06,296 INFO [Microphone] INFO: Opening microphone: Microphone Array (2- Intel® Sma | index=1 | backend=MME | rate=44100 Hz | channels=1 | WASAPI exclusive=False
+2026-11-27 13:40:06,300 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Microphone_Audio (1 ch, 44100 Hz)
+2026-11-27 13:40:06,455 INFO [Microphone] RECORDING: device=1, rate=44100 Hz, channels=1
+2026-11-27 13:40:09,147 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-27 13:40:09,363 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 1280x720)
+2026-11-27 13:40:09,365 INFO [Camera 1] RECORDING: Camera 1: JPEG sequence requested 1280x720 at 25 fps
+2026-11-27 13:40:09,365 INFO [Microphone] READY: live data confirmed
+2026-11-27 13:40:09,466 INFO [Camera 1] READY: live data confirmed
+2026-11-27 13:40:09,470 INFO [Session] RECORDING: d845f73caca441e2a16b866420bef4b4 | C:\Users\chgul\Desktop\Test\SYMPEX_2027\JNS\P001\V01_Training\S20261127T134006_d845f73c
+2026-11-27 13:40:27,068 INFO [Microphone] STOPPED: 901984 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-27 13:40:27,692 INFO [Camera 1] INFO: Camera 1 stopped: 179 JPEG frames; 0 queue drops
+2026-11-27 13:40:27,694 INFO [Microphone] INFO: Integrity: no detected acquisition errors
+2026-11-27 13:40:27,694 WARNING [Camera 1] WARNING: Integrity: actual camera capture rate below 90% of configured FPS
+2026-11-27 13:40:27,694 INFO [Session] STOPPED: C:\Users\chgul\Desktop\Test\SYMPEX_2027\JNS\P001\V01_Training\S20261127T134006_d845f73c | integrity=PARTIAL
+2026-11-27 13:40:58,773 INFO [LabRecorder XDF] INFO: No session-ID-labelled XDF found; use Pair completed XDF after LabRecorder stops

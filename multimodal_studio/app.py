@@ -14,12 +14,12 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 from core import EventBus, SessionManager
+from xdf_organizer import find_matching_xdf, import_xdf, expected_xdf_name, XDFPairingError
 from block_management import DEFAULT_MAX, load_block_state
 from devices.audio import AudioRecorder, available_inputs, refresh_portaudio_devices, microphone_identity, preferred_audio_choice
 from devices.windows_audio import device_manager_sound_names, safe_hardware_match
 from devices.polar import PolarRecorder
 from devices.polar_verity import PolarVerityRecorder
-from devices.seetrue import NetworkLSLRecorder
 from devices.camera_recorder import CameraRecorder
 from devices.camera_preview import CameraPreview, discover_cameras
 from devices.camera_controls import normalize_settings
@@ -29,7 +29,7 @@ BG, PANEL, CARD, WHITE = '#101827', '#172337', '#20304a', '#ecf3ff'
 MUTED, BLUE, GREEN, YELLOW, RED = '#aabbd2', '#55a6ff', '#51d4a2', '#ffc66d', '#ff7585'
 DEVICES = ['Microphone', 'Polar H10', 'Polar Verity Sense', 'Camera 1', 'Camera 2', 'Camera 3']
 ICONS = {'Microphone':'MIC', 'Polar H10':'HEART', 'Polar Verity Sense':'HEART', 'Camera 1':'CAM 1', 'Camera 2':'CAM 2', 'Camera 3':'CAM 3'}
-DESCRIPTIONS = {'Microphone':'Choose any Windows audio input', 'Polar H10':'Heart rate, ECG, motion', 'Polar Verity Sense':'Optical HR, PPG, motion', 'Camera 1':'Camera preview + MP4 recording', 'Camera 2':'Camera preview + MP4 recording', 'Camera 3':'Camera preview + MP4 recording'}
+DESCRIPTIONS = {'Microphone':'Choose any Windows audio input', 'Polar H10':'Heart rate, ECG, motion', 'Polar Verity Sense':'Optical HR, PPG, motion', 'Camera 1':'Camera preview + JPEG frames', 'Camera 2':'Camera preview + JPEG frames', 'Camera 3':'Camera preview + JPEG frames'}
 
 class App:
     def __init__(self, root):
@@ -54,6 +54,9 @@ class App:
         self.enabled['Polar H10'].trace_add('write', lambda *_: self._exclusive_polar('Polar H10'))
         self.enabled['Polar Verity Sense'].trace_add('write', lambda *_: self._exclusive_polar('Polar Verity Sense'))
         self.folder = tk.StringVar(value=str((BASE.parent/'Participant_Data').resolve()))
+        self.labrecorder_staging = tk.StringVar(value=str((BASE.parent/'LabRecorder_Output').resolve()))
+        self._xdf_results = queue.Queue()
+        self._xdf_import_active = False
         self.participant = tk.StringVar(value='P001')
         self.study_centre = tk.StringVar(value='CPH')
         self.study_visit = tk.StringVar(value='1')
@@ -83,10 +86,6 @@ class App:
         self.device_choices, self.ble_device = [], None
         self.windows_sound_names = []
         self.audio_name_lookup = {}
-        self.network_choices = []
-        self.network_selections = {}
-        self.network_channel_vars = []
-        self.network_current_uid = None
         self.selected_device = 'Microphone'
         self.started_at = None
         self._start_results = queue.Queue()
@@ -127,7 +126,7 @@ class App:
             'Intelligent Multimodal Microsurgery Studio (IMMSS)\n'
             'Microsurgical Multimodal Research Platform\n\n'
             'Acquisition · Live Monitoring · Temporal Alignment · Quality Assessment\n\n'
-            'Modular support for audio, video, optional Polar H10 / Verity Sense and external network LSL streams.\n'
+            'Modular support for audio, video, optional Polar H10 / Verity Sense with LSL publication for LabRecorder.\n'
             'Post-experiment synchronization-quality analysis is available in its own tab.\n\n'
             'Physical synchronization accuracy and AI-based surgical assessment require\n'
             'separate experimental validation.\n\n'
@@ -205,6 +204,16 @@ class App:
         self.label(studybar, '', 10, WHITE, True, textvariable=self.block_status).pack(side='left')
         self.block_action_btn = self.action(studybar, 'Start Trial T01  (Ctrl+Shift+T)', self.block_action)
         self.block_action_btn.pack(side='left', padx=(12, 0))
+        # LabRecorder runs independently. Pair its completed XDF with this visit.
+        xdfbar = tk.Frame(setup, bg=BG)
+        xdfbar.grid(row=3, column=0, columnspan=6, sticky='ew', pady=(9, 0))
+        self.label(xdfbar, 'LabRecorder XDF staging folder', 10, MUTED).pack(side='left', padx=(0, 8))
+        self.xdf_staging_entry = self.field(xdfbar, self.labrecorder_staging, 43)
+        self.xdf_staging_entry.pack(side='left', padx=(0, 7))
+        self.xdf_browse_btn = self.action(xdfbar, 'Browse…', self.browse_xdf_staging)
+        self.xdf_browse_btn.pack(side='left', padx=(0, 7))
+        self.xdf_pair_btn = self.action(xdfbar, 'Pair completed XDF…', self.pair_xdf_manually)
+        self.xdf_pair_btn.pack(side='left')
         setup.columnconfigure(1,weight=1)
         self.preview_btn=self.action(setup,'▶  PREVIEW',self.preview,accent=False)
         self.preview_btn.grid(row=1,column=3,padx=(0,7))
@@ -233,13 +242,12 @@ class App:
         self.polar_tab=tk.Frame(self.tabs,bg=PANEL,padx=22,pady=18)
         self.microphone_tab=tk.Frame(self.tabs,bg=PANEL,padx=22,pady=18)
         self.monitor_tab=tk.Frame(self.tabs,bg=PANEL,padx=12,pady=12)
-        self.network_tab=tk.Frame(self.tabs,bg=PANEL,padx=18,pady=14)
         self.camera_tab=tk.Frame(self.tabs,bg=PANEL,padx=22,pady=22)
         self.activity_tab=tk.Frame(self.tabs,bg=PANEL,padx=16,pady=16)
         self.analysis_tab=tk.Frame(self.tabs,bg=PANEL,padx=8,pady=8)
         for name,frame in [('Experiment dashboard',self.dashboard_tab),
                            ('Polar Sensor',self.polar_tab),('Microphone',self.microphone_tab),
-                           ('Cameras',self.camera_tab),('Network LSL',self.network_tab),
+                           ('Cameras',self.camera_tab),
                            ('Live monitoring',self.monitor_tab),
                            ('Post-experiment analysis',self.analysis_tab),
                            ('Logs & diagnostics',self.activity_tab)]:
@@ -250,7 +258,6 @@ class App:
         # One selector replaces the two independent sensor enable checkboxes.
         self._build_monitor()
         self._build_configs()
-        self._build_network_lsl()
         self._build_cameras()
         self._build_activity()
         from post_analysis import PostExperimentTab
@@ -686,11 +693,10 @@ class App:
             state=tk.StringVar(value='Not selected')
             self.label(row,'',10,MUTED,textvariable=state).pack(side='left')
             self.readiness_rows[name]=state
-        self.label(self.dashboard_tab,'NETWORK LSL',11,WHITE,True).pack(anchor='w',pady=(16,4))
-        self.network_dashboard_status=tk.StringVar(value='No external LSL streams selected')
-        self.label(self.dashboard_tab,'',10,MUTED,textvariable=self.network_dashboard_status).pack(anchor='w')
-        self.action(self.dashboard_tab,'Manage network streams  →',
-                    lambda:self.tabs.select(self.network_tab)).pack(anchor='w',pady=(7,10))
+        # LabRecorder receives externally published LSL data; IMMSS does not duplicate it.
+        self.label(self.dashboard_tab,'LSL RECORDING',11,WHITE,True).pack(anchor='w',pady=(16,4))
+        self.label(self.dashboard_tab,'IMMSS publishes trial, camera, sensor and session markers. LabRecorder captures selected IMMSS and SeeTrue streams to XDF.',
+                   10,MUTED,wraplength=790,justify='left').pack(anchor='w',pady=(0,10))
         self.label(self.dashboard_tab,'PREVIEW / RECORD',11,WHITE,True).pack(anchor='w',pady=(9,4))
         self.label(self.dashboard_tab,
                    'Use the Preview and Start Session buttons above. Polar sample readiness is '
@@ -701,13 +707,11 @@ class App:
 
     def _update_selection(self):
         count=sum(v.get() for v in self.enabled.values())
-        netcount=sum(1 for v in self.network_selections.values() if v.get('enabled'))
-        self.count_label.set(f'{count + netcount} selected')
+        self.count_label.set(f'{count} selected')
         if hasattr(self,'readiness_rows'):
             for n,var in self.readiness_rows.items():
                 var.set(('Enabled  ·  '+self.status[n].get()) if self.enabled[n].get() else 'Not included')
-            self.network_dashboard_status.set(f'{netcount} external stream(s) selected')
-        if not self.session.active and not self.preview_active:self.session_status.set('Ready to record' if (count or netcount) else 'Choose devices to begin')
+        if not self.session.active and not self.preview_active:self.session_status.set('Ready to record' if count else 'Choose devices to begin')
 
     def toggle(self,name):
         if self.session.active or self.preview_active:
@@ -945,100 +949,6 @@ class App:
             future.add_done_callback(lambda f:self.bus.events.put(('POLAR_SCAN','DONE',f)))
         except Exception as exc:self.bus.emit('Polar H10','ERROR',repr(exc))
 
-    def _build_network_lsl(self):
-        self.label(self.network_tab, 'Network LSL Stream Manager', 17, WHITE, True).pack(anchor='w')
-        self.label(self.network_tab, 'Single entry point for SeeTrue and external LSL streams. IMMSS outlets retain the existing IMS_ prefix for data compatibility; external names are supplied by their broadcasters.',
-                   10, MUTED, wraplength=800, justify='left').pack(anchor='w', pady=(5,10))
-        row=tk.Frame(self.network_tab,bg=PANEL); row.pack(fill='x',pady=(0,8))
-        self.action(row, 'Discover network streams', self.scan_network_lsl, accent=True).pack(side='left')
-        self.network_status=self.label(row,'Not scanned',10,MUTED)
-        self.network_status.pack(side='left',padx=14)
-        self.label(self.network_tab,'Tick the streams to save, then click a row to configure its channels.',10,MUTED).pack(anchor='w')
-        frame=tk.Frame(self.network_tab,bg=PANEL);frame.pack(fill='both',expand=True)
-        self.network_list=tk.Listbox(frame,selectmode='browse',height=9,exportselection=False,
-              bg=BG,fg=WHITE,selectbackground='#345a7e',font=('Consolas',10))
-        self.network_list.pack(side='left',fill='both',expand=True)
-        bar=ttk.Scrollbar(frame,command=self.network_list.yview)
-        bar.pack(side='left',fill='y');self.network_list.configure(yscrollcommand=bar.set)
-        self.network_list.bind('<<ListboxSelect>>',lambda e:self.describe_network_stream())
-        self.network_checks=tk.Frame(self.network_tab,bg=PANEL)
-        self.network_checks.pack(fill='x',pady=(8,4))
-        self.network_info=tk.StringVar(value='Select a stream to configure channels')
-        self.label(self.network_tab,'',10,MUTED,textvariable=self.network_info,wraplength=800,justify='left').pack(anchor='w')
-        tools=tk.Frame(self.network_tab,bg=PANEL);tools.pack(fill='x',pady=(8,4))
-        self.action(tools,'Select all channels',lambda:self.network_set_channels(True)).pack(side='left',padx=(0,8))
-        self.action(tools,'Clear channels',lambda:self.network_set_channels(False)).pack(side='left')
-        holder=tk.Frame(self.network_tab,bg=PANEL);holder.pack(fill='both',expand=True)
-        self.net_canvas=tk.Canvas(holder,bg=PANEL,highlightthickness=0,height=150)
-        self.net_canvas.pack(side='left',fill='both',expand=True)
-        scroll=ttk.Scrollbar(holder,orient='vertical',command=self.net_canvas.yview)
-        scroll.pack(side='left',fill='y');self.net_canvas.configure(yscrollcommand=scroll.set)
-        self.net_channel_frame=tk.Frame(self.net_canvas,bg=PANEL)
-        self.net_window=self.net_canvas.create_window((0,0),window=self.net_channel_frame,anchor='nw')
-        self.net_channel_frame.bind('<Configure>',lambda e:self.net_canvas.configure(scrollregion=self.net_canvas.bbox('all')))
-        self.net_canvas.bind('<Configure>',lambda e:self.net_canvas.itemconfigure(self.net_window,width=e.width))
-
-    def scan_network_lsl(self):
-        if self.session.active or self.preview_active or self._starting_session:return
-        self.network_status.configure(text='Searching…')
-        def work():
-            try:
-                streams=NetworkLSLRecorder.scan(timeout=3)
-                self.bus.events.put(('NET_LSL_SCAN','DONE',streams))
-            except Exception as exc:
-                self.bus.emit('Network LSL','ERROR',f'Discovery error: {exc!r}')
-                self.bus.events.put(('NET_LSL_SCAN','DONE',[]))
-        threading.Thread(target=work,daemon=True).start()
-
-    def network_toggle_stream(self):
-        if self.session.active or self.preview_active:return
-        i=self.network_list.curselection()
-        if not i:return
-        uid=self.network_choices[i[0]]['uid']
-        entry=self.network_selections[uid]
-        entry['enabled']=not entry['enabled']
-        self._update_network_rows()
-
-    def _update_network_rows(self):
-        keep=self.network_list.curselection()
-        self.network_list.delete(0,'end')
-        for stream in self.network_choices:
-            state=self.network_selections.get(stream['uid'],{}).get('enabled',False)
-            label=(('☑' if state else '☐') + f" {stream['name']} | {stream['type']} | {stream['channels']}ch "
-                + f"| {stream.get('nominal_srate',0):g}Hz | {stream.get('hostname','?')} | {stream['uid'][:12]}")
-            self.network_list.insert('end',label)
-        if keep and keep[0]<self.network_list.size():self.network_list.selection_set(keep[0])
-        active=sum(v['enabled'] for v in self.network_selections.values())
-        self.network_status.configure(text=f'{len(self.network_choices)} discovered · {active} selected')
-
-    def describe_network_stream(self):
-        for w in self.network_checks.winfo_children():w.destroy()
-        for w in self.net_channel_frame.winfo_children():w.destroy()
-        self.network_channel_vars=[]
-        selected=self.network_list.curselection()
-        if not selected:return
-        stream=self.network_choices[selected[0]]; uid=stream['uid'];self.network_current_uid=uid
-        record=self.network_selections[uid]
-        self.action(self.network_checks, 'Disable stream' if record['enabled'] else 'Enable stream',
-                    self.network_toggle_stream,accent=True).pack(side='left')
-        self.network_info.set(f"Data type: {stream['type']} | Stream: {stream['name']} | UID: {uid} | Source ID: {stream['source_id']} | "
-                              f"Host: {stream.get('hostname','?')} | {stream['channels']} channels")
-        for j,label in enumerate(stream['labels']):
-            v=tk.BooleanVar(value=j in record['channels']);self.network_channel_vars.append(v)
-            tk.Checkbutton(self.net_channel_frame,text=f'{j+1:3d}  {label}',variable=v,
-                command=lambda u=uid:self.save_network_channels(u),bg=PANEL,fg=WHITE,
-                selectcolor=BG,activebackground=PANEL,activeforeground=WHITE,
-                anchor='w').pack(fill='x')
-
-    def save_network_channels(self,uid):
-        if self.session.active or self.preview_active:return
-        self.network_selections[uid]['channels']=[i for i,v in enumerate(self.network_channel_vars) if v.get()]
-
-    def network_set_channels(self,value):
-        if self.session.active or self.preview_active:return
-        for v in self.network_channel_vars:v.set(value)
-        if self.network_current_uid:self.save_network_channels(self.network_current_uid)
-
     def audio_args(self,box,rate):
         i = box.current()
         if not 0 <= i < len(self.device_choices):
@@ -1073,18 +983,10 @@ class App:
                     raise ValueError(f'Camera {i}: select a detected camera in the Cameras tab')
                 index=self.camera_choices[choice][0]
                 selected[n]=(self.recorders[n],{'index':index, 'camera_settings':self.camera_settings(i)})
-        # All external LSL streams, including SeeTrue, use this single manager.
-        for n, stream in enumerate(self.network_choices, 1):
-            settings=self.network_selections.get(stream['uid'])
-            if not settings or not settings['enabled']:continue
-            channels=NetworkLSLRecorder.validate_selection(settings['channels'],stream['channels'])
-            key=f'Network LSL {n:02d} · {stream["name"]}'
-            recorder=NetworkLSLRecorder(self.bus,name=key,filename_prefix=f'network_lsl_{n:02d}')
-            selected[key]=(recorder,{'uid':stream['uid'],'channel_indices':channels})
         camera_indexes=[settings['index'] for name,(_,settings) in selected.items() if name.startswith('Camera')]
         if len(set(camera_indexes)) != len(camera_indexes):
             raise ValueError('Camera slots must use different physical camera indices')
-        if not selected:raise ValueError('Enable a device or select a network LSL stream.')
+        if not selected:raise ValueError('Enable a local recording device. External LSL streams are captured by LabRecorder.')
         return selected
 
     def preview(self):
@@ -1301,7 +1203,8 @@ class App:
             self.status_top.configure(text='●  CONNECTING',fg=YELLOW)
             def worker():
                 try:
-                    path = self.session.start(folder, participant, selected, study=study)
+                    path = self.session.start(folder, participant, selected, study=study,
+                                              labrecorder_staging=self.labrecorder_staging.get())
                     self._start_results.put((True,path))
                 except Exception as exc:
                     self._start_results.put((False,exc))
@@ -1354,10 +1257,6 @@ class App:
                     widget.configure(state='disabled' if locked else ('readonly' if isinstance(widget, ttk.Combobox) else 'normal'))
                 except tk.TclError:
                     pass
-        for widget in self.net_channel_frame.winfo_children():
-            widget.configure(state='disabled' if locked else 'normal')
-        for widget in self.network_checks.winfo_children():
-            widget.configure(state='disabled' if locked else 'normal')
 
     def stop(self):
         if not self.session.active:return
@@ -1366,6 +1265,7 @@ class App:
                     'This trial is still active. Stop recording and mark it INTERRUPTED (not completed)?'):
                 return
         self.session.stop()
+        self._schedule_xdf_import(auto=True)
         integrity = getattr(self.session, 'device_integrity', {})
         issues = [name for name, result in integrity.items() if not result.get('ok', False)]
         self.started_at=None
@@ -1382,6 +1282,68 @@ class App:
             self.session_status.set('Session saved · recording integrity checks passed')
         self._sync_blocks()
 
+    def browse_xdf_staging(self):
+        directory = filedialog.askdirectory(title='LabRecorder XDF staging folder',
+                                            initialdir=self.labrecorder_staging.get())
+        if directory:
+            self.labrecorder_staging.set(directory)
+
+    def pair_xdf_manually(self):
+        if self.session.active or self._starting_session:
+            messagebox.showinfo('XDF pairing', 'Stop the IMMSS session and LabRecorder first.')
+            return
+        if self._xdf_import_active:
+            messagebox.showinfo('XDF pairing', 'An XDF transfer is already running.')
+            return
+        if not self.session.folder:
+            messagebox.showinfo('XDF pairing', 'No finished IMMSS session is selected.')
+            return
+        filename = filedialog.askopenfilename(title='Select completed LabRecorder XDF for this session',
+                    initialdir=self.labrecorder_staging.get(), filetypes=[('XDF recordings','*.xdf')])
+        if not filename:
+            return
+        if not messagebox.askyesno('Confirm XDF session pairing',
+                f'Associate this XDF with session {self.session.session_id}?\n\n'
+                f'{Path(filename).name}\n\n'
+                'Select Yes only if LabRecorder recorded this participant and visit.'):
+            return
+        self._schedule_xdf_import(auto=False, selected_file=Path(filename))
+
+    def _schedule_xdf_import(self, auto: bool, selected_file=None):
+        if self._xdf_import_active or self.session.active or not self.session.folder:
+            return
+        session_folder = Path(self.session.folder)
+        staging = Path(self.labrecorder_staging.get()).expanduser()
+        self._xdf_import_active = True
+        self.xdf_pair_btn.configure(state='disabled')
+        def worker():
+            try:
+                if not auto:
+                    info = import_xdf(session_folder, selected_file, explicit_selection=True)
+                    self._xdf_results.put(('success', info))
+                    return
+                # LabRecorder may stop after IMMSS. Wait briefly for a uniquely
+                # ID-labelled, closed XDF. Never choose a file by recency alone.
+                deadline = time.monotonic() + 30.0
+                while time.monotonic() < deadline:
+                    source = find_matching_xdf(staging, session_folder)
+                    if source is not None:
+                        try:
+                            info = import_xdf(session_folder, source, stability_seconds=1.0)
+                        except XDFPairingError as exc:
+                            if ('still changing' not in str(exc) and
+                                    'modified too recently' not in str(exc)):
+                                raise
+                        else:
+                            self._xdf_results.put(('success', info))
+                            return
+                    time.sleep(1.0)
+                self._xdf_results.put(('not_found', None))
+            except Exception as exc:
+                self._xdf_results.put(('error', str(exc)))
+        # Non-daemon prevents quitting halfway through a multi-GB verified copy.
+        threading.Thread(target=worker, daemon=False, name='LabRecorderXDFImport').start()
+
     def mark(self):
         if self.session.active:
             text=self.marker_label.get().strip() or 'EVENT'
@@ -1389,6 +1351,23 @@ class App:
             self._log(f'MARKER   {text}')
 
     def poll(self):
+        try:
+            xdf_status, xdf_result = self._xdf_results.get_nowait()
+        except queue.Empty:
+            pass
+        else:
+            self._xdf_import_active = False
+            self.xdf_pair_btn.configure(state='normal')
+            if xdf_status == 'success':
+                self.bus.emit('LabRecorder XDF', 'INFO',
+                    f"Paired and verified {xdf_result['relative_path']} ({xdf_result['file_size_bytes']} bytes)")
+                self.session_status.set('XDF paired with session · integrity verified')
+            elif xdf_status == 'not_found':
+                self.bus.emit('LabRecorder XDF', 'INFO',
+                    'No session-ID-labelled XDF found; use Pair completed XDF after LabRecorder stops')
+            else:
+                self.bus.emit('LabRecorder XDF', 'WARNING', f'XDF not imported: {xdf_result}')
+                messagebox.showwarning('XDF import', str(xdf_result))
         try:
             ok, result = self._start_results.get_nowait()
         except queue.Empty:
@@ -1438,18 +1417,6 @@ class App:
                 if not labels:
                     self.bus.emit('Cameras','WARNING','No usable camera frames detected. Check Windows Settings > Privacy & security > Camera > Let desktop apps access your camera; close Teams/Zoom/Camera app and retry. Integrated IR camera may be Windows Hello-only.')
                 continue
-            if name=='NET_LSL_SCAN':
-                previous=self.network_selections
-                self.network_choices=message
-                self.network_selections={x['uid']:{'enabled':previous.get(x['uid'],{}).get('enabled',False),
-                    'channels':previous.get(x['uid'],{}).get('channels',list(range(x['channels'])))}
-                    for x in message}
-                self._update_network_rows()
-                if message:
-                    self.network_list.selection_set(0)
-                    self.describe_network_stream()
-                self.bus.emit('Network LSL','INFO',f'Discovered {len(message)} LSL outlets; inspect type, source ID and UID before selection')
-                continue
             if name in self.status:self.status[name].set(status)
             self._log(f'{name:<13} {status:<10} {message}')
         if self.session.active or self.preview_active:
@@ -1468,6 +1435,10 @@ class App:
         self.root.after(500,self.poll)
 
     def close(self):
+        if self._xdf_import_active:
+            messagebox.showwarning('XDF transfer in progress',
+                                   'The completed XDF is still being verified/transferred. Close after it finishes.')
+            return
         if self._starting_session:
             messagebox.showwarning('Connecting', 'Polar preflight is still running. Close after it completes or times out.')
             return
@@ -1480,6 +1451,7 @@ class App:
         for name in ('Polar H10','Polar Verity Sense'):
             try:self.recorders[name].close()
             except Exception as exc:self.bus.emit(name,'WARNING',f'BLE loop close: {exc!r}')
+        self.session.close()
         self.bus.emit('Application','INFO','Application closing')
         self.bus.close()
         self.root.destroy()

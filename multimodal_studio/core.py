@@ -1,6 +1,3 @@
-# Author: Gulraiz
-import re
-import os
 import csv
 import hashlib
 import socket
@@ -108,8 +105,10 @@ class SessionManager:
         self.folder = None
         self.mark_file = None
         self.mark_writer = None
+        # Author: Gulraiz
+        # Do not advertise a marker stream until an acquisition starts.
         self.marker_source_id = None
-        self.marker_outlet = None  # Created on Start and destroyed on Stop.
+        self.marker_outlet = None
         self.lock = threading.RLock()
         self.session_id = None
         self._session_config = None
@@ -122,7 +121,38 @@ class SessionManager:
         self.device_readiness = {}
         self.device_integrity = {}
 
-    def start(self, root, participant, selected, readiness_timeout=45, study=None):
+    def _open_marker_outlet(self):
+        """Open one marker outlet per recording, never per application instance."""
+        with self.lock:
+            self._close_marker_outlet()
+            source_id = f'IMS_ExperimentMarkers_{uuid.uuid4().hex}'
+            info = StreamInfo('IMS_Experiment_Markers', 'Markers', 1, 0,
+                              'string', source_id)
+            if hasattr(info, 'desc'):
+                desc = info.desc()
+                desc.append_child_value('recording_system', 'IMMSS')
+                desc.append_child_value('session_id', str(self.session_id))
+                desc.append_child_value('computer_name', socket.gethostname())
+                desc.append_child('channels').append_child('channel').append_child_value('label', 'EventMarker')
+            outlet = StreamOutlet(info)
+            self.marker_source_id = source_id
+            self.marker_outlet = outlet
+
+    def _close_marker_outlet(self):
+        """Release the publisher after no more samples can be sent."""
+        with self.lock:
+            outlet = self.marker_outlet
+            self.marker_outlet = None
+            # Do not explicitly call __del__: pylsl disposes native resources
+            # when the final Python reference is released.
+            del outlet
+
+    def _close_metadata_outlet(self):
+        outlet = self.metadata_outlet
+        self.metadata_outlet = None
+        del outlet
+
+    def start(self, root, participant, selected, readiness_timeout=45, study=None, labrecorder_staging=None):
         """Start Polar first and require live packets before recording marker.
 
         Other selected devices remain independent after session start. A missing
@@ -130,10 +160,10 @@ class SessionManager:
         """
         if self.active:
             return self.folder
-        if 'Polar H10' in selected and 'Polar Verity Sense' in selected:
-            raise ValueError('Polar H10 and Verity Sense are mutually exclusive')
-        self._release_session_outlets()
+        self._close_marker_outlet()
+        self._close_metadata_outlet()
         self.session_id = uuid.uuid4().hex
+        self.metadata_outlet = None
         self.device_readiness = {}
         self.device_integrity = {}
         self.study = None
@@ -205,31 +235,15 @@ class SessionManager:
                     'eye_tracker': 'eye_tracker/',
                     'video': 'video/',
                     'audio': 'audio/',
+                    'lsl': 'lsl/',
                 },
                 'folder_creation': 'lazy_when_enabled_or_data_generated',
                 'enabled_devices': list(selected),
+                'labrecorder_xdf_folder': 'lsl/',
+                'labrecorder_expected_xdf': recording_prefix + 'lsl.xdf',
             }
-        polar_selection = next((n for n in ('Polar H10', 'Polar Verity Sense') if n in selected), None)
-        polar_options = selected[polar_selection][1] if polar_selection else None
-        polar_ble = polar_options.get('ble_device') if polar_options else None
-        polar_channels = []
-        if polar_selection:
-            polar_channels.append('hr')
-            polar_channels.extend(['ecg'] if polar_selection == 'Polar H10' and polar_options.get('ecg') else [])
-            polar_channels.extend(['ppg'] if polar_selection == 'Polar Verity Sense' and polar_options.get('ppg') else [])
-            if polar_options.get('acc'):
-                polar_channels.append('acc')
-        physiological_sensor = {
-            'model': polar_selection,
-            'device_identifier': str(getattr(polar_ble, 'address', '') or getattr(polar_ble, 'name', '') or polar_ble) if polar_ble else None,
-            'requested_channels': polar_channels,
-            'selection_policy': 'H10_or_Verity_exclusive',
-        }
-        if data_organization is not None:
-            data_organization['physiological_sensor'] = physiological_sensor
         self._session_config = {
             'schema_version': 7,
-            'physiological_sensor': physiological_sensor,
             'file_naming': 'centre_participant_visit_shortsession__original_filename' if self.study else 'participant__session__original_filename',
             'data_layout': 'modality_folders_v1' if self.study else 'flat_legacy',
             'data_organization': data_organization,
@@ -245,32 +259,38 @@ class SessionManager:
             'settings': {k:v[1] for k,v in selected.items()},
             'started_wall_time': datetime.now().astimezone().isoformat(),
             'file_metadata': 'File identities, hashes and sizes are consolidated in session_manifest.json; no per-file sidecars.',
+            'labrecorder_xdf': {
+                'mode': 'independent_labrecorder',
+                'staging_directory': str(Path(labrecorder_staging).expanduser().resolve()) if labrecorder_staging else None,
+                'expected_filename': recording_prefix + 'lsl.xdf' if self.study else None,
+                'destination_relative_folder': 'lsl/',
+                'status': 'not_imported',
+                'pairing_policy': 'session_id_filename_or_explicit_operator_selection',
+                'xdf_structure_validated': False,
+            },
         }
         (session_file(self.folder, 'config.json')).write_text(json.dumps(self._session_config, indent=2, default=str), encoding='utf-8')
         if self.study:
             self._broadcast_session_metadata()
         self.recorders = {}
         try:
-            polar_name = next((name for name in ('Polar H10','Polar Verity Sense') if name in selected), None)
-            if polar_name:
-                recorder, settings = selected[polar_name]
-                self.bus.emit(polar_name, 'INFO', 'Preflight: connect and await live physiological packets')
-                self.recorders[polar_name] = recorder
+            polar = selected.get('Polar H10')
+            if polar:
+                recorder, settings = polar
+                self.bus.emit('Polar H10', 'INFO', 'Preflight: connect and await live HR/ECG/ACC as selected before session marker')
+                self.recorders['Polar H10'] = recorder
                 recorder.start(self.folder, **settings)
-                if polar_name == 'Polar H10':
-                    recorder.wait_ready(ecg=settings.get('ecg', True), acc=settings.get('acc', True), timeout=readiness_timeout)
-                else:
-                    recorder.wait_ready(ppg=settings.get('ppg', True), acc=settings.get('acc', True), timeout=readiness_timeout)
+                recorder.wait_ready(ecg=settings.get('ecg', True), acc=settings.get('acc', True), timeout=readiness_timeout)
             # Start the other devices only after Polar readiness has been proven.
             for dev_name, (recorder, settings) in selected.items():
-                if dev_name in ('Polar H10','Polar Verity Sense'):
+                if dev_name == 'Polar H10':
                     continue
                 self.recorders[dev_name] = recorder
                 recorder.start(self.folder, **settings)
             # Preflight checks inspect *live acquisition*, not just device selection.
             # SeeTrue calibration remains entirely in SeeTrue Station.
             for dev_name, recorder in self.recorders.items():
-                if dev_name in ('Polar H10','Polar Verity Sense'):
+                if dev_name == 'Polar H10':
                     result = assess_device(dev_name, recorder, self.folder, stage='preflight')
                 else:
                     result = await_live_data(dev_name, recorder, self.folder, timeout=8.0)
@@ -295,34 +315,14 @@ class SessionManager:
                 self.mark_file.close()
             self.mark_file = self.mark_writer = None
             self.active = False
+            self._close_marker_outlet()
             self.device_integrity = {name: assess_device(name, rec, self.folder, stage='final')
                                      for name, rec in self.recorders.items()}
             self._write_manifest(status='ABORTED', reason=str(exc))
-            self._release_session_outlets()
+            self._close_metadata_outlet()
             self.bus.close_session()
             unregister_study_block(self.folder)
             raise
-
-    def _open_marker_outlet(self):
-        """Advertise a fresh marker stream only while the session is recording."""
-        self.marker_source_id = f'IMS_ExperimentMarkers_{self.session_id}'
-        info = StreamInfo('IMS_Experiment_Markers', 'Markers', 1, 0,
-                          'string', self.marker_source_id)
-        if hasattr(info, 'desc'):
-            desc = info.desc()
-            desc.append_child_value('recording_system', 'IMMSS')
-            desc.append_child_value('session_id', self.session_id)
-            desc.append_child('channels').append_child('channel').append_child_value('label', 'EventMarker')
-        self.marker_outlet = StreamOutlet(info)
-
-    def _release_session_outlets(self):
-        """Drop native LSL outlet ownership when this recording finishes.
-
-        pylsl normally destroys its native outlet when the last Python reference
-        is released. Do not retain session marker/metadata outlets between visits.
-        """
-        self.marker_outlet = None
-        self.metadata_outlet = None
 
     def _broadcast_session_metadata(self):
         """Advertise study organization over LSL, matching metadata.json.
@@ -389,23 +389,10 @@ class SessionManager:
         if self.folder is None:
             return
         items = []
-        # JPEG frames are numerous (up to 108,000/hour/camera). Represent the
-        # directory once; the camera writer computes its ordered content digest.
-        # This keeps the manifest compact and avoids reading every JPEG again.
-        frame_dirs = []
-        regular_files = []
-        # Prune frame directories before walking: a one-hour, three-camera
-        # visit may have 324,000 JPEGs, but the manifest remains small.
-        for current, subdirs, filenames in os.walk(self.folder):
-            base = Path(current)
-            for dirname in list(subdirs):
-                if re.search(r'(?:^|__)camera_\d+_frames$', dirname):
-                    frame_dirs.append(base / dirname)
-                    subdirs.remove(dirname)
-            regular_files.extend(base / name for name in filenames)
-        for path in sorted(regular_files):
-            if path == session_file(self.folder, 'session_manifest.json'):
+        for path in sorted(self.folder.rglob('*')):
+            if not path.is_file() or path == session_file(self.folder, 'session_manifest.json'):
                 continue
+            # Hash files by streaming chunks (can include multi-GB WAV/MP4).
             digest = hashlib.sha256()
             with path.open('rb') as infile:
                 for chunk in iter(lambda: infile.read(1024*1024), b''):
@@ -416,20 +403,6 @@ class SessionManager:
                        'sha256': digest.hexdigest(), 'status': status,
                        'created_wall_time': self._session_config['started_wall_time']}
             items.append(details)
-        for path in sorted(frame_dirs):
-            meta = path.parent / path.name.replace('_frames', '_metadata.json')
-            stats = {}
-            if meta.is_file():
-                try:
-                    stats = json.loads(meta.read_text(encoding='utf-8'))
-                except (OSError, ValueError):
-                    pass
-            items.append({'session_id': self.session_id, 'participant': self._session_config['participant'],
-                          'relative_path': path.relative_to(self.folder).as_posix(),
-                          'file_role': 'jpeg_frame_sequence', 'file_count': stats.get('frames_written'),
-                          'total_bytes': stats.get('total_jpeg_bytes'),
-                          'ordered_frame_sha256': stats.get('ordered_frame_sha256'),
-                          'status': status})
         manifest = {'schema_version': 7, 'config': self._session_config,
                     'session_id':self.session_id,'participant':self._session_config['participant'],'study':self.study,
                     'session_folder':self.folder.name,'status':status,
@@ -455,8 +428,7 @@ class SessionManager:
                 try:
                     self.marker_outlet.push_sample([label], timestamp=ts)
                 except Exception as exc:
-                    # Persist the event locally even if external LSL consumers fail.
-                    self.bus.emit('Session', 'WARNING', f'LSL marker publish failed: {exc!r}')
+                    self.bus.emit('Markers', 'WARNING', f'LSL marker delivery failed: {exc!r}; local marker retained')
 
     def start_block(self):
         with self.lock:
@@ -494,36 +466,57 @@ class SessionManager:
             return self.current_block
 
     def stop(self):
-        if not self.active:
-            return
-        if self.study and self.block_running:
-            self.marker(f'T{self.current_block:02d}_INTERRUPTED')
-            self.block_running = False
-        self.marker('RECORDING_STOP')
-        for name, recorder in list(self.recorders.items()):
+        with self.lock:
+            if not self.active:
+                self._close_marker_outlet()
+                self._close_metadata_outlet()
+                return
             try:
-                recorder.stop()
-            except Exception as exc:
-                recorder.report('ERROR', f'stop failed: {exc!r}')
-        self.active = False
-        self.mark_file.close()
-        self.mark_file = None
-        self.device_integrity = {name: assess_device(name, rec, self.folder, stage='final')
-                                 for name, rec in self.recorders.items()}
-        summary = summarize_integrity(self.device_readiness, self.device_integrity)
-        # A normal user stop is not evidence that every selected channel succeeded.
-        status = 'COMPLETED' if summary['overall'] == 'PASS' else 'PARTIAL'
-        for name, result in self.device_integrity.items():
-            self.bus.emit(name, 'INFO' if result['ok'] else 'WARNING',
-                          f'Integrity: {result["message"]}')
-        self.bus.emit('Session', 'STOPPED', f'{self.folder} | integrity={summary["overall"]}')
+                if self.study and self.block_running:
+                    self.marker(f'T{self.current_block:02d}_INTERRUPTED')
+                    self.block_running = False
+                self.marker('RECORDING_STOP')
+            finally:
+                # Stop new marker publication before releasing the outlet.
+                self.active = False
+                self._close_marker_outlet()
+                self._close_metadata_outlet()
+
+        # Media recorders and file finalization remain independent of marker LSL.
         try:
-            if self.study:
-                self._session_config['training_trials'] = self._trial_records()
-                session_file(self.folder, 'config.json').write_text(
-                    json.dumps(self._session_config, indent=2, default=str), encoding='utf-8')
-            self._write_manifest(status)
-        except Exception as exc:
-            self.bus.emit('Session', 'ERROR', f'Manifest finalization failed: {exc!r}')
-        self._release_session_outlets()
-        self.bus.close_session()
+            for name, recorder in list(self.recorders.items()):
+                try:
+                    recorder.stop()
+                except Exception as exc:
+                    recorder.report('ERROR', f'stop failed: {exc!r}')
+            if self.mark_file:
+                self.mark_file.close()
+            self.mark_file = self.mark_writer = None
+            self.device_integrity = {name: assess_device(name, rec, self.folder, stage='final')
+                                     for name, rec in self.recorders.items()}
+            summary = summarize_integrity(self.device_readiness, self.device_integrity)
+            status = 'COMPLETED' if summary['overall'] == 'PASS' else 'PARTIAL'
+            for name, result in self.device_integrity.items():
+                self.bus.emit(name, 'INFO' if result['ok'] else 'WARNING',
+                              f'Integrity: {result["message"]}')
+            self.bus.emit('Session', 'STOPPED', f'{self.folder} | integrity={summary["overall"]}')
+            try:
+                if self.study:
+                    self._session_config['training_trials'] = self._trial_records()
+                    session_file(self.folder, 'config.json').write_text(
+                        json.dumps(self._session_config, indent=2, default=str), encoding='utf-8')
+                self._write_manifest(status)
+            except Exception as exc:
+                self.bus.emit('Session', 'ERROR', f'Manifest finalization failed: {exc!r}')
+        finally:
+            self._close_marker_outlet()
+            self._close_metadata_outlet()
+            self.bus.close_session()
+
+    def close(self):
+        """Best-effort cleanup for application exit, including idle state."""
+        try:
+            self.stop()
+        finally:
+            self._close_marker_outlet()
+            self._close_metadata_outlet()
