@@ -1,4 +1,3 @@
-# Author: Gulraiz
 """Interactive, independent-device experiment recorder (Tkinter, Python 3.10+)."""
 import queue
 import json
@@ -16,7 +15,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 from core import EventBus, SessionManager
 from block_management import DEFAULT_MAX, load_block_state
-from devices.audio import AudioRecorder, available_inputs
+from devices.audio import AudioRecorder, available_inputs, refresh_portaudio_devices, microphone_identity, preferred_audio_choice
 from devices.windows_audio import device_manager_sound_names, safe_hardware_match
 from devices.polar import PolarRecorder
 from devices.polar_verity import PolarVerityRecorder
@@ -387,8 +386,8 @@ class App:
     def _build_camera_properties(self, frame, slot):
         self.label(frame, 'CAMERA PROPERTIES', 10, WHITE, True).pack(anchor='w', padx=10, pady=(4, 3))
         vars_ = {
-            'resolution': tk.StringVar(value='640x480'),
-            'fps': tk.StringVar(value='30'),
+            'resolution': tk.StringVar(value='1280x720'),
+            'fps': tk.StringVar(value='25'),
             'autofocus': tk.BooleanVar(value=True),
             'focus': tk.StringVar(value=''),
             'autoexposure': tk.BooleanVar(value=True),
@@ -425,7 +424,7 @@ class App:
 
     def restore_camera_defaults(self, slot):
         v = self.camera_setting_vars[slot]
-        for key, value in {'resolution':'640x480', 'fps':'30', 'focus':'', 'exposure':'', 'brightness':'', 'gain':''}.items():
+        for key, value in {'resolution':'1280x720', 'fps':'25', 'focus':'', 'exposure':'', 'brightness':'', 'gain':''}.items():
             v[key].set(value)
         for key in ('autofocus','autoexposure','auto_white_balance'):
             v[key].set(True)
@@ -470,7 +469,7 @@ class App:
             self.bus.emit('Cameras','WARNING','Stop all live camera previews before scanning')
             return
         self._camera_scanning=True
-        self.bus.emit('Cameras','INFO','Discovering available cameras (Windows enumeration or bounded probe)')
+        self.bus.emit('Cameras','INFO','Scanning indices 0–9 using DirectShow, Media Foundation and default backend')
         def work():
             try:
                 diagnostics=[]
@@ -480,7 +479,7 @@ class App:
                 result=discover_cameras(10, report=record_diagnostic)
                 if not result:
                     self.bus.emit('Cameras','WARNING',
-                                  'No accessible camera found during discovery. '
+                                  'Camera discovery failed on all tested backends. '
                                   'Review the per-index INFO events above; test using camera_diagnostics.py. '
                                   f'{len(diagnostics)} detailed checks logged.')
             except Exception as exc:
@@ -794,51 +793,79 @@ class App:
         self.refresh_audio()
 
     def refresh_audio(self):
-        if self.session.active or self.preview_active:
-            self.bus.emit('Audio','WARNING','Stop Preview/Record before refreshing audio inputs')
+        """Refresh PortAudio safely; prefer the Ultramic WASAPI capture endpoint.
+
+        Author: Gulraiz. No PortAudio restart while ANY IMMSS acquisition or
+        preview is active. Device indices are re-resolved after each refresh.
+        """
+        if self.session.active or self.preview_active or self._starting_session or any(
+            getattr(recorder, 'active', False) for recorder in self.recorders.values()
+        ):
+            self.bus.emit('Audio', 'WARNING', 'Stop all recordings/previews before refreshing audio devices')
             return
         try:
-            old_key = self.device_choices[self.mic_select.current()][0] if (
-                0 <= self.mic_select.current() < len(self.device_choices)) else None
+            old_identity = None
+            pos = self.mic_select.current()
+            if 0 <= pos < len(self.device_choices):
+                import sounddevice as sd
+                old_idx = self.device_choices[pos][0]
+                try:
+                    old_device = sd.query_devices(old_idx)
+                    old_host = sd.query_hostapis(old_device['hostapi'])['name']
+                    old_identity = microphone_identity(old_device, old_host)
+                except Exception:
+                    pass
+
+            # The PortAudio list can remain stale after USB hot-plug. Refresh
+            # before requesting endpoint indices, never after starting a stream.
+            try:
+                refresh_portaudio_devices()
+                self.bus.emit('Audio', 'INFO', 'PortAudio device list reinitialized')
+            except Exception as exc:
+                self.bus.emit('Audio', 'WARNING',
+                              f'PortAudio refresh unsuccessful: {exc!r}; attempting enumeration')
+
             try:
                 self.windows_sound_names = device_manager_sound_names()
-                self.bus.emit('Audio','INFO',
+                self.bus.emit('Audio', 'INFO',
                               'Windows sound hardware: ' + (', '.join(self.windows_sound_names) or 'none reported'))
             except Exception as exc:
                 self.windows_sound_names = []
-                self.bus.emit('Audio','WARNING',f'Windows hardware name lookup failed: {exc!r}')
-            self.windows_hardware_info.set(', '.join(self.windows_sound_names) if self.windows_sound_names else 'No hardware names reported (or lookup failed)')
+                self.bus.emit('Audio', 'WARNING', f'Windows hardware name lookup failed: {exc!r}')
+            self.windows_hardware_info.set(', '.join(self.windows_sound_names)
+                                           if self.windows_sound_names else 'No hardware names reported (or lookup failed)')
             raw_inputs = available_inputs()
             self.audio_name_lookup = {}
             self.device_choices = []
             import sounddevice as sd
+            details = {}
             for index, endpoint_label in raw_inputs:
-                endpoint_name = sd.query_devices(index)['name'].strip()
+                device = sd.query_devices(index)
+                endpoint_name = device['name'].strip()
                 matched = safe_hardware_match(endpoint_name, self.windows_sound_names)
-                api=sd.query_hostapis(sd.query_devices(index)['hostapi'])['name']
-                alias=self.mic_aliases.get(self._mic_key(index,sd.query_devices(index),api))
+                api = sd.query_hostapis(device['hostapi'])['name']
+                details[index] = (device, api)
+                alias = self.mic_aliases.get(self._mic_key(index, device, api))
                 if alias:
-                    label=f'{alias} [user label]  |  {endpoint_label}'
+                    label = f'{alias} [user label]  |  {endpoint_label}'
                 elif matched:
                     label = f'{matched}  |  {endpoint_label}'
                     self.audio_name_lookup[index] = matched
                 else:
                     label = endpoint_label
                 self.device_choices.append((index, label))
-            self.mic_select.configure(values=[label for _,label in self.device_choices])
-            preferred = next((i for i,(index,_) in enumerate(self.device_choices)
-                              if index == old_key),None)
-            if preferred is None:
-                preferred=next((i for i,(_,label) in enumerate(self.device_choices)
-                                if 'ultramic' in label.lower()),None)
-            if preferred is None and self.device_choices:
-                preferred=0
-            if preferred is not None:self.mic_select.current(preferred)
-            else:self.mic_select.set('')
+            self.mic_select.configure(values=[label for _, label in self.device_choices])
+            preferred = preferred_audio_choice(self.device_choices, details, old_identity)
+            if preferred is not None:
+                self.mic_select.current(preferred)
+            else:
+                self.mic_select.set('')
             self.on_audio_selected()
-            self.bus.emit('Audio','INFO',f'{len(self.device_choices)} audio input endpoint(s) enumerated; '
+            self.bus.emit('Audio', 'INFO',
+                          f'{len(self.device_choices)} audio input endpoint(s) enumerated; '
                           f'{len(self.audio_name_lookup)} with unambiguous matching hardware name')
-        except Exception as exc:self.bus.emit('Audio','ERROR',f'Audio discovery: {exc!r}')
+        except Exception as exc:
+            self.bus.emit('Audio', 'ERROR', f'Audio discovery: {exc!r}')
 
     def on_audio_selected(self):
         pos=self.mic_select.current()

@@ -2609,3 +2609,106 @@
 2026-11-26 20:47:12,704 WARNING [Camera 1] WARNING: Integrity: actual camera capture rate below 90% of configured FPS
 2026-11-26 20:47:12,704 INFO [Session] STOPPED: C:\Users\chgul\Desktop\sympex_project\sympex\Participant_Data\SYMPEX_2027\CPH\P007\V01_Training\S20261126T204655_724fc88c | integrity=PARTIAL
 2026-11-26 20:48:08,275 INFO [Application] INFO: Application closing
+2026-11-27 10:22:38,176 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\sympex_project\sympex\multimodal_studio\logs\application.log
+2026-11-27 10:22:38,920 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-27 10:22:38,923 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 10:22:46,856 INFO [Cameras] INFO: Discovering available cameras (Windows enumeration or bounded probe)
+2026-11-27 10:22:46,916 INFO [Cameras] INFO: Windows camera enumeration unavailable (ModuleNotFoundError); using bounded index probe
+2026-11-27 10:22:48,574 INFO [Cameras] INFO: Camera scan stopped after consecutive unavailable indices (last=2)
+2026-11-27 10:22:48,574 INFO [Cameras] INFO: Camera discovery: 1 usable camera(s)
+2026-11-27 10:22:48,845 INFO [Cameras] INFO: Camera scan finished: 1 available
+2026-11-27 10:28:55,900 INFO [Application] INFO: Application closing
+2026-11-27 10:28:59,052 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\sympex_project\sympex\multimodal_studio\logs\application.log
+2026-11-27 10:28:59,468 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-27 10:28:59,469 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 10:29:03,142 INFO [Cameras] INFO: Discovering available cameras (Windows enumeration or bounded probe)
+2026-11-27 10:29:03,143 INFO [Cameras] INFO: Windows camera enumeration unavailable (ModuleNotFoundError); using bounded index probe
+2026-11-27 10:29:04,372 INFO [Cameras] INFO: Camera scan stopped after consecutive unavailable indices (last=2)
+2026-11-27 10:29:04,372 INFO [Cameras] INFO: Camera discovery: 1 usable camera(s)
+2026-11-27 10:29:04,859 INFO [Cameras] INFO: Camera scan finished: 1 available
+2026-11-27 10:29:28,177 INFO [Session Metadata] INFO: Published data organization via IMS_Session_Metadata (LSL)
+2026-11-27 10:29:30,628 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-27 10:29:30,882 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
+2026-11-27 10:29:30,883 INFO [Camera 1] RECORDING: Camera 1: JPEG sequence requested 640x480 at 30 fps
+2026-11-27 10:29:30,984 INFO [Camera 1] READY: live data confirmed
+2026-11-27 10:29:31,033 INFO [Session] RECORDING: 03fcc6edcdfe4689b50097324610bd93 | C:\Users\chgul\Desktop\sympex_project\sympex\Participant_Data\SYMPEX_2027\JNS\P001\V01_Training\S20261127T102928_03fcc6ed
+2026-11-27 10:30:10,781 INFO [Camera 1] INFO: Camera 1 stopped: 428 JPEG frames; 0 queue drops
+2026-11-27 10:30:10,783 WARNING [Camera 1] WARNING: Integrity: actual camera capture rate below 90% of configured FPS
+2026-11-27 10:30:10,783 INFO [Session] STOPPED: C:\Users\chgul\Desktop\sympex_project\sympex\Participant_Data\SYMPEX_2027\JNS\P001\V01_Training\S20261127T102928_03fcc6ed | integrity=PARTIAL
+2026-11-27 10:30:26,757 INFO [Session Metadata] INFO: Published data organization via IMS_Session_Metadata (LSL)
+2026-11-27 10:30:29,119 INFO [Camera 1] INFO: Camera property unsupported/rejected: autofocus=1
+2026-11-27 10:30:29,327 INFO [Camera 1] INFO: index 0 / DirectShow: frames OK (requested, 640x480)
+2026-11-27 10:30:29,328 INFO [Camera 1] RECORDING: Camera 1: JPEG sequence requested 640x480 at 30 fps
+2026-11-27 10:30:29,429 INFO [Camera 1] READY: live data confirmed
+2026-11-27 10:30:29,433 INFO [Session] RECORDING: 66472a365e4d430ead091e1c80aaccc5 | C:\Users\chgul\Desktop\sympex_project\sympex\Participant_Data\SYMPEX_2027\JNS\P001\V01_Training\S20261127T103026_66472a36
+2026-11-27 10:30:39,968 INFO [Camera 1] INFO: Camera 1 stopped: 103 JPEG frames; 0 queue drops
+2026-11-27 10:30:39,969 WARNING [Camera 1] WARNING: Integrity: actual camera capture rate below 90% of configured FPS
+2026-11-27 10:30:39,969 INFO [Session] STOPPED: C:\Users\chgul\Desktop\sympex_project\sympex\Participant_Data\SYMPEX_2027\JNS\P001\V01_Training\S20261127T103026_66472a36 | integrity=PARTIAL
+2026-11-27 10:32:19,562 INFO [Application] INFO: Application closing
+2026-11-27 10:43:49,044 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\sympex_project\sympex\multimodal_studio\logs\application.log
+2026-11-27 10:43:49,667 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-27 10:43:49,669 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 10:44:01,735 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-27 10:44:01,736 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 10:47:11,625 INFO [Application] INFO: Application closing
+2026-11-27 10:59:44,311 INFO [Application] INFO: Intelligent Multimodal Microsurgery Studio (IMMSS) started; persistent log: C:\Users\chgul\Desktop\sympex_project\sympex\multimodal_studio\logs\application.log
+2026-11-27 10:59:44,558 INFO [Audio] INFO: PortAudio device list reinitialized
+2026-11-27 10:59:44,909 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-27 10:59:44,911 INFO [Audio] INFO: 14 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 11:00:08,635 INFO [Audio] INFO: PortAudio device list reinitialized
+2026-11-27 11:00:08,938 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST)
+2026-11-27 11:00:08,939 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 11:00:19,311 INFO [Audio] INFO: PortAudio device list reinitialized
+2026-11-27 11:00:19,680 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-27 11:00:19,681 INFO [Audio] INFO: 11 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 11:00:32,389 INFO [Audio] INFO: PortAudio device list reinitialized
+2026-11-27 11:00:32,713 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-27 11:00:32,714 INFO [Audio] INFO: 14 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 11:00:33,136 INFO [Audio] INFO: PortAudio device list reinitialized
+2026-11-27 11:00:33,460 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-27 11:00:33,461 INFO [Audio] INFO: 14 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 11:00:33,953 INFO [Audio] INFO: PortAudio device list reinitialized
+2026-11-27 11:00:34,252 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-27 11:00:34,253 INFO [Audio] INFO: 14 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 11:00:34,281 INFO [Audio] INFO: PortAudio device list reinitialized
+2026-11-27 11:00:34,609 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-27 11:00:34,610 INFO [Audio] INFO: 14 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 11:00:34,629 INFO [Audio] INFO: PortAudio device list reinitialized
+2026-11-27 11:00:34,941 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-27 11:00:34,942 INFO [Audio] INFO: 14 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 11:00:34,978 INFO [Audio] INFO: PortAudio device list reinitialized
+2026-11-27 11:00:35,395 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-27 11:00:35,396 INFO [Audio] INFO: 14 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 11:00:35,415 INFO [Audio] INFO: PortAudio device list reinitialized
+2026-11-27 11:00:35,723 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-27 11:00:35,724 INFO [Audio] INFO: 14 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 11:00:35,760 INFO [Audio] INFO: PortAudio device list reinitialized
+2026-11-27 11:00:36,074 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-27 11:00:36,075 INFO [Audio] INFO: 14 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 11:00:36,095 INFO [Audio] INFO: PortAudio device list reinitialized
+2026-11-27 11:00:36,404 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-27 11:00:36,405 INFO [Audio] INFO: 14 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 11:00:40,526 INFO [Audio] INFO: PortAudio device list reinitialized
+2026-11-27 11:00:40,836 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-27 11:00:40,836 INFO [Audio] INFO: 14 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 11:00:40,996 INFO [Audio] INFO: PortAudio device list reinitialized
+2026-11-27 11:00:41,325 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-27 11:00:41,327 INFO [Audio] INFO: 14 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 11:00:41,343 INFO [Audio] INFO: PortAudio device list reinitialized
+2026-11-27 11:00:41,642 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-27 11:00:41,643 INFO [Audio] INFO: 14 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 11:00:41,681 INFO [Audio] INFO: PortAudio device list reinitialized
+2026-11-27 11:00:41,994 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-27 11:00:41,995 INFO [Audio] INFO: 14 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 11:00:42,013 INFO [Audio] INFO: PortAudio device list reinitialized
+2026-11-27 11:00:42,313 INFO [Audio] INFO: Windows sound hardware: Intelr Smart Sound Technology for Bluetoothr Audio, Intelr Smart Sound Technology for Digital Microphones, Intelr Smart Sound Technology for USB Audio, Realtek High Definition Audio(SST), USB Audio Device
+2026-11-27 11:00:42,314 INFO [Audio] INFO: 14 audio input endpoint(s) enumerated; 0 with unambiguous matching hardware name
+2026-11-27 11:00:52,771 INFO [Session Metadata] INFO: Published data organization via IMS_Session_Metadata (LSL)
+2026-11-27 11:00:52,773 INFO [Microphone] INFO: Opening microphone: Microphone (UltraMic384K_PRO 16bit r0) | index=11 | backend=Windows WASAPI | rate=384000 Hz | channels=1 | WASAPI exclusive=True
+2026-11-27 11:00:52,799 INFO [Microphone] INFO: LSL audio broadcasting: IMS_Ultramic384K_Audio (1 ch, 384000 Hz)
+2026-11-27 11:00:52,814 INFO [Microphone] RECORDING: device=11, rate=384000 Hz, channels=1
+2026-11-27 11:00:52,915 INFO [Microphone] READY: live data confirmed
+2026-11-27 11:00:52,923 INFO [Session] RECORDING: db5cb049a0024d938a7308c8eba238b6 | C:\Users\chgul\Desktop\sympex_project\sympex\Participant_Data\SYMPEX_2027\JNS\P001\V01_Training\S20261127T110052_db5cb049
+2026-11-27 11:01:24,221 INFO [Microphone] STOPPED: 12034560 samples saved; queue drops=0; LSL drops=0; LSL errors=0
+2026-11-27 11:01:24,222 INFO [Microphone] INFO: Integrity: no detected acquisition errors
+2026-11-27 11:01:24,222 INFO [Session] STOPPED: C:\Users\chgul\Desktop\sympex_project\sympex\Participant_Data\SYMPEX_2027\JNS\P001\V01_Training\S20261127T110052_db5cb049 | integrity=PASS

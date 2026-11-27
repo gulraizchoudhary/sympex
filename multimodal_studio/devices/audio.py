@@ -13,6 +13,65 @@ import uuid
 from core import RecorderBase
 
 
+
+def refresh_portaudio_devices():
+    """Re-enumerate Windows audio endpoints with no streams running.
+
+    Call only after the application has verified that all PortAudio input/output
+    streams, including previews, are stopped. ``sounddevice`` exposes private
+    reinitialization methods; keep their use isolated and test independently.
+    This must NEVER run inside a recording callback.
+
+    Author: Gulraiz
+    """
+    terminate = getattr(sd, '_terminate', None)
+    initialize = getattr(sd, '_initialize', None)
+    if not callable(terminate) or not callable(initialize):
+        raise RuntimeError('This sounddevice build has no PortAudio refresh API')
+    terminate()
+    try:
+        initialize()
+    except Exception:
+        # PortAudio may be left uninitialized. Propagate so the GUI does not
+        # claim that a stale discovery result is reliable.
+        raise
+
+
+def microphone_identity(device, host_api):
+    """Stable-within-name fingerprint; never rely on numeric indices."""
+    return (str(device['name']).strip().casefold(), str(host_api).strip().casefold())
+
+
+def preferred_audio_choice(choices, device_details, previous_identity=None):
+    """Return a COMBOBOX POSITION, preferring Ultramic WASAPI over duplicates.
+
+    ``choices`` entries are ``(PortAudio index, display label)``; device_details
+    maps the index to ``(device info, host API name)``. When the previously
+    chosen endpoint is available, keep it unless it is a non-WASAPI Ultramic
+    and a WASAPI Ultramic is now present.
+    """
+    matches = []
+    for pos, (idx, _label) in enumerate(choices):
+        detail, host = device_details[idx]
+        identity = microphone_identity(detail, host)
+        is_ultramic = 'ultramic' in identity[0]
+        is_wasapi = 'wasapi' in identity[1]
+        if is_ultramic and is_wasapi:
+            matches.append(pos)
+        if previous_identity is not None and identity == previous_identity:
+            retained = pos
+    # Preserve the user's explicit choice except when it is a less suitable
+    # Ultramic endpoint and the same microphone has become available via WASAPI.
+    retained = locals().get('retained')
+    if retained is not None:
+        detail, host = device_details[choices[retained][0]]
+        if not ('ultramic' in str(detail['name']).casefold() and 'wasapi' not in host.casefold() and matches):
+            return retained
+    if matches:
+        return matches[0]
+    return 0 if choices else None
+
+
 def available_inputs():
     """Return actual PortAudio indices with useful Windows endpoint and backend names.
 
