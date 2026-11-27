@@ -66,23 +66,31 @@ def _quiet_opencv_discovery(cv2):
     level; do not use it around actual preview or recording operations.
     """
     with _DISCOVERY_LOG_LOCK:
-        getter = getattr(cv2, 'getLogLevel', None)
-        setter = getattr(cv2, 'setLogLevel', None)
-        old_level = None
-        if callable(getter) and callable(setter):
+        # OpenCV exposes its native logger through different Python bindings.
+        # Recent builds commonly use cv2.utils.logging rather than cv2 itself.
+        logging_api = getattr(getattr(cv2, 'utils', None), 'logging', None)
+        for api in (logging_api, cv2):
+            if api is None:
+                continue
+            getter = getattr(api, 'getLogLevel', None)
+            setter = getattr(api, 'setLogLevel', None)
+            if not (callable(getter) and callable(setter)):
+                continue
             try:
-                old_level = getter()
-                setter(0)  # LOG_LEVEL_SILENT; only for expected discovery failures
+                previous = getter()
+                silent = getattr(api, 'LOG_LEVEL_SILENT', 0)
+                setter(silent)
             except Exception:
-                old_level = None
-        try:
-            yield
-        finally:
-            if old_level is not None:
-                try:
-                    setter(old_level)
-                except Exception:
-                    pass
+                continue
+            try:
+                yield
+            finally:
+                # Restore the native logger even when camera probing raises.
+                setter(previous)
+            return
+        # No usable logging API: still perform discovery, without globally
+        # redirecting stderr or hiding actual recording failures.
+        yield
 
 
 def _windows_camera_indices(max_index, report=None):
